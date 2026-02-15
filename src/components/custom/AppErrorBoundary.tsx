@@ -33,7 +33,7 @@ export default class AppErrorBoundary extends Component<AppErrorBoundaryProps, A
         <section className="mx-auto mt-6 w-full max-w-4xl rounded-3xl border border-red-400/40 bg-red-500/10 p-6 text-white">
           <h3 className="font-poppins text-2xl font-bold">Ocorreu um erro na visualizacao</h3>
           <p className="mt-2 text-sm text-white/80">
-            Recarregue essa aba. Se continuar, use a aba de Questoes e Redacao enquanto ajustamos este modulo.
+            Tente novamente para recarregar o painel sem perder o restante da aplicacao.
           </p>
           <button
             type="button"

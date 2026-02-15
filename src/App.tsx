@@ -7,6 +7,7 @@ import SimuladoSection from '@/components/custom/SimuladoSection';
 import RankingSection from '@/components/custom/RankingSection';
 import BadgesSection from '@/components/custom/BadgesSection';
 import Footer from '@/components/custom/Footer';
+import AppErrorBoundary from '@/components/custom/AppErrorBoundary';
 
 function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
@@ -99,6 +100,7 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [contentKey, setContentKey] = useState(0);
 
   return (
     <div className="min-h-screen bg-dark text-white overflow-x-hidden">
@@ -106,22 +108,24 @@ function App() {
         {isLoading ? (
           <LoadingScreen key="loading" onComplete={() => setIsLoading(false)} />
         ) : (
-          <motion.div
-            key="content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Navbar />
-            <main>
-              <HeroDashboard />
-              <AreasSection />
-              <SimuladoSection />
-              <RankingSection />
-              <BadgesSection />
-            </main>
-            <Footer />
-          </motion.div>
+          <AppErrorBoundary onReset={() => setContentKey((current) => current + 1)}>
+            <motion.div
+              key={`content-${contentKey}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Navbar />
+              <main>
+                <HeroDashboard />
+                <AreasSection />
+                <SimuladoSection />
+                <RankingSection />
+                <BadgesSection />
+              </main>
+              <Footer />
+            </motion.div>
+          </AppErrorBoundary>
         )}
       </AnimatePresence>
     </div>
