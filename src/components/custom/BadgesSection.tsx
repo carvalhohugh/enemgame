@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Lock, Unlock, Star, Award, Zap, Target } from 'lucide-react';
 import { badges } from '@/data/mockData';
+import { useStudyProgress } from '@/context/StudyProgressContext';
 
 const rarityColors = {
   common: {
@@ -112,9 +113,17 @@ function BadgeCard({ badge, index }: BadgeCardProps) {
 export default function BadgesSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { progress } = useStudyProgress();
 
-  const unlockedCount = badges.filter((b) => b.unlocked).length;
-  const legendaryCount = badges.filter((b) => b.unlocked && b.rarity === 'legendary').length;
+  const runtimeBadges = badges.map((badge) => ({
+    ...badge,
+    unlocked: progress.unlockedBadges.includes(badge.id),
+    unlockedAt: progress.badgeUnlockedAt[badge.id] ?? badge.unlockedAt,
+  }));
+
+  const unlockedCount = runtimeBadges.filter((badge) => badge.unlocked).length;
+  const legendaryCount = runtimeBadges.filter((badge) => badge.unlocked && badge.rarity === 'legendary').length;
+  const nextLockedBadge = runtimeBadges.find((badge) => !badge.unlocked);
 
   return (
     <section id="conquistas" className="relative py-24 overflow-hidden bg-dark-deeper/30">
@@ -160,7 +169,7 @@ export default function BadgesSection() {
           {[
             {
               label: 'Badges Desbloqueados',
-              value: `${unlockedCount}/${badges.length}`,
+              value: `${unlockedCount}/${runtimeBadges.length}`,
               icon: <Star className="w-5 h-5 text-gold" />,
               color: 'gold',
             },
@@ -172,13 +181,13 @@ export default function BadgesSection() {
             },
             {
               label: 'Próximo Badge',
-              value: 'Matemático',
+              value: nextLockedBadge?.name ?? 'Todos liberados',
               icon: <Target className="w-5 h-5 text-green-400" />,
               color: 'green',
             },
             {
               label: 'XP Bônus',
-              value: '+2.500',
+              value: `+${(progress.totalCorrect * 5).toLocaleString('pt-BR')}`,
               icon: <Zap className="w-5 h-5 text-yellow-400" />,
               color: 'yellow',
             },
@@ -206,7 +215,7 @@ export default function BadgesSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
         >
-          {badges.map((badge, index) => (
+          {runtimeBadges.map((badge, index) => (
             <BadgeCard key={badge.id} badge={badge} index={index} />
           ))}
         </motion.div>
@@ -221,25 +230,29 @@ export default function BadgesSection() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-xl bg-purple/20 flex items-center justify-center text-2xl">
-                📐
+                {nextLockedBadge?.icon ?? '🏆'}
               </div>
               <div>
-                <h4 className="font-semibold text-white">Próximo: Matemático</h4>
-                <p className="text-white/50 text-sm">Acerte 10 questões de matemática seguidas</p>
+                <h4 className="font-semibold text-white">
+                  Próximo: {nextLockedBadge?.name ?? 'Todos os badges liberados'}
+                </h4>
+                <p className="text-white/50 text-sm">
+                  {nextLockedBadge?.description ?? 'Parabéns pelo desempenho completo.'}
+                </p>
               </div>
             </div>
-            <span className="text-purple-light font-bold">7/10</span>
+            <span className="text-purple-light font-bold">{unlockedCount}/{runtimeBadges.length}</span>
           </div>
           <div className="h-3 bg-dark-deeper rounded-full overflow-hidden">
             <motion.div
               initial={{ width: 0 }}
-              animate={isInView ? { width: '70%' } : {}}
+              animate={isInView ? { width: `${(unlockedCount / runtimeBadges.length) * 100}%` } : {}}
               transition={{ duration: 1, delay: 0.8 }}
               className="h-full bg-gradient-to-r from-purple to-purple-light rounded-full"
             />
           </div>
           <p className="text-white/40 text-sm mt-2">
-            Mais 3 acertos seguidos para desbloquear!
+            Continue respondendo questões oficiais para liberar o próximo badge.
           </p>
         </motion.div>
       </div>

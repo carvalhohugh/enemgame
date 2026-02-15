@@ -8,6 +8,7 @@ import {
   mecCompetencies,
   type EssayTheme,
 } from '@/data/redacao';
+import { useStudyProgress } from '@/context/StudyProgressContext';
 import { fetchEnemExams, fetchEnemQuestions, type EnemQuestion } from '@/services/enemApi';
 
 const containerVariants = {
@@ -236,6 +237,7 @@ function AreaCard({ area, index, onContinue }: AreaCardProps) {
 export default function AreasSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { progress, registerAnswer } = useStudyProgress();
 
   const [latestYear, setLatestYear] = useState<number | null>(null);
   const [areaStates, setAreaStates] = useState<Record<StudyAreaId, AreaApiState>>(
@@ -246,6 +248,9 @@ export default function AreasSection() {
   const [activeAreaId, setActiveAreaId] = useState<AreaId | null>(null);
   const [visibleQuestionCount, setVisibleQuestionCount] = useState(6);
   const [essayThemeOffset, setEssayThemeOffset] = useState(0);
+  const [questionResponses, setQuestionResponses] = useState<
+    Record<string, { selected: number; correct: boolean }>
+  >({});
 
   useEffect(() => {
     let isMounted = true;
@@ -388,21 +393,22 @@ export default function AreasSection() {
         const apiState = areaStates[area.id];
         const officialLoaded = apiState.questions.length;
         const officialTotalEstimate = apiState.totalEstimate || area.totalQuests;
-        const completed = Math.min(area.completedQuests, officialTotalEstimate);
-        const progress = Math.round((completed / officialTotalEstimate) * 100);
+        const sessionAnswered = progress.areaProgress[area.id].answered;
+        const completed = Math.min(Math.max(area.completedQuests, sessionAnswered), officialTotalEstimate);
+        const areaProgressPercent = Math.round((completed / officialTotalEstimate) * 100);
 
         return {
           ...area,
           completedQuests: completed,
           totalQuests: officialTotalEstimate,
-          progress,
+          progress: areaProgressPercent,
           officialLoaded,
           officialTotalEstimate,
           apiLoading: apiState.loading,
           apiError: apiState.error,
         };
       });
-  }, [areaStates]);
+  }, [areaStates, progress.areaProgress]);
 
   const activeArea = useMemo(
     () => enrichedAreas.find((area) => area.id === activeAreaId) ?? null,
@@ -458,6 +464,34 @@ export default function AreasSection() {
 
     void loadAreaQuestions(activeAreaId, false);
     setVisibleQuestionCount((current) => current + 6);
+  };
+
+  const handleAreaQuestionAnswer = (question: EnemQuestion, selectedIndex: number) => {
+    if (!activeAreaId || activeAreaId === 'redacao' || !studyAreaIds.includes(activeAreaId)) {
+      return;
+    }
+
+    const key = getQuestionKey(question);
+    if (questionResponses[key]) {
+      return;
+    }
+
+    const correctIndex = question.alternatives.findIndex((alternative) => alternative.isCorrect);
+    const isCorrect = correctIndex >= 0 ? selectedIndex === correctIndex : false;
+
+    setQuestionResponses((current) => ({
+      ...current,
+      [key]: {
+        selected: selectedIndex,
+        correct: isCorrect,
+      },
+    }));
+
+    registerAnswer({
+      area: activeAreaId,
+      isCorrect,
+      xp: isCorrect ? 20 : 5,
+    });
   };
 
   return (
@@ -616,6 +650,16 @@ export default function AreasSection() {
                   <span className="rounded-full border border-purple/30 bg-purple/15 px-3 py-1 text-purple-light">
                     {activeAreaQuestions.length} questões oficiais em português carregadas
                   </span>
+                  {activeAreaId && activeAreaId !== 'redacao' && (
+                    <>
+                      <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/80">
+                        Respondidas na sessão: {progress.areaProgress[activeAreaId].answered}
+                      </span>
+                      <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/80">
+                        Acertos na sessão: {progress.areaProgress[activeAreaId].correct}
+                      </span>
+                    </>
+                  )}
                   {activeAreaApiState?.totalEstimate ? (
                     <span className="rounded-full border border-white/20 bg-white/5 px-3 py-1 text-white/80">
                       Base estimada: {activeAreaApiState.totalEstimate} itens na API
@@ -641,6 +685,50 @@ export default function AreasSection() {
                       <p className="mt-3 text-xs text-white/45">
                         Alternativas: {question.alternatives.length} • Disciplina: {question.discipline}
                       </p>
+
+                      <div className="mt-4 space-y-2">
+                        {question.alternatives.slice(0, 5).map((alternative, index) => {
+                          const answer = questionResponses[getQuestionKey(question)];
+                          const hasAnswered = Boolean(answer);
+                          const isSelected = answer?.selected === index;
+                          const isCorrectOption = alternative.isCorrect;
+
+                          return (
+                            <button
+                              key={`${getQuestionKey(question)}-${alternative.letter}`}
+                              type="button"
+                              disabled={hasAnswered}
+                              onClick={() => handleAreaQuestionAnswer(question, index)}
+                              className={`w-full rounded-xl border px-3 py-2 text-left text-sm transition ${
+                                hasAnswered
+                                  ? isCorrectOption
+                                    ? 'border-green-500/60 bg-green-500/10 text-green-100'
+                                    : isSelected
+                                      ? 'border-red-500/60 bg-red-500/10 text-red-100'
+                                      : 'border-white/10 bg-white/5 text-white/50'
+                                  : 'border-white/10 bg-white/5 text-white/80 hover:border-purple/40 hover:bg-purple/10'
+                              }`}
+                            >
+                              {alternative.letter}){' '}
+                              {sanitizeQuestionContext(alternative.text || 'Alternativa com imagem')}
+                            </button>
+                          );
+                        })}
+
+                        {questionResponses[getQuestionKey(question)] && (
+                          <p
+                            className={`text-xs font-semibold ${
+                              questionResponses[getQuestionKey(question)].correct
+                                ? 'text-green-300'
+                                : 'text-red-300'
+                            }`}
+                          >
+                            {questionResponses[getQuestionKey(question)].correct
+                              ? 'Resposta correta! +20 XP'
+                              : 'Resposta incorreta. +5 XP pela tentativa'}
+                          </p>
+                        )}
+                      </div>
                     </article>
                   ))}
                 </div>

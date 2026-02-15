@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Trophy, TrendingUp, TrendingDown, Minus, Crown, Medal, Award } from 'lucide-react';
-import { ranking } from '@/data/mockData';
+import { currentUser, ranking } from '@/data/mockData';
+import { useStudyProgress } from '@/context/StudyProgressContext';
 
 const getRankIcon = (rank: number) => {
   switch (rank) {
@@ -30,13 +31,13 @@ const getRankStyle = (rank: number) => {
 };
 
 interface RankingRowProps {
-  user: (typeof ranking)[0];
+  user: (typeof ranking)[0] & { isCurrentUser?: boolean };
   index: number;
-  isCurrentUser: boolean;
 }
 
-function RankingRow({ user, index, isCurrentUser }: RankingRowProps) {
+function RankingRow({ user, index }: RankingRowProps) {
   const rankChange = user.change;
+  const isCurrentUser = Boolean(user.isCurrentUser);
 
   return (
     <motion.div
@@ -104,9 +105,28 @@ function RankingRow({ user, index, isCurrentUser }: RankingRowProps) {
 export default function RankingSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { progress, level } = useStudyProgress();
 
-  const top3 = ranking.slice(0, 3);
-  const rest = ranking.slice(3);
+  const currentRankingUser: (typeof ranking)[number] & { isCurrentUser: boolean } = {
+    id: currentUser.id,
+    name: currentUser.name,
+    avatar: currentUser.avatar,
+    level,
+    xp: progress.totalXp,
+    rank: 0,
+    change: 0,
+    isCurrentUser: true,
+  };
+
+  const mergedRanking = [...ranking.filter((user) => user.name !== currentUser.name), currentRankingUser]
+    .sort((left, right) => right.xp - left.xp)
+    .map((user, index) => ({
+      ...user,
+      rank: index + 1,
+    }));
+
+  const top3 = mergedRanking.slice(0, 3);
+  const rest = mergedRanking.slice(3);
 
   return (
     <section id="ranking" className="relative py-24 overflow-hidden">
@@ -249,7 +269,6 @@ export default function RankingSection() {
               key={user.id}
               user={user}
               index={index}
-              isCurrentUser={user.name === 'Ana Beatriz'}
             />
           ))}
         </motion.div>

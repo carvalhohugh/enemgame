@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, User, Flame, Trophy } from 'lucide-react';
-import { currentUser } from '@/data/mockData';
+import { useStudyProgress } from '@/context/StudyProgressContext';
 
 const navLinks = [
   { name: 'Dashboard', href: '#dashboard' },
@@ -14,6 +14,7 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { progress, level } = useStudyProgress();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,7 +85,7 @@ export default function Navbar() {
               >
                 <Flame className="w-4 h-4 text-orange-400" />
                 <span className="text-sm font-semibold text-orange-400">
-                  {currentUser.streak}
+                  {progress.streak}
                 </span>
               </motion.div>
 
@@ -95,7 +96,7 @@ export default function Navbar() {
               >
                 <Trophy className="w-4 h-4 text-purple-light" />
                 <span className="text-sm font-semibold text-purple-light">
-                  Nv. {currentUser.level}
+                  Nv. {level}
                 </span>
               </motion.div>
 
@@ -154,13 +155,13 @@ export default function Navbar() {
                   <div className="flex items-center gap-2">
                     <Flame className="w-5 h-5 text-orange-400" />
                     <span className="text-orange-400 font-semibold">
-                      {currentUser.streak} dias
+                      {progress.streak} dias
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-purple-light" />
                     <span className="text-purple-light font-semibold">
-                      Nv. {currentUser.level}
+                      Nv. {level}
                     </span>
                   </div>
                 </div>

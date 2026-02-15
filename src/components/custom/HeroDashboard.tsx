@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { TrendingUp, Target, Flame, Award, Zap, Star } from 'lucide-react';
 import { currentUser } from '@/data/mockData';
+import { useStudyProgress } from '@/context/StudyProgressContext';
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -45,6 +46,7 @@ function StatCard({ icon, label, value, subValue, color, delay }: StatCardProps)
 export default function HeroDashboard() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { progress, level, currentLevelXp, xpToNextLevel, accuracy } = useStudyProgress();
   const stars = useMemo(
     () =>
       Array.from({ length: 50 }, (_, index) => {
@@ -85,7 +87,7 @@ export default function HeroDashboard() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
 
-  const xpProgress = (currentUser.xp / currentUser.xpToNextLevel) * 100;
+  const xpProgress = (currentLevelXp / xpToNextLevel) * 100;
 
   return (
     <section
@@ -203,7 +205,7 @@ export default function HeroDashboard() {
                   <span className="text-white font-medium">Progresso para o próximo nível</span>
                 </div>
                 <span className="text-purple-light font-bold">
-                  {currentUser.xp.toLocaleString()} / {currentUser.xpToNextLevel.toLocaleString()} XP
+                  {currentLevelXp.toLocaleString('pt-BR')} / {xpToNextLevel.toLocaleString('pt-BR')} XP
                 </span>
               </div>
               <div className="h-4 bg-dark-deeper rounded-full overflow-hidden">
@@ -219,7 +221,7 @@ export default function HeroDashboard() {
                 </motion.div>
               </div>
               <p className="text-white/40 text-sm mt-2">
-                Faltam {(currentUser.xpToNextLevel - currentUser.xp).toLocaleString()} XP para o nível {currentUser.level + 1}
+                Faltam {(xpToNextLevel - currentLevelXp).toLocaleString('pt-BR')} XP para o nível {level + 1}
               </p>
             </motion.div>
           </div>
@@ -229,7 +231,7 @@ export default function HeroDashboard() {
             <StatCard
               icon={<Award className="w-6 h-6" />}
               label="Nível Atual"
-              value={currentUser.level}
+              value={level}
               subValue="Avançado"
               color="#a855f7"
               delay={0.3}
@@ -237,24 +239,24 @@ export default function HeroDashboard() {
             <StatCard
               icon={<TrendingUp className="w-6 h-6" />}
               label="XP Total"
-              value={currentUser.xp.toLocaleString()}
-              subValue="+1.250 esta semana"
+              value={progress.totalXp.toLocaleString('pt-BR')}
+              subValue={`${progress.totalCorrect} acertos totais`}
               color="#fbbf24"
               delay={0.4}
             />
             <StatCard
               icon={<Flame className="w-6 h-6" />}
               label="Sequência"
-              value={`${currentUser.streak} dias`}
-              subValue="Seu recorde: 12 dias"
+              value={`${progress.streak} dias`}
+              subValue={`Seu recorde: ${progress.bestStreak} dias`}
               color="#f97316"
               delay={0.5}
             />
             <StatCard
               icon={<Target className="w-6 h-6" />}
-              label="Ranking"
-              value={`#${currentUser.rank}`}
-              subValue="Top 5% dos estudantes"
+              label="Desempenho"
+              value={`${accuracy}%`}
+              subValue={`${progress.totalAnswered} questões respondidas`}
               color="#10b981"
               delay={0.6}
             />
