@@ -121,7 +121,7 @@ export default function Footer() {
               © 2024 ENEM Game. Todos os direitos reservados.
             </p>
             <p className="text-white/40 text-sm flex items-center gap-1">
-              Feito com <Heart className="w-4 h-4 text-red-500 fill-red-500" /> para estudantes
+              Feito com <Heart className="w-4 h-4 text-red-500 fill-red-500" /> por Hugo Carvalho
             </p>
             <div className="flex items-center gap-4 text-sm">
               <a href="#" className="text-white/40 hover:text-purple-light transition-colors">
