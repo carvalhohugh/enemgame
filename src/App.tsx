@@ -26,8 +26,14 @@ import {
   type EssayTheme,
 } from '@/data/redacao';
 import { supabase, supabaseConfigError } from '@/lib/supabase';
+import AreasSection from '@/components/custom/AreasSection';
 import AppErrorBoundary from '@/components/custom/AppErrorBoundary';
-import OriginalPlatform from '@/components/custom/OriginalPlatform';
+import BadgesSection from '@/components/custom/BadgesSection';
+import Footer from '@/components/custom/Footer';
+import HeroDashboard from '@/components/custom/HeroDashboard';
+import Navbar from '@/components/custom/Navbar';
+import RankingSection from '@/components/custom/RankingSection';
+import SimuladoSection from '@/components/custom/SimuladoSection';
 
 interface AuthUser {
   name: string;
@@ -103,7 +109,7 @@ function App() {
   const [authReady, setAuthReady] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [screen, setScreen] = useState<Screen>('landing');
-  const [activeTab, setActiveTab] = useState<DashboardTab>('questoes');
+  const [activeTab, setActiveTab] = useState<DashboardTab>('plataforma');
 
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [authLoading, setAuthLoading] = useState(false);
@@ -648,64 +654,91 @@ function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen px-5 py-6 md:px-10"
+            className="min-h-screen"
           >
-            <header className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="text-sm text-white/60">Bem-vindo(a), {user.name}</p>
-                <h2 className="font-poppins text-3xl font-bold">Painel ENEM gratuito</h2>
-              </div>
-              <button
-                type="button"
-                onClick={() => void handleLogout()}
-                className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-4 py-2 text-sm transition hover:border-gold hover:text-gold"
-              >
-                <LogOut className="h-4 w-4" />
-                Sair
-              </button>
-            </header>
-
-            <nav className="mx-auto mt-7 flex w-full max-w-6xl gap-3">
-              <button
-                type="button"
-                onClick={() => setActiveTab('plataforma')}
-                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
-                  activeTab === 'plataforma' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
-                }`}
-              >
-                <LayoutDashboard className="h-4 w-4" />
-                Plataforma original
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('questoes')}
-                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
-                  activeTab === 'questoes' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
-                }`}
-              >
-                <BookOpenCheck className="h-4 w-4" />
-                Questoes reais
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveTab('redacao')}
-                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
-                  activeTab === 'redacao' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
-                }`}
-              >
-                <PenLine className="h-4 w-4" />
-                Redacao
-              </button>
-            </nav>
-
-            <main className={activeTab === 'plataforma' ? 'mt-6' : 'mx-auto mt-6 w-full max-w-6xl'}>
-              {activeTab === 'plataforma' && (
+            {activeTab === 'plataforma' ? (
+              <>
                 <AppErrorBoundary onReset={() => setActiveTab('questoes')}>
-                  <OriginalPlatform />
+                  <Navbar />
+                  <main>
+                    <HeroDashboard />
+                    <AreasSection />
+                    <SimuladoSection />
+                    <RankingSection />
+                    <BadgesSection />
+                  </main>
+                  <Footer />
                 </AppErrorBoundary>
-              )}
 
-              {activeTab === 'questoes' && (
+                <div className="fixed bottom-5 right-5 z-[70] flex flex-col gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('questoes')}
+                    className="inline-flex items-center gap-2 rounded-xl bg-purple px-4 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-purple-light"
+                  >
+                    <BookOpenCheck className="h-4 w-4" />
+                    Ir para modulo ENEM real
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleLogout()}
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-dark-surface/90 px-4 py-3 text-sm font-semibold text-white transition hover:border-gold hover:text-gold"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sair
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="px-5 py-6 md:px-10">
+                <header className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4">
+                  <div>
+                    <p className="text-sm text-white/60">Bem-vindo(a), {user.name}</p>
+                    <h2 className="font-poppins text-3xl font-bold">Painel ENEM gratuito</h2>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => void handleLogout()}
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-4 py-2 text-sm transition hover:border-gold hover:text-gold"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Sair
+                  </button>
+                </header>
+
+                <nav className="mx-auto mt-7 flex w-full max-w-6xl gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('plataforma')}
+                    className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold text-white/75 transition hover:border-white/40"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Voltar para plataforma original
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('questoes')}
+                    className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                      activeTab === 'questoes' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
+                    }`}
+                  >
+                    <BookOpenCheck className="h-4 w-4" />
+                    Questoes reais
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('redacao')}
+                    className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                      activeTab === 'redacao' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
+                    }`}
+                  >
+                    <PenLine className="h-4 w-4" />
+                    Redacao
+                  </button>
+                </nav>
+
+                <main className="mx-auto mt-6 w-full max-w-6xl">
+                  {activeTab === 'questoes' && (
                 <section className="space-y-6">
                   <div className="glass rounded-3xl p-5 md:p-6">
                     <h3 className="font-poppins text-xl font-bold">Conteudo oficial do ENEM por API</h3>
@@ -810,7 +843,7 @@ function App() {
                 </section>
               )}
 
-              {activeTab === 'redacao' && (
+                  {activeTab === 'redacao' && (
                 <section className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
                   <div className="glass rounded-3xl p-6">
                     <div className="flex items-center justify-between gap-3">
@@ -886,7 +919,9 @@ function App() {
                   </div>
                 </section>
               )}
-            </main>
+                </main>
+              </div>
+            )}
           </motion.section>
         )}
       </AnimatePresence>
