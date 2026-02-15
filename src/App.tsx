@@ -3,7 +3,6 @@ import {
   BookOpenCheck,
   CheckCircle2,
   GraduationCap,
-  LayoutDashboard,
   LoaderCircle,
   LogOut,
   PenLine,
@@ -26,14 +25,8 @@ import {
   type EssayTheme,
 } from '@/data/redacao';
 import { supabase, supabaseConfigError } from '@/lib/supabase';
-import AreasSection from '@/components/custom/AreasSection';
 import AppErrorBoundary from '@/components/custom/AppErrorBoundary';
-import BadgesSection from '@/components/custom/BadgesSection';
-import Footer from '@/components/custom/Footer';
-import HeroDashboard from '@/components/custom/HeroDashboard';
-import Navbar from '@/components/custom/Navbar';
-import RankingSection from '@/components/custom/RankingSection';
-import SimuladoSection from '@/components/custom/SimuladoSection';
+import ClassicDashboard from '@/components/custom/ClassicDashboard';
 
 interface AuthUser {
   name: string;
@@ -118,6 +111,7 @@ function App() {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [authMessage, setAuthMessage] = useState('');
+  const [dashboardTarget, setDashboardTarget] = useState<'plataforma' | 'questoes'>('plataforma');
 
   const [exams, setExams] = useState<EnemExam[]>([]);
   const [examsLoading, setExamsLoading] = useState(false);
@@ -342,6 +336,7 @@ function App() {
       return;
     }
 
+    setActiveTab(dashboardTarget);
     setAuthLoading(true);
 
     try {
@@ -569,6 +564,27 @@ function App() {
                 </button>
               </div>
 
+              <div className="mt-3 grid grid-cols-2 gap-2 rounded-xl border border-white/10 bg-black/20 p-1">
+                <button
+                  type="button"
+                  onClick={() => setDashboardTarget('plataforma')}
+                  className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${
+                    dashboardTarget === 'plataforma' ? 'bg-gold text-dark' : 'text-white/75'
+                  }`}
+                >
+                  Entrar no visual original
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setDashboardTarget('questoes')}
+                  className={`rounded-lg px-3 py-2 text-xs font-semibold transition ${
+                    dashboardTarget === 'questoes' ? 'bg-purple text-white' : 'text-white/75'
+                  }`}
+                >
+                  Entrar no modulo ENEM
+                </button>
+              </div>
+
               <form className="mt-6 space-y-4" onSubmit={(event) => void handleLogin(event)}>
                 {authMode === 'signup' && (
                   <label className="block text-sm text-white/75">
@@ -657,38 +673,9 @@ function App() {
             className="min-h-screen"
           >
             {activeTab === 'plataforma' ? (
-              <>
-                <AppErrorBoundary onReset={() => setActiveTab('questoes')}>
-                  <Navbar />
-                  <main>
-                    <HeroDashboard />
-                    <AreasSection />
-                    <SimuladoSection />
-                    <RankingSection />
-                    <BadgesSection />
-                  </main>
-                  <Footer />
-                </AppErrorBoundary>
-
-                <div className="fixed bottom-5 right-5 z-[70] flex flex-col gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('questoes')}
-                    className="inline-flex items-center gap-2 rounded-xl bg-purple px-4 py-3 text-sm font-semibold text-white shadow-glow transition hover:bg-purple-light"
-                  >
-                    <BookOpenCheck className="h-4 w-4" />
-                    Ir para modulo ENEM real
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => void handleLogout()}
-                    className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-dark-surface/90 px-4 py-3 text-sm font-semibold text-white transition hover:border-gold hover:text-gold"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Sair
-                  </button>
-                </div>
-              </>
+              <AppErrorBoundary onReset={() => setActiveTab('questoes')}>
+                <ClassicDashboard />
+              </AppErrorBoundary>
             ) : (
               <div className="px-5 py-6 md:px-10">
                 <header className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4">
@@ -712,8 +699,7 @@ function App() {
                     onClick={() => setActiveTab('plataforma')}
                     className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold text-white/75 transition hover:border-white/40"
                   >
-                    <LayoutDashboard className="h-4 w-4" />
-                    Voltar para plataforma original
+                    Voltar ao visual original
                   </button>
                   <button
                     type="button"
