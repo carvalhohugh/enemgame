@@ -1,276 +1,103 @@
-import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { TrendingUp, Target, Flame, Award, Zap, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Award, Flame, Star, Target, TrendingUp } from 'lucide-react';
 import { currentUser } from '@/data/mockData';
 
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  subValue?: string;
-  color: string;
-  delay: number;
-}
-
-function StatCard({ icon, label, value, subValue, color, delay }: StatCardProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, rotateY: 90 }}
-      animate={{ opacity: 1, rotateY: 0 }}
-      transition={{ duration: 1, delay, ease: [0.19, 1, 0.22, 1] }}
-      whileHover={{ scale: 1.05, y: -5 }}
-      className="relative group"
-    >
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(circle at center, ${color}30 0%, transparent 70%)`,
-        }}
-      />
-      <div className="relative glass-purple rounded-2xl p-5 border border-purple/20 hover:border-purple/50 transition-all duration-300">
-        <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center mb-3"
-          style={{ backgroundColor: `${color}20` }}
-        >
-          <div style={{ color }}>{icon}</div>
-        </div>
-        <p className="text-white/60 text-sm mb-1">{label}</p>
-        <p className="text-2xl font-poppins font-bold text-white">{value}</p>
-        {subValue && <p className="text-white/40 text-xs mt-1">{subValue}</p>}
-      </div>
-    </motion.div>
-  );
-}
+const stats = [
+  {
+    label: 'Nivel atual',
+    value: currentUser.level,
+    icon: Award,
+    color: 'text-purple-light',
+  },
+  {
+    label: 'XP total',
+    value: currentUser.xp.toLocaleString('pt-BR'),
+    icon: TrendingUp,
+    color: 'text-gold',
+  },
+  {
+    label: 'Sequencia',
+    value: `${currentUser.streak} dias`,
+    icon: Flame,
+    color: 'text-orange-400',
+  },
+  {
+    label: 'Ranking',
+    value: `#${currentUser.rank}`,
+    icon: Target,
+    color: 'text-emerald-400',
+  },
+];
 
 export default function HeroDashboard() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springConfig = { damping: 25, stiffness: 150 };
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), springConfig);
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), springConfig);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      mouseX.set(x);
-      mouseY.set(y);
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
-
-  const xpProgress = (currentUser.xp / currentUser.xpToNextLevel) * 100;
+  const xpProgress = Math.min(100, (currentUser.xp / currentUser.xpToNextLevel) * 100);
 
   return (
-    <section
-      id="dashboard"
-      ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
-    >
-      {/* Animated Background */}
-      <div className="absolute inset-0">
-        {/* Gradient Orbs */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple/30 rounded-full blur-[120px]"
-        />
-        <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gold/20 rounded-full blur-[100px]"
-        />
-
-        {/* Stars */}
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              opacity: [0.2, 1, 0.2],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 3,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
-
-        {/* Mouse-following glow */}
-        <motion.div
-          className="absolute w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%)',
-            left: mousePosition.x - 300,
-            top: mousePosition.y - 300,
-          }}
-          transition={{ type: 'spring', damping: 30, stiffness: 200 }}
-        />
+    <section id="dashboard" className="relative overflow-hidden pt-24 pb-16">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-purple/25 blur-3xl" />
+        <div className="absolute -bottom-20 right-0 h-72 w-72 rounded-full bg-gold/20 blur-3xl" />
       </div>
 
-      {/* Main Content */}
-      <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
-          perspective: 1000,
-        }}
-        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
-      >
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Welcome & Avatar */}
-          <div className="text-center lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="inline-flex items-center gap-2 bg-purple/20 px-4 py-2 rounded-full border border-purple/30 mb-6"
-            >
-              <Zap className="w-4 h-4 text-gold" />
-              <span className="text-sm text-purple-light font-medium">
-                Bem-vindo de volta!
-              </span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="font-poppins text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4"
-            >
-              Olá,{' '}
-              <span className="text-gradient">{currentUser.name}</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-white/60 text-lg mb-8"
-            >
-              Sua jornada pelo conhecimento continua. Você está indo muito bem!
-            </motion.p>
-
-            {/* XP Progress Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="glass rounded-2xl p-5 border border-purple/20"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 text-gold" />
-                  <span className="text-white font-medium">Progresso para o próximo nível</span>
-                </div>
-                <span className="text-purple-light font-bold">
-                  {currentUser.xp.toLocaleString()} / {currentUser.xpToNextLevel.toLocaleString()} XP
-                </span>
-              </div>
-              <div className="h-4 bg-dark-deeper rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${xpProgress}%` }}
-                  transition={{ duration: 1.5, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
-                  className="h-full bg-gradient-to-r from-purple via-purple-light to-gold rounded-full relative"
-                >
-                  <div className="absolute inset-0 bg-white/20 animate-shimmer" 
-                    style={{ backgroundSize: '200% 100%' }}
-                  />
-                </motion.div>
-              </div>
-              <p className="text-white/40 text-sm mt-2">
-                Faltam {(currentUser.xpToNextLevel - currentUser.xp).toLocaleString()} XP para o nível {currentUser.level + 1}
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Right Column - Stats Grid */}
-          <div className="grid grid-cols-2 gap-4">
-            <StatCard
-              icon={<Award className="w-6 h-6" />}
-              label="Nível Atual"
-              value={currentUser.level}
-              subValue="Avançado"
-              color="#a855f7"
-              delay={0.3}
-            />
-            <StatCard
-              icon={<TrendingUp className="w-6 h-6" />}
-              label="XP Total"
-              value={currentUser.xp.toLocaleString()}
-              subValue="+1.250 esta semana"
-              color="#fbbf24"
-              delay={0.4}
-            />
-            <StatCard
-              icon={<Flame className="w-6 h-6" />}
-              label="Sequência"
-              value={`${currentUser.streak} dias`}
-              subValue="Seu recorde: 12 dias"
-              color="#f97316"
-              delay={0.5}
-            />
-            <StatCard
-              icon={<Target className="w-6 h-6" />}
-              label="Ranking"
-              value={`#${currentUser.rank}`}
-              subValue="Top 5% dos estudantes"
-              color="#10b981"
-              delay={0.6}
-            />
-          </div>
-        </div>
-
-        {/* Quick Actions */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-12 flex flex-wrap justify-center lg:justify-start gap-4"
+          transition={{ duration: 0.5 }}
+          className="glass rounded-3xl border border-purple/20 p-6 md:p-8"
         >
-          <motion.a
-            href="#simulado"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary flex items-center gap-2"
-          >
-            <Zap className="w-5 h-5" />
-            <span>Desafio do Dia</span>
-          </motion.a>
-          <motion.a
-            href="#trilhas"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:border-purple/30 transition-all flex items-center gap-2"
-          >
-            <Target className="w-5 h-5" />
-            <span>Continuar Estudos</span>
-          </motion.a>
+          <p className="inline-flex items-center gap-2 rounded-full border border-purple/30 bg-purple/15 px-3 py-1 text-xs font-semibold text-purple-light">
+            <Star className="h-4 w-4" />
+            Modulo original da plataforma
+          </p>
+
+          <h2 className="mt-4 font-poppins text-3xl font-bold text-white md:text-5xl">
+            Ola, <span className="text-gradient">{currentUser.name}</span>
+          </h2>
+          <p className="mt-3 max-w-2xl text-white/70">
+            Continue sua trilha de estudos com simulados, ranking e conquistas.
+          </p>
+
+          <div className="mt-8 rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div className="flex items-center justify-between gap-3 text-sm">
+              <span className="text-white/70">Progresso para o proximo nivel</span>
+              <span className="font-semibold text-purple-light">
+                {currentUser.xp.toLocaleString('pt-BR')} / {currentUser.xpToNextLevel.toLocaleString('pt-BR')} XP
+              </span>
+            </div>
+            <div className="mt-3 h-3 overflow-hidden rounded-full bg-dark-deeper">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${xpProgress}%` }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="h-full rounded-full bg-gradient-to-r from-purple to-gold"
+              />
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+
+              return (
+                <motion.article
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: index * 0.08 }}
+                  className="rounded-2xl border border-white/10 bg-white/5 p-4"
+                >
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-white/65">{stat.label}</p>
+                    <Icon className={`h-5 w-5 ${stat.color}`} />
+                  </div>
+                  <p className="mt-2 font-poppins text-2xl font-bold text-white">{stat.value}</p>
+                </motion.article>
+              );
+            })}
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
     </section>
   );
 }
