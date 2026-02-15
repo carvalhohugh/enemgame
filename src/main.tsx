@@ -3,11 +3,14 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { StudyProgressProvider } from '@/context/StudyProgressContext'
+import { AuthProfileProvider } from '@/context/AuthProfileContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <StudyProgressProvider>
-      <App />
-    </StudyProgressProvider>
+    <AuthProfileProvider>
+      <StudyProgressProvider>
+        <App />
+      </StudyProgressProvider>
+    </AuthProfileProvider>
   </StrictMode>,
 )

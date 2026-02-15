@@ -1,7 +1,8 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Trophy, TrendingUp, TrendingDown, Minus, Crown, Medal, Award } from 'lucide-react';
-import { currentUser, ranking } from '@/data/mockData';
+import { ranking } from '@/data/mockData';
+import { useAuthProfile } from '@/context/AuthProfileContext';
 import { useStudyProgress } from '@/context/StudyProgressContext';
 
 const getRankIcon = (rank: number) => {
@@ -105,12 +106,13 @@ function RankingRow({ user, index }: RankingRowProps) {
 export default function RankingSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { profile } = useAuthProfile();
   const { progress, level } = useStudyProgress();
 
   const currentRankingUser: (typeof ranking)[number] & { isCurrentUser: boolean } = {
-    id: currentUser.id,
-    name: currentUser.name,
-    avatar: currentUser.avatar,
+    id: profile.userId ?? 'local-user',
+    name: profile.displayName,
+    avatar: profile.avatarUrl,
     level,
     xp: progress.totalXp,
     rank: 0,
@@ -118,7 +120,10 @@ export default function RankingSection() {
     isCurrentUser: true,
   };
 
-  const mergedRanking = [...ranking.filter((user) => user.name !== currentUser.name), currentRankingUser]
+  const mergedRanking = [
+    ...ranking.filter((user) => user.id !== '6' && user.name !== 'Ana Beatriz'),
+    currentRankingUser,
+  ]
     .sort((left, right) => right.xp - left.xp)
     .map((user, index) => ({
       ...user,

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { TrendingUp, Target, Flame, Award, Zap, Star } from 'lucide-react';
-import { currentUser } from '@/data/mockData';
+import { useAuthProfile } from '@/context/AuthProfileContext';
 import { useStudyProgress } from '@/context/StudyProgressContext';
 
 interface StatCardProps {
@@ -46,6 +46,7 @@ function StatCard({ icon, label, value, subValue, color, delay }: StatCardProps)
 export default function HeroDashboard() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { profile } = useAuthProfile();
   const { progress, level, currentLevelXp, xpToNextLevel, accuracy } = useStudyProgress();
   const stars = useMemo(
     () =>
@@ -180,7 +181,7 @@ export default function HeroDashboard() {
               className="font-poppins text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4"
             >
               Olá,{' '}
-              <span className="text-gradient">{currentUser.name}</span>
+              <span className="text-gradient">{profile.displayName}</span>
             </motion.h1>
 
             <motion.p
