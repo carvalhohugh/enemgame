@@ -82,9 +82,11 @@ function mapUserToProfile(user: User | null): AuthProfile {
   if (!user) {
     // Fallback to localStorage for dev/demo if Supabase is offline/not logged in
     const localClan = localStorage.getItem('enemgame_clan') as ClanId | null;
+    const localAdmin = localStorage.getItem('enemgame_admin') === 'true';
     return {
       ...initialProfile,
       clanId: localClan,
+      isAdmin: localAdmin,
       isLoading: false,
     };
   }

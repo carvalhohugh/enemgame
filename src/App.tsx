@@ -12,22 +12,23 @@ import SimuladoSection from '@/features/exam/components/SimuladoSection';
 import SimuladoRealPage from '@/features/exam/components/SimuladoRealPage';
 import TesteRapidoPage from '@/features/exam/components/TesteRapidoPage';
 import AdminPanel from '@/features/admin/components/AdminPanel';
-import RedacaoPage from '@/features/redacao/RedacaoPage';
+import PublicEnrollmentPage from '@/pages/PublicEnrollmentPage';
+
 import ClanSortingPage from '@/features/clans/ClanSortingPage';
-import ProfilePage from '@/features/profile/ProfilePage';
+import RedacaoPage from '@/features/redacao/RedacaoPage';
 import ArenaPage from '@/features/arena/ArenaPage';
 import BatalhaX1Page from '@/features/arena/BatalhaX1Page';
 import BatalhaClaPage from '@/features/arena/BatalhaClaPage';
 import ClanHubPage from '@/features/clans/ClanHubPage';
 import ActivitiesPage from '@/features/activities/ActivitiesPage';
 import AulasOnlinePage from '@/features/classes/AulasOnlinePage';
+import ProfilePage from '@/features/profile/ProfilePage';
 
 /* ── Gate: força sorting de clã pós-cadastro ── */
 function RequireClan({ children }: { children: React.ReactNode }) {
   const { profile } = useAuthProfile();
   const location = useLocation();
 
-  // Se não tem clã e não está já na página de sorting, redireciona
   if (!profile.clanId && location.pathname !== '/clans/sorting') {
     return <Navigate to="/clans/sorting" replace />;
   }
@@ -45,6 +46,7 @@ function App() {
             <Routes>
               {/* Full-screen routes (outside layout + outside clan gate) */}
               <Route path="/clans/sorting" element={<ClanSortingPage />} />
+              <Route path="/matricula" element={<PublicEnrollmentPage />} />
 
               {/* Protected routes: require clan */}
               <Route path="/" element={

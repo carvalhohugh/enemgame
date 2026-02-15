@@ -73,7 +73,14 @@ export default function TeachersManager() {
                                     <GraduationCap className="w-5 h-5 text-green-400" />
                                 </div>
                                 <div className="min-w-0">
-                                    <h4 className="font-medium text-white text-sm truncate">{teacher.full_name}</h4>
+                                    <div className="flex items-center gap-2">
+                                        <h4 className="font-medium text-white text-sm truncate">{teacher.full_name}</h4>
+                                        {teacher.coupon_code && (
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-purple/20 text-purple-light border border-purple/20">
+                                                CUPOM: {teacher.coupon_code}
+                                            </span>
+                                        )}
+                                    </div>
                                     <div className="flex items-center gap-3 text-xs text-white/40 mt-0.5">
                                         <span>{teacher.email}</span>
                                         {teacher.subject && (
@@ -81,6 +88,9 @@ export default function TeachersManager() {
                                         )}
                                         {teacher.school_name && (
                                             <span className="flex items-center gap-1"><Building2 className="w-3 h-3" />{teacher.school_name}</span>
+                                        )}
+                                        {teacher.commission_rate && (
+                                            <span className="text-green-400">Comissão: {teacher.commission_rate}%</span>
                                         )}
                                     </div>
                                 </div>
@@ -123,6 +133,8 @@ function TeacherFormModal({ teacher, schools, onSave, onClose }: {
         email: teacher?.email || '',
         subject: teacher?.subject || '',
         school_id: teacher?.school_id || null as string | null,
+        coupon_code: teacher?.coupon_code || '',
+        commission_rate: teacher?.commission_rate || 0,
         is_active: teacher?.is_active ?? true,
     });
 
@@ -173,6 +185,19 @@ function TeacherFormModal({ teacher, schools, onSave, onClose }: {
                             <option value="" className="bg-dark-surface">Sem vínculo</option>
                             {schools.map(s => <option key={s.id} value={s.id} className="bg-dark-surface">{s.name}</option>)}
                         </select>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="block text-xs text-white/50 mb-1 uppercase">Código do Cupom</label>
+                            <input value={form.coupon_code} onChange={e => setForm(p => ({ ...p, coupon_code: e.target.value.toUpperCase() }))}
+                                placeholder="EX: PROFJUAN"
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-purple/50" />
+                        </div>
+                        <div>
+                            <label className="block text-xs text-white/50 mb-1 uppercase">Comissão (%)</label>
+                            <input type="number" min={0} max={100} value={form.commission_rate} onChange={e => setForm(p => ({ ...p, commission_rate: parseFloat(e.target.value) || 0 }))}
+                                className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-purple/50" />
+                        </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <input type="checkbox" checked={form.is_active} onChange={e => setForm(p => ({ ...p, is_active: e.target.checked }))} id="teacher-active" className="rounded" />

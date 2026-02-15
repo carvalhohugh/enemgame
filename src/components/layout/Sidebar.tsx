@@ -22,6 +22,22 @@ import { useStudyProgress } from '@/context/StudyProgressContext';
 export function Sidebar() {
     const { profile } = useAuthProfile();
     const { level, progress } = useStudyProgress();
+    // const navigate = useNavigate();
+
+    const handleAdminAccess = () => {
+        if (profile.isAdmin) {
+            navigate('/admin');
+            return;
+        }
+
+        const pwd = window.prompt("🔐 Acesso Administrativo\nDigite a senha de administrador:");
+        if (pwd === 'admin' || pwd === 'admin123') {
+            localStorage.setItem('enemgame_admin', 'true');
+            window.location.reload();
+        } else if (pwd !== null) {
+            alert("Senha incorreta.");
+        }
+    };
 
     const links = useMemo(() => [
         { name: 'Dashboard', href: '/', icon: LayoutDashboard },
@@ -89,6 +105,14 @@ export function Sidebar() {
                 <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-white/60 hover:text-white hover:bg-white/5 transition-all">
                     <Settings className="w-4 h-4" />
                     Configurações
+                </button>
+
+                <button
+                    onClick={handleAdminAccess}
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-purple-light/70 hover:text-purple-light hover:bg-purple/10 transition-all"
+                >
+                    <Shield className="w-4 h-4" />
+                    Painel Admin
                 </button>
                 <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-red-400/70 hover:text-red-400 hover:bg-red-400/10 transition-all">
                     <LogOut className="w-4 h-4" />

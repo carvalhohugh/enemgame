@@ -35,6 +35,9 @@ export interface Teacher {
     subject: string;
     school_id: string | null;
     school_name?: string;
+    school_name?: string;
+    coupon_code?: string;
+    commission_rate?: number; // percentage
     is_active: boolean;
     created_at: string;
     updated_at: string;
@@ -73,8 +76,8 @@ const MOCK_SCHOOLS: School[] = [
 ];
 
 const MOCK_TEACHERS: Teacher[] = [
-    { id: '1', full_name: 'Prof. Maria Silva', email: 'maria.silva@dombosco.edu.br', subject: 'Matemática', school_id: '1', school_name: 'Colégio Dom Bosco', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
-    { id: '2', full_name: 'Prof. João Santos', email: 'joao.santos@emsaopaulo.edu.br', subject: 'Redação', school_id: '2', school_name: 'Escola Municipal São Paulo', is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '1', full_name: 'Prof. Maria Silva', email: 'maria.silva@dombosco.edu.br', subject: 'Matemática', school_id: '1', school_name: 'Colégio Dom Bosco', coupon_code: 'MARIA10', commission_rate: 10, is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '2', full_name: 'Prof. João Santos', email: 'joao.santos@emsaopaulo.edu.br', subject: 'Redação', school_id: '2', school_name: 'Escola Municipal São Paulo', coupon_code: 'JOAO2024', commission_rate: 15, is_active: true, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
 ];
 
 // ---- CRUD Operations ----
