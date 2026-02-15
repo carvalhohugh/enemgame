@@ -159,14 +159,14 @@ function AreaCard({ area, index, onContinue }: AreaCardProps) {
     <motion.div
       variants={cardVariants}
       whileHover={{ scale: 1.03, y: -8 }}
-      className="group relative"
+      className="group relative isolate"
     >
       <div
-        className="absolute -inset-0.5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"
+        className="pointer-events-none absolute -inset-0.5 z-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg"
         style={{ backgroundColor: area.color }}
       />
 
-      <div className="relative glass rounded-2xl p-6 border border-white/10 group-hover:border-white/20 transition-all duration-300 h-full flex flex-col">
+      <div className="relative z-10 glass rounded-2xl p-6 border border-white/10 group-hover:border-white/20 transition-all duration-300 h-full flex flex-col">
         <div className="flex items-start justify-between mb-4">
           <div
             className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl"
@@ -219,15 +219,14 @@ function AreaCard({ area, index, onContinue }: AreaCardProps) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => onContinue(area.id)}
-          className="w-full py-3 rounded-xl flex items-center justify-center gap-2 font-medium transition-all duration-300"
+          className="relative z-20 w-full py-3 rounded-xl border border-white/15 hover:border-white/35 flex items-center justify-center gap-2 font-medium text-white transition-all duration-300"
           style={{
-            backgroundColor: `${area.color}15`,
-            color: area.color,
+            backgroundColor: `${area.color}22`,
           }}
         >
-          <BookOpen className="w-4 h-4" />
+          <BookOpen className="w-4 h-4" style={{ color: area.color }} />
           <span>Continuar</span>
-          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" style={{ color: area.color }} />
         </motion.button>
       </div>
     </motion.div>
