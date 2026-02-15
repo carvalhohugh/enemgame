@@ -611,7 +611,7 @@ function App() {
 
                 {supabaseConfigError && (
                   <p className="rounded-lg border border-amber-300/40 bg-amber-500/15 px-3 py-2 text-sm text-amber-100">
-                    {supabaseConfigError} Configure o arquivo .env.local.
+                    {supabaseConfigError}
                   </p>
                 )}
 
