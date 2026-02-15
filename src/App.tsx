@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/custom/Navbar';
 import HeroDashboard from '@/components/custom/HeroDashboard';
+import AdminDashboardSection from '@/components/custom/AdminDashboardSection';
 import AreasSection from '@/components/custom/AreasSection';
 import SimuladoSection from '@/components/custom/SimuladoSection';
 import RankingSection from '@/components/custom/RankingSection';
 import BadgesSection from '@/components/custom/BadgesSection';
 import Footer from '@/components/custom/Footer';
 import AppErrorBoundary from '@/components/custom/AppErrorBoundary';
+import StudyProgressSync from '@/components/custom/StudyProgressSync';
 
 function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
@@ -115,9 +117,11 @@ function App() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
+              <StudyProgressSync />
               <Navbar />
               <main>
                 <HeroDashboard />
+                <AdminDashboardSection />
                 <AreasSection />
                 <SimuladoSection />
                 <RankingSection />

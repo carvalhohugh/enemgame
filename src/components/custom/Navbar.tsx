@@ -1,20 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, User, Flame, Trophy } from 'lucide-react';
+import { useAuthProfile } from '@/context/AuthProfileContext';
 import { useStudyProgress } from '@/context/StudyProgressContext';
-
-const navLinks = [
-  { name: 'Dashboard', href: '#dashboard' },
-  { name: 'Trilhas', href: '#trilhas' },
-  { name: 'Simulado', href: '#simulado' },
-  { name: 'Ranking', href: '#ranking' },
-  { name: 'Conquistas', href: '#conquistas' },
-];
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { profile } = useAuthProfile();
   const { progress, level } = useStudyProgress();
+  const navLinks = useMemo(() => {
+    const baseLinks = [
+      { name: 'Dashboard', href: '#dashboard' },
+      { name: 'Trilhas', href: '#trilhas' },
+      { name: 'Simulado', href: '#simulado' },
+      { name: 'Ranking', href: '#ranking' },
+      { name: 'Conquistas', href: '#conquistas' },
+    ];
+
+    if (profile.isAdmin) {
+      return [{ name: 'Admin', href: '#admin' }, ...baseLinks];
+    }
+
+    return baseLinks;
+  }, [profile.isAdmin]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -107,7 +116,7 @@ export default function Navbar() {
                 className="flex items-center gap-2 bg-gradient-to-r from-purple to-purple-light px-4 py-2 rounded-xl font-medium text-white text-sm"
               >
                 <User className="w-4 h-4" />
-                <span>Perfil</span>
+                <span>{profile.displayName}</span>
               </motion.button>
             </div>
 

@@ -71,3 +71,13 @@ export default defineConfig([
   },
 ])
 ```
+
+## Painel Administrativo (Supabase)
+
+Para habilitar o painel administrativo com alunos, notas e metricas:
+
+1. Abra o SQL Editor do Supabase.
+2. Execute o arquivo `scripts/admin_schema.sql`.
+3. Use login com um dos emails administradores:
+   - `hugocamposdecarvalho@gmail.com`
+   - `roosevelt.miranda@gmail.com`

@@ -9,6 +9,7 @@ interface AuthProfile {
   email: string | null;
   avatarUrl: string;
   isAuthenticated: boolean;
+  isAdmin: boolean;
   isLoading: boolean;
 }
 
@@ -24,8 +25,14 @@ const initialProfile: AuthProfile = {
   email: null,
   avatarUrl: defaultAvatar,
   isAuthenticated: false,
+  isAdmin: false,
   isLoading: true,
 };
+
+const ADMIN_EMAILS = new Set([
+  'hugocamposdecarvalho@gmail.com',
+  'roosevelt.miranda@gmail.com',
+]);
 
 function toTitleCase(value: string): string {
   return value
@@ -76,13 +83,16 @@ function mapUserToProfile(user: User | null): AuthProfile {
   }
 
   const displayName = resolveDisplayName(user);
+  const resolvedEmail = user.email?.toLowerCase().trim() ?? null;
+  const isAdmin = resolvedEmail ? ADMIN_EMAILS.has(resolvedEmail) : false;
 
   return {
     userId: user.id,
     displayName,
-    email: user.email ?? null,
+    email: resolvedEmail,
     avatarUrl: resolveAvatar(user, displayName),
     isAuthenticated: true,
+    isAdmin,
     isLoading: false,
   };
 }
