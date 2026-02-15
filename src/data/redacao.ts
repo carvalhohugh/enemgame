@@ -17,37 +17,37 @@ export interface EssayTheme {
 export const mecCompetencies: MecCompetency[] = [
   {
     id: 1,
-    title: 'Dominio da norma padrao da lingua portuguesa',
+    title: 'Domínio da norma padrão da língua portuguesa',
     description:
-      'Avalia se o texto demonstra dominio de ortografia, concordancia, regencia, pontuacao e registro formal.',
+      'Avalia se o texto demonstra domínio de ortografia, concordância, regência, pontuação e registro formal.',
     scoreRange: '0 a 200 pontos',
   },
   {
     id: 2,
-    title: 'Compreensao da proposta e repertorio',
+    title: 'Compreensão da proposta e repertório',
     description:
-      'Avalia se o estudante desenvolve o tema no formato dissertativo-argumentativo, com repertorio produtivo e pertinente.',
+      'Avalia se o estudante desenvolve o tema no formato dissertativo-argumentativo, com repertório produtivo e pertinente.',
     scoreRange: '0 a 200 pontos',
   },
   {
     id: 3,
-    title: 'Selecao e organizacao de argumentos',
+    title: 'Seleção e organização de argumentos',
     description:
-      'Avalia a construcao de ponto de vista, progressao das ideias e uso de dados/exemplos para sustentar a tese.',
+      'Avalia a construção de ponto de vista, progressão das ideias e uso de dados/exemplos para sustentar a tese.',
     scoreRange: '0 a 200 pontos',
   },
   {
     id: 4,
-    title: 'Coesao textual',
+    title: 'Coesão textual',
     description:
-      'Avalia o uso de conectivos, referenciação e encadeamento logico entre frases, periodos e paragrafos.',
+      'Avalia o uso de conectivos, referenciação e encadeamento lógico entre frases, períodos e parágrafos.',
     scoreRange: '0 a 200 pontos',
   },
   {
     id: 5,
-    title: 'Proposta de intervencao',
+    title: 'Proposta de intervenção',
     description:
-      'Avalia se o texto apresenta proposta detalhada, viavel, respeitando os direitos humanos e com agentes, acoes e meios.',
+      'Avalia se o texto apresenta proposta detalhada, viável, respeitando os direitos humanos e com agentes, ações e meios.',
     scoreRange: '0 a 200 pontos',
   },
 ];
@@ -55,74 +55,74 @@ export const mecCompetencies: MecCompetency[] = [
 export const baseEssayThemes: EssayTheme[] = [
   {
     id: 'base-1',
-    title: 'Desafios para combater a desinformacao cientifica no Brasil',
-    axes: ['educacao midiatica', 'saude publica', 'responsabilidade digital'],
+    title: 'Desafios para combater a desinformação científica no Brasil',
+    axes: ['educação midiática', 'saúde pública', 'responsabilidade digital'],
     inspiration: 'Tema recorrente em debates sociais e educacionais.',
   },
   {
     id: 'base-2',
-    title: 'Caminhos para ampliar a permanencia de jovens no ensino medio',
-    axes: ['evasao escolar', 'politicas publicas', 'projeto de vida'],
-    inspiration: 'Relaciona educacao, desigualdade e mercado de trabalho.',
+    title: 'Caminhos para ampliar a permanência de jovens no ensino médio',
+    axes: ['evasão escolar', 'políticas públicas', 'projeto de vida'],
+    inspiration: 'Relaciona educação, desigualdade e mercado de trabalho.',
   },
   {
     id: 'base-3',
-    title: 'Impactos da inteligencia artificial na formacao dos estudantes brasileiros',
-    axes: ['etica', 'acesso', 'inovacao pedagógica'],
+    title: 'Impactos da inteligência artificial na formação dos estudantes brasileiros',
+    axes: ['ética', 'acesso', 'inovação pedagógica'],
     inspiration: 'Atualiza o debate sobre tecnologia e aprendizagem.',
   },
   {
     id: 'base-4',
-    title: 'Desafios da mobilidade urbana para a inclusao social',
-    axes: ['direito a cidade', 'infraestrutura', 'acessibilidade'],
+    title: 'Desafios da mobilidade urbana para a inclusão social',
+    axes: ['direito à cidade', 'infraestrutura', 'acessibilidade'],
     inspiration: 'Conecta cidadania, trabalho e qualidade de vida.',
   },
   {
     id: 'base-5',
-    title: 'Seguranca alimentar e desperdicio de alimentos no Brasil contemporaneo',
+    title: 'Segurança alimentar e desperdício de alimentos no Brasil contemporâneo',
     axes: ['fome', 'consumo consciente', 'cadeia produtiva'],
     inspiration: 'Dialoga com desigualdade e sustentabilidade.',
   },
   {
     id: 'base-6',
-    title: 'Desafios para proteger adolescentes de violencias no ambiente digital',
-    axes: ['cyberbullying', 'legislacao', 'familia e escola'],
-    inspiration: 'Tema de alta incidencia na vida escolar.',
+    title: 'Desafios para proteger adolescentes de violências no ambiente digital',
+    axes: ['cyberbullying', 'legislação', 'família e escola'],
+    inspiration: 'Tema de alta incidência na vida escolar.',
   },
   {
     id: 'base-7',
-    title: 'Valorizacao do trabalho de cuidado e seus efeitos na economia brasileira',
-    axes: ['desigualdade de genero', 'politicas de apoio', 'mercado de trabalho'],
+    title: 'Valorização do trabalho de cuidado e seus efeitos na economia brasileira',
+    axes: ['desigualdade de gênero', 'políticas de apoio', 'mercado de trabalho'],
     inspiration: 'Tema social com foco em equidade e direitos.',
   },
   {
     id: 'base-8',
     title: 'Barreiras para democratizar o acesso a bens culturais no Brasil',
-    axes: ['territorio', 'financiamento', 'pluralidade'],
-    inspiration: 'Amplia discussao sobre cidadania cultural.',
+    axes: ['território', 'financiamento', 'pluralidade'],
+    inspiration: 'Amplia discussão sobre cidadania cultural.',
   },
   {
     id: 'base-9',
-    title: 'Estrategias para reduzir o preconceito linguistico na sociedade brasileira',
-    axes: ['diversidade', 'educacao', 'direitos civis'],
-    inspiration: 'Tema alinhado a linguagens e inclusao social.',
+    title: 'Estratégias para reduzir o preconceito linguístico na sociedade brasileira',
+    axes: ['diversidade', 'educação', 'direitos civis'],
+    inspiration: 'Tema alinhado a linguagens e inclusão social.',
   },
   {
     id: 'base-10',
-    title: 'Desafios para fortalecer a participacao civica da juventude',
-    axes: ['democracia', 'engajamento social', 'formacao politica'],
-    inspiration: 'Relaciona protagonismo juvenil e politicas publicas.',
+    title: 'Desafios para fortalecer a participação cívica da juventude',
+    axes: ['democracia', 'engajamento social', 'formação política'],
+    inspiration: 'Relaciona protagonismo juvenil e políticas públicas.',
   },
   {
     id: 'base-11',
-    title: 'Consequencias sociais da precarizacao do trabalho por aplicativos',
-    axes: ['direitos trabalhistas', 'renda', 'regulacao'],
-    inspiration: 'Tema atual sobre economia e justica social.',
+    title: 'Consequências sociais da precarização do trabalho por aplicativos',
+    axes: ['direitos trabalhistas', 'renda', 'regulação'],
+    inspiration: 'Tema atual sobre economia e justiça social.',
   },
   {
     id: 'base-12',
-    title: 'Desafios para garantir inclusao de pessoas com deficiencia no ensino superior',
-    axes: ['acessibilidade', 'permanencia', 'politicas afirmativas'],
+    title: 'Desafios para garantir inclusão de pessoas com deficiência no ensino superior',
+    axes: ['acessibilidade', 'permanência', 'políticas afirmativas'],
     inspiration: 'Debate sobre equidade e acesso educacional.',
   },
 ];
@@ -145,11 +145,11 @@ const stopWords = new Set([
   'quando',
   'onde',
   'porque',
-  'tambem',
+  'também',
   'ainda',
   'se',
-  'nao',
-  'sao',
+  'não',
+  'são',
   'ser',
   'foi',
   'sua',
@@ -163,7 +163,7 @@ const stopWords = new Set([
   'esse',
   'essa',
   'texto',
-  'questao',
+  'questão',
   'enem',
 ]);
 
@@ -210,8 +210,8 @@ export function buildThemesFromQuestions(questions: EnemQuestion[]): EssayTheme[
       return {
         id: `api-${question.year}-${question.index}-${question.language}`,
         title: `Desafios para promover ${keyword} de forma inclusiva no Brasil`,
-        axes: ['contexto historico', 'impacto social', 'proposta de intervencao'],
-        inspiration: `Inspirado por topicos da prova ENEM ${question.year}, questao ${question.index}.`,
+        axes: ['contexto histórico', 'impacto social', 'proposta de intervenção'],
+        inspiration: `Inspirado por tópicos da prova ENEM ${question.year}, questão ${question.index}.`,
       } as EssayTheme;
     })
     .filter((theme): theme is EssayTheme => theme !== null);

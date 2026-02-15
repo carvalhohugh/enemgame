@@ -2,12 +2,14 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import type { ClanId } from '@/services/ClanService';
 
-interface AuthProfile {
+export interface AuthProfile {
   userId: string | null;
   displayName: string;
   email: string | null;
   avatarUrl: string;
+  clanId: ClanId | null; // Added ClanId
   isAuthenticated: boolean;
   isAdmin: boolean;
   isLoading: boolean;
@@ -15,6 +17,7 @@ interface AuthProfile {
 
 interface AuthProfileContextValue {
   profile: AuthProfile;
+  updateClan: (clanId: ClanId) => Promise<void>;
 }
 
 const defaultAvatar = 'https://api.dicebear.com/7.x/avataaars/svg?seed=Estudante&backgroundColor=7c3aed';
@@ -24,6 +27,7 @@ const initialProfile: AuthProfile = {
   displayName: 'Estudante',
   email: null,
   avatarUrl: defaultAvatar,
+  clanId: null,
   isAuthenticated: false,
   isAdmin: false,
   isLoading: true,
@@ -76,8 +80,11 @@ function resolveAvatar(user: User, displayName: string): string {
 
 function mapUserToProfile(user: User | null): AuthProfile {
   if (!user) {
+    // Fallback to localStorage for dev/demo if Supabase is offline/not logged in
+    const localClan = localStorage.getItem('enemgame_clan') as ClanId | null;
     return {
       ...initialProfile,
+      clanId: localClan,
       isLoading: false,
     };
   }
@@ -85,12 +92,14 @@ function mapUserToProfile(user: User | null): AuthProfile {
   const displayName = resolveDisplayName(user);
   const resolvedEmail = user.email?.toLowerCase().trim() ?? null;
   const isAdmin = resolvedEmail ? ADMIN_EMAILS.has(resolvedEmail) : false;
+  const clanId = (user.user_metadata?.clanId as ClanId) || (localStorage.getItem('enemgame_clan') as ClanId) || null;
 
   return {
     userId: user.id,
     displayName,
     email: resolvedEmail,
     avatarUrl: resolveAvatar(user, displayName),
+    clanId,
     isAuthenticated: true,
     isAdmin,
     isLoading: false,
@@ -104,14 +113,20 @@ export function AuthProfileProvider({ children }: { children: ReactNode }) {
     supabase
       ? initialProfile
       : {
-          ...initialProfile,
-          isLoading: false,
-        },
+        ...initialProfile,
+        isLoading: false,
+      },
   );
 
   useEffect(() => {
     let isMounted = true;
     const supabaseClient = supabase;
+
+    // Load initial state from localStorage if needed (for immediate feedback)
+    const localClan = localStorage.getItem('enemgame_clan') as ClanId | null;
+    if (localClan && !profile.clanId) {
+      setProfile(prev => ({ ...prev, clanId: localClan }));
+    }
 
     if (!supabaseClient) {
       return undefined;
@@ -143,9 +158,27 @@ export function AuthProfileProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const updateClan = async (clanId: ClanId) => {
+    // 1. Update Local State
+    setProfile(prev => ({ ...prev, clanId }));
+    localStorage.setItem('enemgame_clan', clanId);
+
+    // 2. Update Supabase if logged in
+    if (profile.userId && supabase) {
+      try {
+        await supabase.auth.updateUser({
+          data: { clanId }
+        });
+      } catch (error) {
+        console.error("Error updating clan in Supabase:", error);
+      }
+    }
+  };
+
   const value = useMemo<AuthProfileContextValue>(
     () => ({
       profile,
+      updateClan,
     }),
     [profile],
   );

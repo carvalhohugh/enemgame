@@ -1,0 +1,83 @@
+[
+    {
+        "id": "2023-HUM-01",
+        "year": 2023,
+        "area": "humanas",
+        "discipline": "historia",
+        "title": "Questão 1 - Humanas 2023",
+        "context": "A compreensão histórica das relações de poder na antiguidade clássica requer a análise das estruturas sociais e políticas...",
+        "alternatives": [
+            {
+                "letter": "A",
+                "text": "Baseava-se exclusivamente na força militar",
+                "isCorrect": false
+            },
+            {
+                "letter": "B",
+                "text": "Envolvia complexas negociações entre aristocracia e plebe",
+                "isCorrect": true
+            },
+            {
+                "letter": "C",
+                "text": "Era determinada apenas pela autoridade religiosa",
+                "isCorrect": false
+            },
+            {
+                "letter": "D",
+                "text": "Independia das condições econômicas",
+                "isCorrect": false
+            },
+            {
+                "letter": "E",
+                "text": "Não possuía relação com a propriedade da terra",
+                "isCorrect": false
+            }
+        ],
+        "correctAlternative": "B",
+        "difficulty": "media",
+        "skills": [
+            "H1",
+            "H2"
+        ]
+    },
+    {
+        "id": "2023-MAT-01",
+        "year": 2023,
+        "area": "matematica",
+        "discipline": "matematica",
+        "title": "Questão 136 - Matemática 2023",
+        "context": "Um estudante precisa calcular a média de suas notas. Se ele obteve 7,0, 8,0 e 9,0 nas três primeiras provas, qual nota ele precisa tirar na quarta prova para ter média 8,5?",
+        "alternatives": [
+            {
+                "letter": "A",
+                "text": "9,0",
+                "isCorrect": false
+            },
+            {
+                "letter": "B",
+                "text": "9,5",
+                "isCorrect": false
+            },
+            {
+                "letter": "C",
+                "text": "10,0",
+                "isCorrect": true
+            },
+            {
+                "letter": "D",
+                "text": "8,5",
+                "isCorrect": false
+            },
+            {
+                "letter": "E",
+                "text": "11,0",
+                "isCorrect": false
+            }
+        ],
+        "correctAlternative": "C",
+        "difficulty": "facil",
+        "skills": [
+            "H18"
+        ]
+    }
+]

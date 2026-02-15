@@ -7,16 +7,16 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim() || fallbackSupabas
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() || fallbackSupabaseAnonKey;
 
 export const supabaseConfigError = !supabaseUrl
-  ? 'Variavel VITE_SUPABASE_URL nao configurada.'
+  ? 'Variável VITE_SUPABASE_URL não configurada.'
   : !supabaseAnonKey
-    ? 'Variavel VITE_SUPABASE_ANON_KEY nao configurada.'
+    ? 'Variável VITE_SUPABASE_ANON_KEY não configurada.'
     : '';
 
 export const supabase = supabaseConfigError
   ? null
   : createClient(supabaseUrl as string, supabaseAnonKey as string, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-    });
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  });

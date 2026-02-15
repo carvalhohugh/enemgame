@@ -3,6 +3,9 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { TrendingUp, Target, Flame, Award, Zap, Star } from 'lucide-react';
 import { useAuthProfile } from '@/context/AuthProfileContext';
 import { useStudyProgress } from '@/context/StudyProgressContext';
+import { Link } from 'react-router-dom';
+import { SocialShare } from './SocialShare';
+import { ReferralCard } from './ReferralCard';
 
 interface StatCardProps {
   icon: React.ReactNode;
@@ -96,6 +99,24 @@ export default function HeroDashboard() {
       ref={containerRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
+      {/* Top Right Actions */}
+      <div className="absolute top-24 right-8 z-30 flex gap-3 hidden lg:flex">
+        <Link
+          to="/simulado"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-purple/20 border border-purple/30 text-white font-semibold hover:bg-purple/40 transition-all shadow-lg shadow-purple/10"
+        >
+          <Zap className="w-5 h-5 text-gold" />
+          <span>Desafio Diário</span>
+        </Link>
+        <Link
+          to="/trilhas"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-500/20 border border-green-500/30 text-white font-semibold hover:bg-green-500/40 transition-all shadow-lg shadow-green-500/10"
+        >
+          <Target className="w-5 h-5 text-green-400" />
+          <span>Continuar Estudos</span>
+        </Link>
+      </div>
+
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Gradient Orbs */}
@@ -162,17 +183,20 @@ export default function HeroDashboard() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Welcome & Avatar */}
           <div className="text-center lg:text-left">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="inline-flex items-center gap-2 bg-purple/20 px-4 py-2 rounded-full border border-purple/30 mb-6"
-            >
-              <Zap className="w-4 h-4 text-gold" />
-              <span className="text-sm text-purple-light font-medium">
-                Bem-vindo de volta!
-              </span>
-            </motion.div>
+            <div className="flex items-center justify-between lg:justify-start gap-4 mb-6">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="inline-flex items-center gap-2 bg-purple/20 px-4 py-2 rounded-full border border-purple/30"
+              >
+                <Zap className="w-4 h-4 text-gold" />
+                <span className="text-sm text-purple-light font-medium">
+                  Bem-vindo de volta!
+                </span>
+              </motion.div>
+              <SocialShare />
+            </div>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -198,8 +222,9 @@ export default function HeroDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="glass rounded-2xl p-5 border border-purple/20"
+              className="glass rounded-2xl p-5 border border-purple/20 mb-8"
             >
+              {/* ... existing XP bar code ... */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-gold" />
@@ -216,7 +241,7 @@ export default function HeroDashboard() {
                   transition={{ duration: 1.5, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
                   className="h-full bg-gradient-to-r from-purple via-purple-light to-gold rounded-full relative"
                 >
-                  <div className="absolute inset-0 bg-white/20 animate-shimmer" 
+                  <div className="absolute inset-0 bg-white/20 animate-shimmer"
                     style={{ backgroundSize: '200% 100%' }}
                   />
                 </motion.div>
@@ -225,6 +250,9 @@ export default function HeroDashboard() {
                 Faltam {(xpToNextLevel - currentLevelXp).toLocaleString('pt-BR')} XP para o nível {level + 1}
               </p>
             </motion.div>
+
+            {/* Indique um Amigo */}
+            <ReferralCard />
           </div>
 
           {/* Right Column - Stats Grid */}
@@ -264,32 +292,7 @@ export default function HeroDashboard() {
           </div>
         </div>
 
-        {/* Quick Actions */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-          className="mt-12 flex flex-wrap justify-center lg:justify-start gap-4"
-        >
-          <motion.a
-            href="#simulado"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn-primary flex items-center gap-2"
-          >
-            <Zap className="w-5 h-5" />
-            <span>Desafio do Dia</span>
-          </motion.a>
-          <motion.a
-            href="#trilhas"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:border-purple/30 transition-all flex items-center gap-2"
-          >
-            <Target className="w-5 h-5" />
-            <span>Continuar Estudos</span>
-          </motion.a>
-        </motion.div>
+
       </motion.div>
     </section>
   );

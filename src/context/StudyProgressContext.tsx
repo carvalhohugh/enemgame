@@ -46,6 +46,7 @@ interface StudyProgressContextValue {
   accuracy: number;
   registerAnswer: (input: RegisterAnswerInput) => void;
   isChallengeCompleted: (challengeId: string) => boolean;
+  addXp: (amount: number) => void;
 }
 
 const STORAGE_KEY = 'enemgame-study-progress-v2';
@@ -173,6 +174,13 @@ export function StudyProgressProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   }, [progress]);
 
+  const addXp = useCallback((amount: number) => {
+    setProgress((prev) => ({
+      ...prev,
+      totalXp: prev.totalXp + amount,
+    }));
+  }, []);
+
   const registerAnswer = useCallback((input: RegisterAnswerInput) => {
     setProgress((previous) => {
       const currentDate = todayKey();
@@ -244,8 +252,9 @@ export function StudyProgressProvider({ children }: { children: ReactNode }) {
       accuracy,
       registerAnswer,
       isChallengeCompleted,
+      addXp,
     }),
-    [accuracy, currentLevelXp, isChallengeCompleted, level, progress, registerAnswer, xpToNextLevel],
+    [accuracy, currentLevelXp, isChallengeCompleted, level, progress, registerAnswer, xpToNextLevel, addXp],
   );
 
   return <StudyProgressContext.Provider value={value}>{children}</StudyProgressContext.Provider>;

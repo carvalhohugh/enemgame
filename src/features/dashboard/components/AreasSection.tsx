@@ -10,12 +10,11 @@ import {
 } from '@/data/redacao';
 import { useStudyProgress } from '@/context/StudyProgressContext';
 import {
-  fetchEnemExams,
-  fetchEnemQuestions,
+  EnemService,
   type EnemExam,
   type EnemExamOption,
   type EnemQuestion,
-} from '@/services/enemApi';
+} from '@/services/EnemService';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -317,7 +316,7 @@ export default function AreasSection() {
       setOfficialApiError('');
 
       try {
-        const exams = await fetchEnemExams();
+        const exams = await EnemService.getExams();
 
         if (exams.length === 0) {
           throw new Error('Nenhuma prova encontrada na API oficial.');
@@ -377,16 +376,16 @@ export default function AreasSection() {
           error: '',
           ...(reset
             ? {
-                questions: [],
-                nextOffset: 0,
-                hasMore: true,
-              }
+              questions: [],
+              nextOffset: 0,
+              hasMore: true,
+            }
             : {}),
         },
       }));
 
       try {
-        const response = await fetchEnemQuestions(latestYear, {
+        const response = await EnemService.getQuestions(latestYear, {
           discipline,
           limit: 50,
           offset,
@@ -753,15 +752,14 @@ export default function AreasSection() {
                               type="button"
                               disabled={hasAnswered}
                               onClick={() => handleAreaQuestionAnswer(question, index)}
-                              className={`w-full rounded-xl border px-3 py-2 text-left text-sm transition ${
-                                hasAnswered
-                                  ? isCorrectOption
-                                    ? 'border-green-500/60 bg-green-500/10 text-green-100'
-                                    : isSelected
-                                      ? 'border-red-500/60 bg-red-500/10 text-red-100'
-                                      : 'border-white/10 bg-white/5 text-white/50'
-                                  : 'border-white/10 bg-white/5 text-white/80 hover:border-purple/40 hover:bg-purple/10'
-                              }`}
+                              className={`w-full rounded-xl border px-3 py-2 text-left text-sm transition ${hasAnswered
+                                ? isCorrectOption
+                                  ? 'border-green-500/60 bg-green-500/10 text-green-100'
+                                  : isSelected
+                                    ? 'border-red-500/60 bg-red-500/10 text-red-100'
+                                    : 'border-white/10 bg-white/5 text-white/50'
+                                : 'border-white/10 bg-white/5 text-white/80 hover:border-purple/40 hover:bg-purple/10'
+                                }`}
                             >
                               {alternative.letter}){' '}
                               {sanitizeQuestionContext(alternative.text || 'Alternativa com imagem')}
@@ -771,11 +769,10 @@ export default function AreasSection() {
 
                         {questionResponses[getQuestionKey(question)] && (
                           <p
-                            className={`text-xs font-semibold ${
-                              questionResponses[getQuestionKey(question)].correct
-                                ? 'text-green-300'
-                                : 'text-red-300'
-                            }`}
+                            className={`text-xs font-semibold ${questionResponses[getQuestionKey(question)].correct
+                              ? 'text-green-300'
+                              : 'text-red-300'
+                              }`}
                           >
                             {questionResponses[getQuestionKey(question)].correct
                               ? 'Resposta correta! +20 XP'

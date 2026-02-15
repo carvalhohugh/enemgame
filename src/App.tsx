@@ -1,138 +1,78 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from '@/components/custom/Navbar';
-import HeroDashboard from '@/components/custom/HeroDashboard';
-import AdminDashboardSection from '@/components/custom/AdminDashboardSection';
-import AreasSection from '@/components/custom/AreasSection';
-import SimuladoSection from '@/components/custom/SimuladoSection';
-import RankingSection from '@/components/custom/RankingSection';
-import BadgesSection from '@/components/custom/BadgesSection';
-import Footer from '@/components/custom/Footer';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProfileProvider, useAuthProfile } from '@/context/AuthProfileContext';
+import { StudyProgressProvider } from '@/context/StudyProgressContext';
 import AppErrorBoundary from '@/components/custom/AppErrorBoundary';
-import StudyProgressSync from '@/components/custom/StudyProgressSync';
+import StudyProgressSync from '@/features/dashboard/components/StudyProgressSync';
+import RootLayout from '@/components/layout/RootLayout';
 
-function LoadingScreen({ onComplete }: { onComplete: () => void }) {
-  useEffect(() => {
-    const timer = setTimeout(onComplete, 2500);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+// Pages
+import DashboardPage from '@/features/dashboard/DashboardPage';
+import TrilhasPage from '@/features/trilhas/TrilhasPage';
+import SimuladoSection from '@/features/exam/components/SimuladoSection';
+import SimuladoRealPage from '@/features/exam/components/SimuladoRealPage';
+import TesteRapidoPage from '@/features/exam/components/TesteRapidoPage';
+import AdminPanel from '@/features/admin/components/AdminPanel';
+import RedacaoPage from '@/features/redacao/RedacaoPage';
+import ClanSortingPage from '@/features/clans/ClanSortingPage';
+import ProfilePage from '@/features/profile/ProfilePage';
+import ArenaPage from '@/features/arena/ArenaPage';
+import BatalhaX1Page from '@/features/arena/BatalhaX1Page';
+import BatalhaClaPage from '@/features/arena/BatalhaClaPage';
+import ClanHubPage from '@/features/clans/ClanHubPage';
+import ActivitiesPage from '@/features/activities/ActivitiesPage';
+import AulasOnlinePage from '@/features/classes/AulasOnlinePage';
 
-  return (
-    <motion.div
-      initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed inset-0 z-[100] bg-dark flex items-center justify-center"
-    >
-      <div className="relative">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col items-center"
-        >
-          <div className="relative mb-8">
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-                scale: [1, 1.1, 1],
-              }}
-              transition={{
-                rotate: { duration: 2, repeat: Infinity, ease: 'linear' },
-                scale: { duration: 1, repeat: Infinity, ease: 'easeInOut' },
-              }}
-              className="w-24 h-24 rounded-2xl bg-gradient-to-br from-purple to-purple-light flex items-center justify-center"
-            >
-              <svg
-                className="w-12 h-12 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-                />
-              </svg>
-            </motion.div>
+/* ── Gate: força sorting de clã pós-cadastro ── */
+function RequireClan({ children }: { children: React.ReactNode }) {
+  const { profile } = useAuthProfile();
+  const location = useLocation();
 
-            <motion.div
-              animate={{
-                opacity: [0.5, 1, 0.5],
-                scale: [1, 1.2, 1],
-              }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="absolute inset-0 rounded-2xl bg-purple/50 blur-xl -z-10"
-            />
-          </div>
+  // Se não tem clã e não está já na página de sorting, redireciona
+  if (!profile.clanId && location.pathname !== '/clans/sorting') {
+    return <Navigate to="/clans/sorting" replace />;
+  }
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="font-poppins text-3xl font-bold text-white"
-          >
-            ENEM<span className="text-gold">Game</span>
-          </motion.h1>
-
-          <div className="mt-8 w-48 h-1 bg-white/10 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
-              className="h-full bg-gradient-to-r from-purple via-purple-light to-gold rounded-full"
-            />
-          </div>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mt-4 text-white/50 text-sm"
-          >
-            Preparando sua jornada...
-          </motion.p>
-        </motion.div>
-      </div>
-    </motion.div>
-  );
+  return <>{children}</>;
 }
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [contentKey, setContentKey] = useState(0);
-
   return (
-    <div className="min-h-screen bg-dark text-white overflow-x-hidden">
-      <AnimatePresence mode="wait">
-        {isLoading ? (
-          <LoadingScreen key="loading" onComplete={() => setIsLoading(false)} />
-        ) : (
-          <AppErrorBoundary onReset={() => setContentKey((current) => current + 1)}>
-            <motion.div
-              key={`content-${contentKey}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <StudyProgressSync />
-              <Navbar />
-              <main>
-                <HeroDashboard />
-                <AdminDashboardSection />
-                <AreasSection />
-                <SimuladoSection />
-                <RankingSection />
-                <BadgesSection />
-              </main>
-              <Footer />
-            </motion.div>
+    <BrowserRouter>
+      <AuthProfileProvider>
+        <StudyProgressProvider>
+          <AppErrorBoundary>
+            <StudyProgressSync />
+            <Routes>
+              {/* Full-screen routes (outside layout + outside clan gate) */}
+              <Route path="/clans/sorting" element={<ClanSortingPage />} />
+
+              {/* Protected routes: require clan */}
+              <Route path="/" element={
+                <RequireClan>
+                  <RootLayout />
+                </RequireClan>
+              }>
+                <Route index element={<DashboardPage />} />
+                <Route path="trilhas" element={<TrilhasPage />} />
+                <Route path="simulado" element={<SimuladoSection />} />
+                <Route path="simulado-real" element={<SimuladoRealPage />} />
+                <Route path="teste-rapido" element={<TesteRapidoPage />} />
+                <Route path="redacao" element={<RedacaoPage />} />
+                <Route path="arena" element={<ArenaPage />} />
+                <Route path="arena/x1" element={<BatalhaX1Page />} />
+                <Route path="arena/cla" element={<BatalhaClaPage />} />
+                <Route path="cla" element={<ClanHubPage />} />
+                <Route path="atividades" element={<ActivitiesPage />} />
+                <Route path="aulas" element={<AulasOnlinePage />} />
+                <Route path="admin" element={<AdminPanel />} />
+                <Route path="perfil" element={<ProfilePage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
           </AppErrorBoundary>
-        )}
-      </AnimatePresence>
-    </div>
+        </StudyProgressProvider>
+      </AuthProfileProvider>
+    </BrowserRouter>
   );
 }
 
