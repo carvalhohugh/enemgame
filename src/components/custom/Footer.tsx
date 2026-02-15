@@ -130,6 +130,14 @@ export default function Footer() {
               <a href="#" className="text-white/40 hover:text-purple-light transition-colors">
                 Termos
               </a>
+              <a
+                href="#admin"
+                className="text-white/25 hover:text-white/45 transition-colors text-xs"
+                aria-label="Acesso administrativo"
+                title="Acesso administrativo"
+              >
+                Acesso administrativo
+              </a>
             </div>
           </div>
         </div>
