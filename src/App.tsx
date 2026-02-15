@@ -3,6 +3,7 @@ import {
   BookOpenCheck,
   CheckCircle2,
   GraduationCap,
+  LayoutDashboard,
   LoaderCircle,
   LogOut,
   PenLine,
@@ -25,6 +26,12 @@ import {
   type EssayTheme,
 } from '@/data/redacao';
 import { supabase, supabaseConfigError } from '@/lib/supabase';
+import AreasSection from '@/components/custom/AreasSection';
+import BadgesSection from '@/components/custom/BadgesSection';
+import Footer from '@/components/custom/Footer';
+import HeroDashboard from '@/components/custom/HeroDashboard';
+import RankingSection from '@/components/custom/RankingSection';
+import SimuladoSection from '@/components/custom/SimuladoSection';
 
 interface AuthUser {
   name: string;
@@ -32,7 +39,7 @@ interface AuthUser {
 }
 
 type Screen = 'landing' | 'login' | 'dashboard';
-type DashboardTab = 'questoes' | 'redacao';
+type DashboardTab = 'plataforma' | 'questoes' | 'redacao';
 type AuthMode = 'signin' | 'signup';
 
 const THEME_HISTORY_STORAGE_KEY = 'enemhugo.theme-history';
@@ -100,7 +107,7 @@ function App() {
   const [authReady, setAuthReady] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [screen, setScreen] = useState<Screen>('landing');
-  const [activeTab, setActiveTab] = useState<DashboardTab>('questoes');
+  const [activeTab, setActiveTab] = useState<DashboardTab>('plataforma');
 
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [authLoading, setAuthLoading] = useState(false);
@@ -665,6 +672,16 @@ function App() {
             <nav className="mx-auto mt-7 flex w-full max-w-6xl gap-3">
               <button
                 type="button"
+                onClick={() => setActiveTab('plataforma')}
+                className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
+                  activeTab === 'plataforma' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
+                }`}
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                Plataforma original
+              </button>
+              <button
+                type="button"
                 onClick={() => setActiveTab('questoes')}
                 className={`inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition ${
                   activeTab === 'questoes' ? 'bg-purple text-white' : 'border border-white/20 text-white/75 hover:border-white/40'
@@ -685,7 +702,18 @@ function App() {
               </button>
             </nav>
 
-            <main className="mx-auto mt-6 w-full max-w-6xl">
+            <main className={activeTab === 'plataforma' ? 'mt-6' : 'mx-auto mt-6 w-full max-w-6xl'}>
+              {activeTab === 'plataforma' && (
+                <>
+                  <HeroDashboard />
+                  <AreasSection />
+                  <SimuladoSection />
+                  <RankingSection />
+                  <BadgesSection />
+                  <Footer />
+                </>
+              )}
+
               {activeTab === 'questoes' && (
                 <section className="space-y-6">
                   <div className="glass rounded-3xl p-5 md:p-6">
