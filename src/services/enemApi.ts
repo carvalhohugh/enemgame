@@ -1,4 +1,5 @@
 const ENEM_API_BASE = 'https://api.enem.dev/v1';
+const MAX_QUESTIONS_PER_REQUEST = 50;
 
 export interface EnemExamOption {
   label: string;
@@ -23,7 +24,7 @@ export interface EnemQuestion {
   title: string;
   index: number;
   discipline: string;
-  language: string;
+  language: string | null;
   year: number;
   context: string;
   files: string[];
@@ -88,9 +89,8 @@ export async function fetchEnemQuestions(
     query.set('discipline', params.discipline);
   }
 
-  if (params.limit) {
-    query.set('limit', String(params.limit));
-  }
+  const resolvedLimit = Math.min(params.limit ?? MAX_QUESTIONS_PER_REQUEST, MAX_QUESTIONS_PER_REQUEST);
+  query.set('limit', String(resolvedLimit));
 
   if (params.offset) {
     query.set('offset', String(params.offset));
@@ -101,12 +101,53 @@ export async function fetchEnemQuestions(
   const response = await fetchWithTimeout(endpoint);
 
   if (!response.ok) {
+    const errorPayload = (await response.json().catch(() => null)) as
+      | { error?: { message?: string } }
+      | null;
+    const apiMessage = errorPayload?.error?.message;
+
     if (response.status === 429) {
       throw new Error('Limite de requisicoes da API atingido. Aguarde alguns segundos e tente novamente.');
+    }
+
+    if (apiMessage) {
+      throw new Error(apiMessage);
     }
 
     throw new Error('Nao foi possivel carregar as questoes reais do ENEM.');
   }
 
   return (await response.json()) as EnemQuestionsResponse;
+}
+
+export async function fetchAllEnemQuestions(year: number): Promise<EnemQuestion[]> {
+  const questions: EnemQuestion[] = [];
+  const seen = new Set<string>();
+  let offset = 0;
+
+  for (let page = 0; page < 10; page += 1) {
+    const response = await fetchEnemQuestions(year, {
+      limit: MAX_QUESTIONS_PER_REQUEST,
+      offset,
+    });
+
+    response.questions.forEach((question) => {
+      const key = `${question.year}-${question.index}-${question.language ?? 'pt-br'}`;
+
+      if (seen.has(key)) {
+        return;
+      }
+
+      seen.add(key);
+      questions.push(question);
+    });
+
+    if (!response.metadata.hasMore || response.questions.length === 0) {
+      break;
+    }
+
+    offset += MAX_QUESTIONS_PER_REQUEST;
+  }
+
+  return questions;
 }

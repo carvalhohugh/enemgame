@@ -13,8 +13,8 @@ import { useEffect, useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import {
+  fetchAllEnemQuestions,
   fetchEnemExams,
-  fetchEnemQuestions,
   type EnemExam,
   type EnemQuestion,
 } from '@/services/enemApi';
@@ -46,6 +46,11 @@ function sanitizeContext(value: string): string {
     .trim();
 
   return withoutMarkdown.length > 320 ? `${withoutMarkdown.slice(0, 320)}...` : withoutMarkdown;
+}
+
+function isPortugueseQuestion(question: EnemQuestion): boolean {
+  const language = question.language?.toLowerCase().trim();
+  return !language || language === 'portugues' || language === 'pt-br' || language === 'ptbr';
 }
 
 function loadThemeHistory(): string[] {
@@ -110,7 +115,6 @@ function App() {
   const [examsError, setExamsError] = useState('');
 
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [selectedLanguage, setSelectedLanguage] = useState('');
   const [selectedDiscipline, setSelectedDiscipline] = useState('all');
 
   const [questions, setQuestions] = useState<EnemQuestion[]>([]);
@@ -229,23 +233,10 @@ function App() {
 
     const first = exams[0];
     setSelectedYear(first.year);
-    setSelectedLanguage(first.languages[0]?.value ?? 'ingles');
   }, [exams, selectedYear]);
 
   useEffect(() => {
-    if (!selectedExam) {
-      return;
-    }
-
-    const validLanguage = selectedExam.languages.some((language) => language.value === selectedLanguage);
-
-    if (!validLanguage) {
-      setSelectedLanguage(selectedExam.languages[0]?.value ?? 'ingles');
-    }
-  }, [selectedExam, selectedLanguage]);
-
-  useEffect(() => {
-    if (!user || !selectedYear || !selectedLanguage || screen !== 'dashboard') {
+    if (!user || !selectedYear || screen !== 'dashboard') {
       return;
     }
 
@@ -254,12 +245,10 @@ function App() {
       setQuestionsError('');
 
       try {
-        const response = await fetchEnemQuestions(selectedYear, {
-          language: selectedLanguage,
-          limit: 200,
-        });
+        const response = await fetchAllEnemQuestions(selectedYear);
+        const portugueseQuestions = response.filter(isPortugueseQuestion);
 
-        setQuestions(response.questions);
+        setQuestions(portugueseQuestions);
         setVisibleQuestions(6);
       } catch (error) {
         setQuestionsError(error instanceof Error ? error.message : 'Erro ao carregar questoes.');
@@ -269,11 +258,11 @@ function App() {
     };
 
     void loadQuestions();
-  }, [screen, selectedLanguage, selectedYear, user]);
+  }, [screen, selectedYear, user]);
 
   useEffect(() => {
     setSelectedDiscipline('all');
-  }, [selectedYear, selectedLanguage]);
+  }, [selectedYear]);
 
   useEffect(() => {
     localStorage.setItem(THEME_HISTORY_STORAGE_KEY, JSON.stringify(usedThemeIds));
@@ -702,10 +691,10 @@ function App() {
                   <div className="glass rounded-3xl p-5 md:p-6">
                     <h3 className="font-poppins text-xl font-bold">Conteudo oficial do ENEM por API</h3>
                     <p className="mt-2 text-sm text-white/70">
-                      Fonte: api.enem.dev. Escolha ano, idioma e disciplina para estudar com questoes reais.
+                      Fonte: api.enem.dev. Escolha ano e disciplina para estudar com questoes reais.
                     </p>
 
-                    <div className="mt-5 grid gap-3 md:grid-cols-3">
+                    <div className="mt-5 grid gap-3 md:grid-cols-2">
                       <label className="text-sm text-white/70">
                         Ano da prova
                         <select
@@ -716,21 +705,6 @@ function App() {
                           {exams.map((exam) => (
                             <option key={exam.year} value={exam.year}>
                               {exam.title}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-
-                      <label className="text-sm text-white/70">
-                        Idioma
-                        <select
-                          value={selectedLanguage}
-                          onChange={(event) => setSelectedLanguage(event.target.value)}
-                          className="mt-1 w-full rounded-xl border border-white/20 bg-dark-surface px-3 py-2 outline-none"
-                        >
-                          {(selectedExam?.languages ?? []).map((language) => (
-                            <option key={language.value} value={language.value}>
-                              {language.label}
                             </option>
                           ))}
                         </select>
@@ -757,6 +731,9 @@ function App() {
                       <span className="rounded-full bg-purple/20 px-3 py-1 text-purple-light">
                         {filteredQuestions.length} questoes no filtro atual
                       </span>
+                      <span className="rounded-full bg-white/10 px-3 py-1 text-white/80">
+                        Idioma fixo: Portugues (Brasil)
+                      </span>
                       <span className="rounded-full bg-gold/20 px-3 py-1 text-gold">Fonte em tempo real</span>
                     </div>
 
@@ -776,7 +753,7 @@ function App() {
                         <header className="flex flex-wrap items-center gap-2 text-xs text-white/70">
                           <span className="rounded-full bg-white/10 px-2 py-1">{question.title}</span>
                           <span className="rounded-full bg-white/10 px-2 py-1">{question.discipline}</span>
-                          <span className="rounded-full bg-white/10 px-2 py-1">Idioma: {question.language}</span>
+                          <span className="rounded-full bg-white/10 px-2 py-1">Idioma: Portugues (Brasil)</span>
                         </header>
 
                         <p className="mt-3 text-sm text-white/85">{sanitizeContext(question.context)}</p>
@@ -797,7 +774,7 @@ function App() {
 
                     {!questionsLoading && filteredQuestions.length === 0 && (
                       <p className="rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white/70">
-                        Nenhuma questao encontrada nesse filtro. Tente outro ano, idioma ou disciplina.
+                        Nenhuma questao encontrada nesse filtro. Tente outro ano ou disciplina.
                       </p>
                     )}
 
