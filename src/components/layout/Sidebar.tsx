@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard,
     Map,
@@ -22,7 +22,7 @@ import { useStudyProgress } from '@/context/StudyProgressContext';
 export function Sidebar() {
     const { profile } = useAuthProfile();
     const { level, progress } = useStudyProgress();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleAdminAccess = () => {
         if (profile.isAdmin) {
