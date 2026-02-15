@@ -332,7 +332,7 @@ export default function AreasSection() {
           setYearNotice(
             usingPreferredYear
               ? `Base oficial definida para ENEM ${PREFERRED_ENEM_YEAR}.`
-              : `ENEM ${PREFERRED_ENEM_YEAR} ainda não disponível na API. Usando ENEM ${exam.year}.`,
+              : `ENEM ${PREFERRED_ENEM_YEAR} ainda não disponível no acervo atual. Usando ENEM ${exam.year}.`,
           );
         }
       } catch (error) {
@@ -619,20 +619,6 @@ export default function AreasSection() {
           {enrichedAreas.map((area, index) => (
             <AreaCard key={area.id} area={area} index={index} onContinue={openArea} />
           ))}
-
-          <motion.div variants={cardVariants} className="group relative">
-            <div className="relative glass rounded-2xl p-6 border border-dashed border-white/20 h-full flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 rounded-full bg-purple/10 flex items-center justify-center mb-4">
-                <span className="text-3xl">🚀</span>
-              </div>
-              <h3 className="font-poppins font-bold text-xl text-white mb-2">
-                API Oficial Ativa
-              </h3>
-              <p className="text-white/50 text-sm">
-                Trilhas e matérias oficiais carregadas diretamente da API do ENEM.
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
 
         {activeArea && (
