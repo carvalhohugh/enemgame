@@ -38,7 +38,7 @@ export default function ActivitiesPage() {
 
                     <div className="space-y-3">
                         {WEEKLY_ESSAY_TOPICS.map((topic, i) => (
-                            <Link to="/redacao" key={i} className="block group">
+                            <Link to="/app/redacao" key={i} className="block group">
                                 <div className="p-4 rounded-xl bg-black/20 hover:bg-white/5 border border-white/5 hover:border-pink-500/30 transition-all flex justify-between items-center">
                                     <div>
                                         <h3 className="font-semibold text-sm group-hover:text-pink-300 transition-colors">{topic.title}</h3>
@@ -78,7 +78,7 @@ export default function ActivitiesPage() {
                             Mantenha sua ofensiva! Responda a questão de hoje e garanta seu bônus de XP.
                         </p>
 
-                        <Link to="/simulado" className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-all w-full justify-center">
+                        <Link to="/app/simulado" className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold transition-all w-full justify-center">
                             <Zap className="w-4 h-4" /> Desafio Agora
                         </Link>
                     </div>
@@ -103,11 +103,11 @@ export default function ActivitiesPage() {
 
                     <div className="space-y-3">
                         <div className="flex gap-3">
-                            <Link to="/arena/x1" className="flex-1 p-4 rounded-xl bg-black/20 hover:bg-orange-500/10 border border-white/5 hover:border-orange-500/30 transition-all text-center group">
+                            <Link to="/app/arena/x1" className="flex-1 p-4 rounded-xl bg-black/20 hover:bg-orange-500/10 border border-white/5 hover:border-orange-500/30 transition-all text-center group">
                                 <h3 className="font-bold text-orange-400 mb-1">X1 Rápido</h3>
                                 <p className="text-xs text-white/40 group-hover:text-white/60">5 questões • 30s</p>
                             </Link>
-                            <Link to="/arena/cla" className="flex-1 p-4 rounded-xl bg-black/20 hover:bg-red-500/10 border border-white/5 hover:border-red-500/30 transition-all text-center group">
+                            <Link to="/app/arena/cla" className="flex-1 p-4 rounded-xl bg-black/20 hover:bg-red-500/10 border border-white/5 hover:border-red-500/30 transition-all text-center group">
                                 <h3 className="font-bold text-red-400 mb-1">Guerra de Clã</h3>
                                 <p className="text-xs text-white/40 group-hover:text-white/60">Pontos pro Clã</p>
                             </Link>
@@ -139,7 +139,7 @@ export default function ActivitiesPage() {
                                 <h3 className="font-bold text-green-300">Simulado ENEM 2023</h3>
                                 <p className="text-xs text-green-400/60">Recomendado esta semana</p>
                             </div>
-                            <Link to="/simulado-real" className="p-2 bg-green-500 text-black rounded-lg hover:bg-green-400 transition">
+                            <Link to="/app/simulado-real" className="p-2 bg-green-500 text-black rounded-lg hover:bg-green-400 transition">
                                 <ChevronRight className="w-5 h-5" />
                             </Link>
                         </div>

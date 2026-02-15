@@ -234,7 +234,20 @@ export default function HeroDashboard() {
                   {currentLevelXp.toLocaleString('pt-BR')} / {xpToNextLevel.toLocaleString('pt-BR')} XP
                 </span>
               </div>
-              <div className="h-4 bg-dark-deeper rounded-full overflow-hidden">
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  to="/app/simulado"
+                  className="px-6 py-3 bg-white text-purple-900 font-bold rounded-xl hover:bg-white/90 transition-colors inline-grid place-content-center"
+                >
+                  Desafio Diário
+                </Link>
+                <Link
+                  to="/app/trilhas"
+                  className="px-6 py-3 bg-white/10 text-white font-bold rounded-xl hover:bg-white/20 transition-colors inline-grid place-content-center backdrop-blur-sm"
+                >
+                  Continuar Estudos
+                </Link>
+              </div>      <div className="h-4 bg-dark-deeper rounded-full overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${xpProgress}%` }}

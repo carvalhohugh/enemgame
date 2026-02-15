@@ -115,7 +115,7 @@ export default function BatalhaClaPage() {
                     className="w-20 h-20 rounded-full border-4 border-white/10 border-t-red-500" />
                 <h2 className="text-2xl font-bold text-white">Procurando Clã adversário...</h2>
                 <p className="text-white/40">Aguardando combate entre clãs</p>
-                <button onClick={() => navigate('/arena')} className="mt-6 text-sm text-white/40 hover:text-white transition">Cancelar</button>
+                <button onClick={() => navigate('/app/arena')} className="mt-6 text-sm text-white/40 hover:text-white transition">Cancelar</button>
             </div>
         );
     }
@@ -265,7 +265,7 @@ export default function BatalhaClaPage() {
                     </div>
 
                     <div className="flex gap-3 justify-center pt-2">
-                        <button onClick={() => navigate('/arena')} className="px-6 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">
+                        <button onClick={() => navigate('/app/arena')} className="px-6 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition">
                             <ArrowRight className="w-4 h-4 inline mr-2" />Voltar à Arena
                         </button>
                         <button onClick={() => { setPhase('matchmaking'); setCurrentIdx(0); setMyTeamScore(0); setEnemyTeamScore(0); setMyAnswer(null); }}

@@ -151,7 +151,7 @@ export default function BatalhaX1Page() {
                     ))}
                 </div>
                 <button
-                    onClick={() => navigate('/arena')}
+                    onClick={() => navigate('/app/arena')}
                     className="mt-6 text-sm text-white/40 hover:text-white transition"
                 >
                     Cancelar
@@ -402,7 +402,7 @@ export default function BatalhaX1Page() {
                     {/* Actions */}
                     <div className="flex gap-3 justify-center pt-2">
                         <button
-                            onClick={() => navigate('/arena')}
+                            onClick={() => navigate('/app/arena')}
                             className="px-6 py-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition"
                         >
                             <ArrowRight className="w-4 h-4 inline mr-2" />

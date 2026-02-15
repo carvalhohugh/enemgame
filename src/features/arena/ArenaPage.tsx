@@ -46,8 +46,8 @@ export default function ArenaPage() {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`px-5 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2 transition-all ${activeTab === tab.id
-                                ? 'bg-white/10 text-white border border-white/20'
-                                : 'text-white/40 hover:text-white/60 hover:bg-white/5'
+                            ? 'bg-white/10 text-white border border-white/20'
+                            : 'text-white/40 hover:text-white/60 hover:bg-white/5'
                             }`}
                     >
                         <tab.icon className="w-4 h-4" />
@@ -63,7 +63,7 @@ export default function ArenaPage() {
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple/20 to-indigo-900/20 border border-purple/30 p-8 cursor-pointer group"
-                        onClick={() => navigate('/arena/x1')}
+                        onClick={() => navigate('/app/arena/x1')}
                     >
                         <div className="absolute top-0 right-0 w-40 h-40 bg-purple/10 rounded-full -mr-20 -mt-20 group-hover:scale-110 transition-transform" />
                         <motion.div
@@ -90,7 +90,7 @@ export default function ArenaPage() {
                     <motion.div
                         whileHover={{ scale: 1.02 }}
                         className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-900/20 border border-red-500/30 p-8 cursor-pointer group"
-                        onClick={() => navigate('/arena/cla')}
+                        onClick={() => navigate('/app/arena/cla')}
                     >
                         <div className="absolute top-0 right-0 w-40 h-40 bg-red-500/10 rounded-full -mr-20 -mt-20 group-hover:scale-110 transition-transform" />
                         <motion.div

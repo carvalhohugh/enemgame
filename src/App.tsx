@@ -24,13 +24,30 @@ import ActivitiesPage from '@/features/activities/ActivitiesPage';
 import AulasOnlinePage from '@/features/classes/AulasOnlinePage';
 import ProfilePage from '@/features/profile/ProfilePage';
 
+// Pages imports...
+import LandingPage from '@/pages/LandingPage';
+import LoginPage from '@/pages/LoginPage';
+
+/* ── Gate: força auth ── */
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const { profile, isLoading } = useAuthProfile();
+
+  if (isLoading) return <div className="min-h-screen bg-dark-bg text-white flex items-center justify-center">Carregando...</div>;
+
+  if (!profile.isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
+
 /* ── Gate: força sorting de clã pós-cadastro ── */
 function RequireClan({ children }: { children: React.ReactNode }) {
   const { profile } = useAuthProfile();
   const location = useLocation();
 
-  if (!profile.clanId && location.pathname !== '/clans/sorting') {
-    return <Navigate to="/clans/sorting" replace />;
+  if (!profile.clanId && location.pathname !== '/app/clans/sorting') {
+    return <Navigate to="/app/clans/sorting" replace />;
   }
 
   return <>{children}</>;
@@ -44,17 +61,21 @@ function App() {
           <AppErrorBoundary>
             <StudyProgressSync />
             <Routes>
-              {/* Full-screen routes (outside layout + outside clan gate) */}
-              <Route path="/clans/sorting" element={<ClanSortingPage />} />
+              {/* Public Routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/matricula" element={<PublicEnrollmentPage />} />
 
-              {/* Protected routes: require clan */}
-              <Route path="/" element={
-                <RequireClan>
-                  <RootLayout />
-                </RequireClan>
+              {/* Protected App Routes */}
+              <Route path="/app" element={
+                <RequireAuth>
+                  <RequireClan>
+                    <RootLayout />
+                  </RequireClan>
+                </RequireAuth>
               }>
                 <Route index element={<DashboardPage />} />
+                <Route path="clans/sorting" element={<ClanSortingPage />} />
                 <Route path="trilhas" element={<TrilhasPage />} />
                 <Route path="simulado" element={<SimuladoSection />} />
                 <Route path="simulado-real" element={<SimuladoRealPage />} />
@@ -68,8 +89,10 @@ function App() {
                 <Route path="aulas" element={<AulasOnlinePage />} />
                 <Route path="admin" element={<AdminPanel />} />
                 <Route path="perfil" element={<ProfilePage />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
+
+              {/* Catch all */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AppErrorBoundary>
         </StudyProgressProvider>

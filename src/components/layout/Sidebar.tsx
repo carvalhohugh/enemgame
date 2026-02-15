@@ -40,18 +40,18 @@ export function Sidebar() {
     };
 
     const links = useMemo(() => [
-        { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-        { name: 'Minhas Atividades', href: '/atividades', icon: ListTodo },
-        { name: 'Aulas Online', href: '/aulas', icon: Video },
-        { name: 'Trilhas', href: '/trilhas', icon: Map },
-        { name: 'Questão Diária', href: '/simulado', icon: Target },
-        { name: 'Simulado Real', href: '/simulado-real', icon: BookOpen },
-        { name: 'Teste Rápido', href: '/teste-rapido', icon: Zap },
-        { name: 'Redação', href: '/redacao', icon: ScrollText },
-        { name: 'Arena ENEM', href: '/arena', icon: Swords },
-        { name: 'Meu Clã', href: '/cla', icon: Shield },
-        { name: 'Perfil', href: '/perfil', icon: User },
-        { name: 'Admin', href: '/admin', icon: Shield, adminOnly: true },
+        { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
+        { name: 'Minhas Atividades', href: '/app/atividades', icon: ListTodo },
+        { name: 'Aulas Online', href: '/app/aulas', icon: Video },
+        { name: 'Trilhas', href: '/app/trilhas', icon: Map },
+        { name: 'Questão Diária', href: '/app/simulado', icon: Target },
+        { name: 'Simulado Real', href: '/app/simulado-real', icon: BookOpen },
+        { name: 'Teste Rápido', href: '/app/teste-rapido', icon: Zap },
+        { name: 'Redação', href: '/app/redacao', icon: ScrollText },
+        { name: 'Arena ENEM', href: '/app/arena', icon: Swords },
+        { name: 'Meu Clã', href: '/app/cla', icon: Shield },
+        { name: 'Perfil', href: '/app/perfil', icon: User },
+        { name: 'Admin', href: '/app/admin', icon: Shield, adminOnly: true },
     ], []);
 
     const filteredLinks = links.filter(link => !link.adminOnly || profile.isAdmin);

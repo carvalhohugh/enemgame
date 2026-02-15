@@ -11,7 +11,7 @@ export default function ClanSortingPage() {
 
     // If user already has a clan, redirect
     if (profile.clanId) {
-        navigate('/', { replace: true });
+        navigate('/app', { replace: true });
         return null;
     }
 
@@ -22,7 +22,7 @@ export default function ClanSortingPage() {
             ) : (
                 <ClanReveal
                     clanId={profile.clanId!}
-                    onContinue={() => navigate('/')}
+                    onContinue={() => navigate('/app')}
                 />
             )}
         </div>

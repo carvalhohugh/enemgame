@@ -292,7 +292,7 @@ export default function ClanHubPage() {
 
                                     {/* Challenge button */}
                                     <button
-                                        onClick={() => navigate('/arena/x1')}
+                                        onClick={() => navigate('/app/arena/x1')}
                                         className="px-4 py-2 rounded-xl text-sm font-medium flex items-center gap-2 transition hover:scale-105"
                                         style={{ backgroundColor: clanColor + '20', color: clanColor }}
                                     >
