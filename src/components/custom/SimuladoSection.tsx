@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Clock, CheckCircle2, XCircle, Lightbulb, ArrowRight, RotateCcw, LoaderCircle } from 'lucide-react';
 import { dailyQuestion } from '@/data/mockData';
-import { fetchEnemExams, fetchEnemQuestions, type EnemQuestion } from '@/services/enemApi';
+import { fetchEnemExams, fetchEnemQuestions, type EnemExam, type EnemQuestion } from '@/services/enemApi';
 import { useStudyProgress, type AreaId } from '@/context/StudyProgressContext';
 
 type Difficulty = 'easy' | 'medium' | 'hard';
@@ -19,6 +19,22 @@ interface QuizQuestion {
 }
 
 const disciplineCycle = ['ciencias-humanas', 'ciencias-natureza', 'linguagens', 'matematica'] as const;
+const DEFAULT_SIMULADO_YEAR = 2025;
+
+function chooseSimuladoExam(exams: EnemExam[]): { exam: EnemExam; usingDefaultYear: boolean } {
+  const targetExam = exams.find((exam) => exam.year === DEFAULT_SIMULADO_YEAR);
+  if (targetExam) {
+    return {
+      exam: targetExam,
+      usingDefaultYear: true,
+    };
+  }
+
+  return {
+    exam: exams[0],
+    usingDefaultYear: false,
+  };
+}
 
 function sanitizeText(value: string): string {
   return value
@@ -140,6 +156,8 @@ export default function SimuladoSection() {
   const [hasRegisteredResult, setHasRegisteredResult] = useState(false);
   const [isLoadingQuestion, setIsLoadingQuestion] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [simuladoYear, setSimuladoYear] = useState<number | null>(null);
+  const [simuladoNotice, setSimuladoNotice] = useState('');
   const [questionPool, setQuestionPool] = useState<QuizQuestion[]>([]);
   const [activePoolIndex, setActivePoolIndex] = useState(0);
 
@@ -157,17 +175,24 @@ export default function SimuladoSection() {
 
       try {
         const exams = await fetchEnemExams();
-        const latestExam = exams[0];
 
-        if (!latestExam) {
+        if (exams.length === 0) {
           throw new Error('A API oficial não retornou provas disponíveis.');
         }
 
+        const { exam, usingDefaultYear } = chooseSimuladoExam(exams);
+        const officialDisciplines = exam.disciplines
+          .map((option) => option.value)
+          .filter((value): value is (typeof disciplineCycle)[number] =>
+            disciplineCycle.includes(value as (typeof disciplineCycle)[number]),
+          );
+
         const now = new Date();
         const dayOfYear = getDayOfYear(now);
-        const discipline = disciplineCycle[dayOfYear % disciplineCycle.length];
+        const disciplineSource = officialDisciplines.length > 0 ? officialDisciplines : disciplineCycle;
+        const discipline = disciplineSource[dayOfYear % disciplineSource.length];
 
-        const response = await fetchEnemQuestions(latestExam.year, {
+        const response = await fetchEnemQuestions(exam.year, {
           discipline,
           limit: 50,
         });
@@ -183,11 +208,19 @@ export default function SimuladoSection() {
         if (isMounted) {
           setQuestionPool(pool);
           setActivePoolIndex(dayOfYear % pool.length);
+          setSimuladoYear(exam.year);
+          setSimuladoNotice(
+            usingDefaultYear
+              ? `Simulado padrão configurado no ENEM ${DEFAULT_SIMULADO_YEAR}.`
+              : `ENEM ${DEFAULT_SIMULADO_YEAR} ainda não está disponível na API. Simulado usando ENEM ${exam.year}.`,
+          );
         }
       } catch (error) {
         if (isMounted) {
           setQuestionPool([buildFallbackQuestion()]);
           setActivePoolIndex(0);
+          setSimuladoYear(null);
+          setSimuladoNotice('');
           setApiError(
             error instanceof Error
               ? `${error.message} Exibindo questão de contingência.`
@@ -274,14 +307,20 @@ export default function SimuladoSection() {
             className="inline-flex items-center gap-2 bg-gold/20 px-4 py-2 rounded-full border border-gold/30 mb-6"
           >
             <Clock className="w-4 h-4 text-gold" />
-            <span className="text-sm text-gold font-medium">Desafio do Dia</span>
+            <span className="text-sm text-gold font-medium">
+              Simulado Padrão {DEFAULT_SIMULADO_YEAR}
+            </span>
           </motion.div>
 
           <h2 className="font-poppins text-4xl sm:text-5xl font-bold text-white mb-4">
             Teste seus <span className="text-gradient-gold">conhecimentos</span>
           </h2>
           <p className="text-white/60 text-lg">Questão real do ENEM com correção instantânea e XP.</p>
-          <p className="mt-3 text-sm text-white/50">{question.sourceLabel}</p>
+          <p className="mt-3 text-sm text-white/50">
+            {question.sourceLabel}
+            {simuladoYear ? ` • Base: ENEM ${simuladoYear}` : ''}
+          </p>
+          {simuladoNotice && <p className="mt-2 text-sm text-gold/90">{simuladoNotice}</p>}
           {challengeCompleted && (
             <p className="mt-2 text-sm text-green-300">
               Desafio diário de hoje já concluído. Você ainda pode treinar outras questões.

@@ -9,7 +9,13 @@ import {
   type EssayTheme,
 } from '@/data/redacao';
 import { useStudyProgress } from '@/context/StudyProgressContext';
-import { fetchEnemExams, fetchEnemQuestions, type EnemQuestion } from '@/services/enemApi';
+import {
+  fetchEnemExams,
+  fetchEnemQuestions,
+  type EnemExam,
+  type EnemExamOption,
+  type EnemQuestion,
+} from '@/services/enemApi';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -55,20 +61,13 @@ interface AreaApiState {
 }
 
 const studyAreaIds: StudyAreaId[] = ['humanas', 'natureza', 'linguagens', 'matematica'];
+const PREFERRED_ENEM_YEAR = 2025;
 
 const disciplineByArea: Record<StudyAreaId, Discipline> = {
   humanas: 'ciencias-humanas',
   natureza: 'ciencias-natureza',
   linguagens: 'linguagens',
   matematica: 'matematica',
-};
-
-const subjectsByArea: Record<AreaId, string[]> = {
-  humanas: ['História', 'Geografia', 'Filosofia', 'Sociologia'],
-  natureza: ['Biologia', 'Química', 'Física'],
-  linguagens: ['Português', 'Literatura', 'Artes'],
-  matematica: ['Matemática'],
-  redacao: ['Competência 1', 'Competência 2', 'Competência 3', 'Competência 4', 'Competência 5'],
 };
 
 function sanitizeQuestionContext(value: string): string {
@@ -146,6 +145,49 @@ function pickThemeSuggestions(themes: EssayTheme[], offset: number, take = 3): E
   }
 
   return result;
+}
+
+function choosePreferredExam(exams: EnemExam[]): { exam: EnemExam; usingPreferredYear: boolean } {
+  const preferred = exams.find((exam) => exam.year === PREFERRED_ENEM_YEAR);
+  if (preferred) {
+    return {
+      exam: preferred,
+      usingPreferredYear: true,
+    };
+  }
+
+  return {
+    exam: exams[0],
+    usingPreferredYear: false,
+  };
+}
+
+function buildSubjectsByArea(
+  disciplineOptions: EnemExamOption[],
+  languageOptions: EnemExamOption[],
+): Record<AreaId, string[]> {
+  const labelByDiscipline = new Map(
+    disciplineOptions.map((option) => [option.value, option.label]),
+  );
+
+  const idiomas = languageOptions.map((option) => option.label);
+
+  return {
+    humanas: [
+      labelByDiscipline.get('ciencias-humanas') ?? 'Ciências Humanas e suas Tecnologias',
+    ],
+    natureza: [
+      labelByDiscipline.get('ciencias-natureza') ?? 'Ciências da Natureza e suas Tecnologias',
+    ],
+    linguagens: [
+      labelByDiscipline.get('linguagens') ?? 'Linguagens, Códigos e suas Tecnologias',
+      ...idiomas.map((idioma) => `Idioma: ${idioma}`),
+    ],
+    matematica: [
+      labelByDiscipline.get('matematica') ?? 'Matemática e suas Tecnologias',
+    ],
+    redacao: ['Competência 1', 'Competência 2', 'Competência 3', 'Competência 4', 'Competência 5'],
+  };
 }
 
 interface AreaCardProps {
@@ -239,6 +281,9 @@ export default function AreasSection() {
   const { progress, registerAnswer } = useStudyProgress();
 
   const [latestYear, setLatestYear] = useState<number | null>(null);
+  const [yearNotice, setYearNotice] = useState('');
+  const [disciplineOptions, setDisciplineOptions] = useState<EnemExamOption[]>([]);
+  const [languageOptions, setLanguageOptions] = useState<EnemExamOption[]>([]);
   const [areaStates, setAreaStates] = useState<Record<StudyAreaId, AreaApiState>>(
     createInitialAreaState,
   );
@@ -251,6 +296,19 @@ export default function AreasSection() {
     Record<string, { selected: number; correct: boolean }>
   >({});
 
+  const subjectsByArea = useMemo(
+    () => buildSubjectsByArea(disciplineOptions, languageOptions),
+    [disciplineOptions, languageOptions],
+  );
+  const officialSubjectsCount = useMemo(() => {
+    const uniqueSubjects = new Set<string>();
+    studyAreaIds.forEach((areaId) => {
+      subjectsByArea[areaId].forEach((subject) => uniqueSubjects.add(subject));
+    });
+
+    return uniqueSubjects.size;
+  }, [subjectsByArea]);
+
   useEffect(() => {
     let isMounted = true;
 
@@ -260,14 +318,22 @@ export default function AreasSection() {
 
       try {
         const exams = await fetchEnemExams();
-        const newest = exams[0];
 
-        if (!newest) {
+        if (exams.length === 0) {
           throw new Error('Nenhuma prova encontrada na API oficial.');
         }
 
+        const { exam, usingPreferredYear } = choosePreferredExam(exams);
+
         if (isMounted) {
-          setLatestYear(newest.year);
+          setLatestYear(exam.year);
+          setDisciplineOptions(exam.disciplines);
+          setLanguageOptions(exam.languages);
+          setYearNotice(
+            usingPreferredYear
+              ? `Base oficial definida para ENEM ${PREFERRED_ENEM_YEAR}.`
+              : `ENEM ${PREFERRED_ENEM_YEAR} ainda não disponível na API. Usando ENEM ${exam.year}.`,
+          );
         }
       } catch (error) {
         if (isMounted) {
@@ -524,8 +590,11 @@ export default function AreasSection() {
             Áreas do <span className="text-gradient">Conhecimento</span>
           </h2>
           <p className="text-white/60 text-lg max-w-2xl mx-auto">
-            Trilhas com matérias e questões oficiais do ENEM ({latestYear ?? 'carregando...'}).
+            Trilhas e componentes oficiais do ENEM ({latestYear ?? 'carregando...'}).
           </p>
+          {yearNotice && (
+            <p className="mt-3 text-sm text-gold/90">{yearNotice}</p>
+          )}
 
           {isApiLoading && (
             <p className="mt-4 inline-flex items-center gap-2 text-sm text-white/70">
@@ -560,7 +629,7 @@ export default function AreasSection() {
                 API Oficial Ativa
               </h3>
               <p className="text-white/50 text-sm">
-                As trilhas agora carregam questões reais do ENEM e matérias por área.
+                Trilhas e matérias oficiais carregadas diretamente da API do ENEM.
               </p>
             </div>
           </motion.div>
@@ -810,7 +879,7 @@ export default function AreasSection() {
               value: enrichedAreas.filter((area) => area.officialLoaded > 0).length,
               icon: '📚',
             },
-            { label: 'Matérias por Trilha', value: '11', icon: '🎯' },
+            { label: 'Matérias Oficiais', value: officialSubjectsCount, icon: '🎯' },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
