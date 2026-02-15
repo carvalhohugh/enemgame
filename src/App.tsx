@@ -27,6 +27,7 @@ import {
 } from '@/data/redacao';
 import { supabase, supabaseConfigError } from '@/lib/supabase';
 import AreasSection from '@/components/custom/AreasSection';
+import AppErrorBoundary from '@/components/custom/AppErrorBoundary';
 import BadgesSection from '@/components/custom/BadgesSection';
 import Footer from '@/components/custom/Footer';
 import HeroDashboard from '@/components/custom/HeroDashboard';
@@ -107,7 +108,7 @@ function App() {
   const [authReady, setAuthReady] = useState(false);
   const [user, setUser] = useState<AuthUser | null>(null);
   const [screen, setScreen] = useState<Screen>('landing');
-  const [activeTab, setActiveTab] = useState<DashboardTab>('plataforma');
+  const [activeTab, setActiveTab] = useState<DashboardTab>('questoes');
 
   const [authMode, setAuthMode] = useState<AuthMode>('signin');
   const [authLoading, setAuthLoading] = useState(false);
@@ -704,14 +705,14 @@ function App() {
 
             <main className={activeTab === 'plataforma' ? 'mt-6' : 'mx-auto mt-6 w-full max-w-6xl'}>
               {activeTab === 'plataforma' && (
-                <>
+                <AppErrorBoundary onReset={() => setActiveTab('questoes')}>
                   <HeroDashboard />
                   <AreasSection />
                   <SimuladoSection />
                   <RankingSection />
                   <BadgesSection />
                   <Footer />
-                </>
+                </AppErrorBoundary>
               )}
 
               {activeTab === 'questoes' && (
