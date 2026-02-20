@@ -1,0 +1,152 @@
+.redacao-pro-container {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.redacao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.redacao-tools {
+    display: flex;
+    gap: 20px;
+}
+
+.timer-card,
+.stat-badge {
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.time-val {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.start-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--bg-card-border);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.redacao-editor-layout {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 32px;
+}
+
+.editor-main {
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    overflow: hidden;
+}
+
+.editor-toolbar {
+    padding: 16px 32px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--bg-card-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.theme-current {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--primary);
+}
+
+.toolbar-btns {
+    display: flex;
+    gap: 12px;
+}
+
+.toolbar-btns button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.pro-textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 40px;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    resize: none;
+    outline: none;
+}
+
+.editor-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.analysis-card h3,
+.checklist-card h3 {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.analysis-metrics {
+    display: grid;
+    gap: 20px;
+}
+
+.metric span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: 8px;
+}
+
+.metric .bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.metric .fill {
+    height: 100%;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.checklist-items {
+    display: grid;
+    gap: 12px;
+}
+
+.checklist-items label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.submit-btn {
+    margin-top: auto;
+    width: 100%;
+    padding: 20px !important;
+}

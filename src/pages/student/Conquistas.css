@@ -1,0 +1,64 @@
+.conquistas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.badge-card {
+    text-align: center;
+    padding: 32px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--bg-card-border);
+}
+
+.badge-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+}
+
+.badge-card.locked {
+    filter: grayscale(1) opacity(0.5);
+}
+
+.badge-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.badge-card:not(.locked) .badge-icon-wrapper {
+    background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+}
+
+.badge-card h4 {
+    margin-bottom: 8px;
+    font-family: var(--font-display);
+}
+
+.badge-card p {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.badge-progress {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin-top: 16px;
+    overflow: hidden;
+}
+
+.badge-progress-fill {
+    height: 100%;
+    background: var(--primary);
+}

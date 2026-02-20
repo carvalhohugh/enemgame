@@ -1,0 +1,193 @@
+.store-container {
+    width: 100%;
+}
+
+.store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.xp-balance-card {
+    padding: 16px 24px;
+    border: 1px solid var(--primary-glow);
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.xp-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.store-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.tabs-container {
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--bg-card-border);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-family: var(--font-main);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    background: var(--bg-card);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.store-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.item-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    position: relative;
+    border: 1px solid var(--bg-card-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.item-card:hover {
+    transform: translateY(-8px);
+}
+
+.rarity-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.item-visual {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.visual-glow {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: var(--primary);
+    filter: blur(40px);
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.item-details {
+    flex: 1;
+    margin-bottom: 24px;
+}
+
+.item-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: white;
+}
+
+.item-price-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.item-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.buy-btn {
+    width: 100%;
+    gap: 12px;
+}
+
+/* Rarity Styles */
+.rarity-lendário {
+    border-color: gold;
+}
+
+.rarity-lendário .rarity-badge {
+    background: gold;
+    color: black;
+}
+
+.rarity-lendário .visual-glow {
+    background: gold;
+    opacity: 0.3;
+}
+
+.rarity-épico {
+    border-color: var(--secondary);
+}
+
+.rarity-épico .rarity-badge {
+    background: var(--secondary);
+    color: white;
+}
+
+.rarity-épico .visual-glow {
+    background: var(--secondary);
+    opacity: 0.3;
+}
+
+.rarity-raro {
+    border-color: var(--primary);
+}
+
+.rarity-raro .rarity-badge {
+    background: var(--primary);
+    color: white;
+}
+
+.rarity-raro .visual-glow {
+    background: var(--primary);
+    opacity: 0.3;
+}

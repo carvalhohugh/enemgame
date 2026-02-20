@@ -1,0 +1,85 @@
+.trilhas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.trilhas-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.years-selector {
+    display: flex;
+    gap: 12px;
+}
+
+.year-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--bg-card-border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.year-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.content-tracks {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.track-lane {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.lane-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.content-cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.content-card {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+}
+
+.content-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.content-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}

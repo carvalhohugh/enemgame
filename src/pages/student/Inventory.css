@@ -1,0 +1,315 @@
+.inventory-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+}
+
+.inventory-nav {
+    display: flex;
+    padding: 6px !important;
+    gap: 8px;
+}
+
+.inventory-nav button {
+    padding: 10px 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 800;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.inventory-nav button.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+.inventory-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.item-card {
+    padding: 24px !important;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+    border: 1px solid transparent !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.item-card.selected {
+    border-color: var(--primary) !important;
+    background: rgba(var(--primary-rgb), 0.1) !important;
+    box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.2);
+}
+
+.item-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.item-name {
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.rarity-tag {
+    font-size: 0.65rem;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+/* Rarity Styles */
+.comum {
+    color: #9ca3af;
+}
+
+.item-card.comum:hover {
+    border-color: #9ca3af !important;
+}
+
+.rarity-tag.comum {
+    background: #374151;
+    color: #d1d5db;
+}
+
+.rarity-text.comum {
+    color: #9ca3af;
+}
+
+.raro {
+    color: #3b82f6;
+}
+
+.item-card.raro:hover {
+    border-color: #3b82f6 !important;
+}
+
+.rarity-tag.raro {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+}
+
+.rarity-text.raro {
+    color: #3b82f6;
+}
+
+.epico {
+    color: #a855f7;
+}
+
+.item-card.epico:hover {
+    border-color: #a855f7 !important;
+}
+
+.rarity-tag.epico {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+}
+
+.rarity-text.epico {
+    color: #a855f7;
+}
+
+.lendario {
+    color: #f59e0b;
+}
+
+.item-card.lendario:hover {
+    border-color: #f59e0b !important;
+}
+
+.rarity-tag.lendario {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+}
+
+.rarity-text.lendario {
+    color: #f59e0b;
+}
+
+/* Detail Panel */
+.detail-card {
+    padding: 32px !important;
+    text-align: center;
+}
+
+.detail-visual {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    margin: 0 auto 24px;
+    position: relative;
+}
+
+.detail-visual::after {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: 32px;
+    z-index: -1;
+    opacity: 0.2;
+    filter: blur(20px);
+}
+
+.detail-visual.lendario::after {
+    background: #f59e0b;
+}
+
+.detail-visual.epico::after {
+    background: #a855f7;
+}
+
+.detail-content h2 {
+    font-size: 1.75rem;
+    font-weight: 900;
+    margin: 8px 0 16px;
+}
+
+.detail-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.item-stats {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.empty-detail {
+    padding: 64px 32px !important;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    color: var(--text-secondary);
+}
+
+.detail-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.equip-btn {
+    flex: 2;
+}
+
+.gift-btn {
+    flex: 1;
+    background: var(--secondary) !important;
+}
+
+/* Gift Modal */
+.gift-modal {
+    width: 400px;
+    padding: 32px !important;
+}
+
+.gift-item-preview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px !important;
+    margin-bottom: 24px;
+    background: rgba(var(--primary-rgb), 0.1) !important;
+}
+
+.friend-search {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.friend-search svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.friend-search input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--bg-card-border);
+    border-radius: 8px;
+    color: white;
+}
+
+.friends-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.friend-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px !important;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.friend-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--primary) !important;
+}
+
+.friend-item svg {
+    margin-left: auto;
+    opacity: 0.3;
+}

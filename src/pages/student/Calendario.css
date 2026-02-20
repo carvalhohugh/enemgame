@@ -1,0 +1,80 @@
+.calendar-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 24px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-weight: 700;
+    padding: 12px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--bg-card-border);
+    border-radius: var(--radius-sm);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: var(--transition-fast);
+    cursor: pointer;
+    min-height: 80px;
+}
+
+.calendar-day:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--primary);
+}
+
+.calendar-day.today {
+    border-color: var(--primary);
+    background: rgba(139, 92, 246, 0.1);
+}
+
+.day-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.event-dot {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.event-dot.study {
+    background: var(--primary);
+}
+
+.event-dot.school {
+    background: var(--clan-titas);
+}
+
+.event-dot.work {
+    background: var(--secondary);
+}
+
+.agenda-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.agenda-item {
+    padding: 12px;
+    border-left: 4px solid var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}

@@ -1,0 +1,87 @@
+.arena-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.battle-creation {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.battle-type-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.type-card {
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: var(--transition-fast);
+}
+
+.type-card.active {
+    border-color: var(--primary);
+    background: rgba(139, 92, 246, 0.1);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.multi-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.select-tag {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--bg-card-border);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.select-tag.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.active-battles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+.battle-card {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.battle-info h4 {
+    margin-bottom: 4px;
+}
+
+.battle-info p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}

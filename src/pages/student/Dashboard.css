@@ -1,0 +1,83 @@
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+}
+
+.stat-card {
+    grid-column: span 3;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.chart-section {
+    grid-column: span 8;
+    padding: 24px;
+    height: 400px;
+}
+
+.goals-section {
+    grid-column: span 4;
+    padding: 24px;
+}
+
+.activities-section {
+    grid-column: span 4;
+    padding: 24px;
+}
+
+.goal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.goal-progress {
+    flex: 1;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.goal-fill {
+    height: 100%;
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.referral-banner {
+    grid-column: span 12;
+    background: linear-gradient(90deg, var(--clan-eclipse), var(--secondary));
+    padding: 32px;
+    border-radius: var(--radius-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+}
+
+.referral-content h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.referral-content p {
+    opacity: 0.9;
+}

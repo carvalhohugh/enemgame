@@ -1,0 +1,28 @@
+@import './styles/variables.css';
+
+:root {
+  color-scheme: dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+}
+
+select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--bg-card-border);
+  color: white;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+}
+
+input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--bg-card-border);
+  color: white;
+  padding: 8px;
+  border-radius: var(--radius-sm);
+}

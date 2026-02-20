@@ -1,0 +1,132 @@
+.school-panel-container {
+    padding: 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+.school-header {
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.school-main-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+}
+
+.students-section {
+    padding: 32px;
+}
+
+.ranking-section {
+    padding: 32px;
+}
+
+.analytics-section {
+    grid-column: span 2;
+    padding: 32px;
+}
+
+.student-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    margin-top: 24px;
+}
+
+.student-table th {
+    text-align: left;
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.student-table tr {
+    transition: transform 0.2s ease;
+}
+
+.student-table tr:hover {
+    transform: scale(1.005);
+}
+
+.student-table td {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-top: 1px solid var(--bg-card-border);
+    border-bottom: 1px solid var(--bg-card-border);
+}
+
+.student-table td:first-child {
+    border-left: 1px solid var(--bg-card-border);
+    border-radius: 12px 0 0 12px;
+}
+
+.student-table td:last-child {
+    border-right: 1px solid var(--bg-card-border);
+    border-radius: 0 12px 12px 0;
+}
+
+.ranking-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.rank-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    border: 1px solid var(--bg-card-border);
+}
+
+.rank-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.9rem;
+}
+
+.rank-number.top-1 {
+    background: gold;
+    color: black;
+    box-shadow: 0 0 15px gold;
+}
+
+.rank-number.top-2 {
+    background: silver;
+    color: black;
+}
+
+.rank-number.top-3 {
+    background: #cd7f32;
+    color: black;
+}
+
+@media (max-width: 1200px) {
+    .school-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-section {
+        grid-column: span 1;
+    }
+}
