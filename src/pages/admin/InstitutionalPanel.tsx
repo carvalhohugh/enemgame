@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
 import {
-    Building2, TrendingUp, Swords, Users, GraduationCap,
-    DollarSign, Search, Plus, MoreVertical, Edit2, Trash2,
-    X, ArrowUpRight, ArrowDownRight, CreditCard
+    Swords, Users,
+    DollarSign, Search, Plus, Edit2, Trash2,
+    X, ArrowUpRight, ArrowDownRight, CreditCard, Video,
+    Calendar, Youtube
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './InstitutionalPanel.css';
 
-type TabType = 'dashboard' | 'alunos' | 'professores' | 'escolas' | 'planos' | 'financeiro';
+type TabType = 'dashboard' | 'alunos' | 'professores' | 'escolas' | 'planos' | 'financeiro' | 'salas' | 'arena';
 
-interface Transaction {
+interface Room {
     id: string;
-    description: string;
-    amount: number;
-    type: 'entrada' | 'saida';
-    date: string;
-    category: string;
+    title: string;
+    professor: string;
+    youtubeUrl: string;
+    status: 'online' | 'scheduled' | 'finished';
+    startTime: string;
 }
 
-const MOCK_TRANSACTIONS: Transaction[] = [
-    { id: '1', description: 'Assinatura Premium - Hugo V.', amount: 29.90, type: 'entrada', date: '2024-02-20', category: 'Assinaturas' },
-    { id: '2', description: 'AWS Cloud Services', amount: 450.00, type: 'saida', date: '2024-02-19', category: 'Infraestrutura' },
-    { id: '3', description: 'Parceria Colégio Alpha', amount: 1200.00, type: 'entrada', date: '2024-02-18', category: 'Escolas' },
-    { id: '4', description: 'Marketing Google Ads', amount: 800.00, type: 'saida', date: '2024-02-17', category: 'Marketing' },
-];
+interface ArenaRoom {
+    id: string;
+    name: string;
+    year: number;
+    subject: string;
+    difficulty: 'Fácil' | 'Médio' | 'Difícil' | 'Elite';
+    activePlayers: number;
+}
 
 const InstitutionalPanel: React.FC = () => {
     const [activeTab, setActiveTab] = useState<TabType>('dashboard');
@@ -31,14 +34,24 @@ const InstitutionalPanel: React.FC = () => {
     const [modalType, setModalType] = useState<TabType | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
+    const [rooms, setRooms] = useState<Room[]>([
+        { id: '1', title: 'Revisão de Biologia: Genética', professor: 'Dr. Silva', youtubeUrl: 'https://youtube.com/live/abc', status: 'online', startTime: '14:00' },
+        { id: '2', title: 'Matemática Financeira', professor: 'Prof. Ana', youtubeUrl: 'https://youtube.com/live/xyz', status: 'scheduled', startTime: '16:00' },
+    ]);
+
+    const [arenaRooms, setArenaRooms] = useState<ArenaRoom[]>([
+        { id: '1', name: 'Grande Batalha do Cosmos', year: 2023, subject: 'Ciências da Natureza', difficulty: 'Elite', activePlayers: 124 },
+        { id: '2', name: 'Duelo de Humanas', year: 2022, subject: 'Ciências Humanas', difficulty: 'Médio', activePlayers: 45 },
+    ]);
+
     const renderDashboard = () => (
         <>
             <div className="stats-grid">
                 {[
                     { label: "Total Alunos", val: "12.450", icon: <Users />, color: "var(--primary)" },
                     { label: "Receita Prevista", val: "R$ 425k", icon: <DollarSign />, color: "var(--accent)" },
-                    { label: "Engajamento", val: "89%", icon: <TrendingUp />, color: "var(--secondary)" },
-                    { label: "Escolas Ativas", val: "142", icon: <Building2 />, color: "var(--clan-glacies)" },
+                    { label: "Aulas Online", val: rooms.filter(r => r.status === 'online').length.toString(), icon: <Video />, color: "var(--secondary)" },
+                    { label: "Arena Global", val: arenaRooms.length.toString(), icon: <Swords />, color: "#f59e0b" },
                 ].map((s, i) => (
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -58,27 +71,110 @@ const InstitutionalPanel: React.FC = () => {
 
             <div className="dashboard-sections">
                 <section className="glass-card section-card">
-                    <h3 className="section-title"><Swords size={20} /> Salas Ativas</h3>
+                    <h3 className="section-title"><Video size={20} /> Aulas em Tempo Real</h3>
                     <table className="admin-table">
-                        <thead><tr><th>SALA</th><th>ALUNOS</th><th>STATUS</th></tr></thead>
+                        <thead><tr><th>TÍTULO</th><th>PROFESSOR</th><th>STATUS</th></tr></thead>
                         <tbody>
-                            <tr><td>Torneio de Inverno</td><td>1.2k</td><td><span className="status-badge open">Aberta</span></td></tr>
-                            <tr><td>X1 dos Heróis</td><td>450</td><td><span className="status-badge active">Em curso</span></td></tr>
+                            {rooms.map(r => (
+                                <tr key={r.id}>
+                                    <td>{r.title}</td>
+                                    <td>{r.professor}</td>
+                                    <td><span className={`status-badge ${r.status}`}>{r.status === 'online' ? 'AO VIVO' : 'AGENDADO'}</span></td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </section>
                 <section className="glass-card section-card">
-                    <h3 className="section-title"><GraduationCap size={20} /> Top Professores</h3>
+                    <h3 className="section-title"><Swords size={20} /> Salas de Batalha (Arena)</h3>
                     <table className="admin-table">
-                        <thead><tr><th>NOME</th><th>ADESÕES</th><th>CUPOM</th></tr></thead>
+                        <thead><tr><th>NOME</th><th>ANO</th><th>JOGADORES</th></tr></thead>
                         <tbody>
-                            <tr><td>Ricardo Mat</td><td>154</td><td><span className="coupon-code">MATFAST20</span></td></tr>
-                            <tr><td>Maria Letras</td><td>89</td><td><span className="coupon-code">LINGPRO</span></td></tr>
+                            {arenaRooms.map(a => (
+                                <tr key={a.id}>
+                                    <td>{a.name}</td>
+                                    <td>{a.year}</td>
+                                    <td><span className="player-count">{a.activePlayers}</span></td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </section>
             </div>
         </>
+    );
+
+    const renderSalas = () => (
+        <div className="glass-card table-wrapper">
+            <div className="table-header" style={{ padding: '0 24px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3>Gestão de Salas de Aula (Videoconferência)</h3>
+                <button className="neon-button" onClick={() => { setModalType('salas'); setShowModal(true); }}>
+                    <Video size={16} /> CRIAR SALA AO VIVO
+                </button>
+            </div>
+            <div className="rooms-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', padding: '24px' }}>
+                {rooms.map(room => (
+                    <div key={room.id} className="glass-card room-card" style={{ padding: '20px', border: '1px solid var(--bg-card-border)' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                            <span className={`status-badge ${room.status}`}>{room.status.toUpperCase()}</span>
+                            <div className="action-btns">
+                                <button className="action-btn edit"><Edit2 size={14} /></button>
+                                <button className="action-btn delete" onClick={() => setRooms(prev => prev.filter(p => p.id !== room.id))}><Trash2 size={14} /></button>
+                            </div>
+                        </div>
+                        <h4 style={{ marginBottom: '8px' }}>{room.title}</h4>
+                        <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                            <p style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Users size={14} /> Prof: {room.professor}</p>
+                            <p style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Calendar size={14} /> Início: {room.startTime}</p>
+                        </div>
+                        <div className="youtube-link" style={{ background: 'rgba(255,0,0,0.1)', padding: '10px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem' }}>
+                            <Youtube size={16} color="#ff0000" />
+                            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{room.youtubeUrl}</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
+    const renderArenaMgmt = () => (
+        <div className="glass-card table-wrapper">
+            <div className="table-header" style={{ padding: '0 24px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h3>Configuração de Salas da Arena</h3>
+                <button className="neon-button" onClick={() => { setModalType('arena'); setShowModal(true); }}>
+                    <Plus size={16} /> NOVA SALA DE BATALHA
+                </button>
+            </div>
+            <table className="admin-table">
+                <thead>
+                    <tr>
+                        <th>NOME DA SALA</th>
+                        <th>ANO ENEM</th>
+                        <th>ÁREA DO CONHECIMENTO</th>
+                        <th>DIFICULDADE</th>
+                        <th>JOGADORES ATIVOS</th>
+                        <th>AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {arenaRooms.map(room => (
+                        <tr key={room.id}>
+                            <td style={{ fontWeight: 700 }}>{room.name}</td>
+                            <td>{room.year}</td>
+                            <td>{room.subject}</td>
+                            <td><span className={`diff-tag ${room.difficulty.toLowerCase()}`}>{room.difficulty}</span></td>
+                            <td>{room.activePlayers}</td>
+                            <td>
+                                <div className="action-btns">
+                                    <button className="action-btn edit"><Edit2 size={16} /></button>
+                                    <button className="action-btn delete"><Trash2 size={16} onClick={() => setArenaRooms(prev => prev.filter(p => p.id !== room.id))} /></button>
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 
     const renderFinanceiro = () => (
@@ -123,19 +219,18 @@ const InstitutionalPanel: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {MOCK_TRANSACTIONS.map(tx => (
+                        {[
+                            { id: '1', desc: 'Assinatura Premium', cat: 'Vendas', date: '20-02-24', val: 29.90, type: 'entrada' },
+                            { id: '2', desc: 'Infraestrutura Cloud', cat: 'Custo', date: '19-02-24', val: 340.00, type: 'saida' },
+                        ].map(tx => (
                             <tr key={tx.id}>
-                                <td>{tx.description}</td>
-                                <td><span className="category-tag">{tx.category}</span></td>
+                                <td>{tx.desc}</td>
+                                <td><span className="category-tag">{tx.cat}</span></td>
                                 <td>{tx.date}</td>
                                 <td className={tx.type === 'entrada' ? 'text-success' : 'text-danger'}>
-                                    {tx.type === 'entrada' ? '+' : '-'} R$ {tx.amount.toFixed(2)}
+                                    {tx.type === 'entrada' ? '+' : '-'} R$ {tx.val.toFixed(2)}
                                 </td>
-                                <td>
-                                    <span className={`status-badge ${tx.type}`}>
-                                        {tx.type.toUpperCase()}
-                                    </span>
-                                </td>
+                                <td><span className={`status-badge ${tx.type}`}>{tx.type.toUpperCase()}</span></td>
                             </tr>
                         ))}
                     </tbody>
@@ -152,23 +247,6 @@ const InstitutionalPanel: React.FC = () => {
             planos: ['NOME', 'PREÇO', 'USUÁRIOS', 'RECURSOS', 'STATUS']
         };
         const headers = headersMap[type as keyof typeof headersMap];
-
-        const mockDataMap: Record<string, Record<string, string | number>[]> = {
-            alunos: [
-                { nome: 'Hugo Vasconcelos', cla: 'Cosmos', nivel: 12, plano: 'Premium', acesso: 'Hoje' },
-                { nome: 'Ana Julia', cla: 'Ignis', nivel: 8, plano: 'Basic', acesso: 'Há 2 dias' },
-            ],
-            professores: [
-                { nome: 'Prof. Sérgio', discip: 'Matemática', acessos: 1240, cupom: 'SERGINHO10', comissao: 'R$ 840,00' },
-            ],
-            escolas: [
-                { nome: 'Colégio Alpha', cidade: 'São Paulo', alunos: 450, plano: 'Pro', contrato: 'Ativo' },
-            ],
-            planos: [
-                { nome: 'Gamer Premium', preco: 'R$ 29,90', user: 'Individual', recursos: 'Full + Arena', status: 'Ativo' },
-            ]
-        };
-        const mockData = mockDataMap[type as keyof typeof mockDataMap];
 
         return (
             <div className="glass-card table-wrapper">
@@ -194,18 +272,7 @@ const InstitutionalPanel: React.FC = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {mockData?.map((item: Record<string, string | number>, i: number) => (
-                            <tr key={i}>
-                                {Object.values(item).map((val: string | number, j) => <td key={j}>{val}</td>)}
-                                <td>
-                                    <div className="action-btns">
-                                        <button className="action-btn edit"><Edit2 size={16} /></button>
-                                        <button className="action-btn delete"><Trash2 size={16} /></button>
-                                        <button className="action-btn more"><MoreVertical size={16} /></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                        <tr><td colSpan={headers?.length + 1} style={{ textAlign: 'center', padding: '40px', opacity: 0.5 }}>Utilize a busca ou adicione um novo registro</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -217,17 +284,18 @@ const InstitutionalPanel: React.FC = () => {
             <header className="admin-header">
                 <div>
                     <h1>Painel Institucional 🛡️</h1>
-                    <p>Gestão administrativa da base de usuários e parceiros.</p>
+                    <p>Gestão administrativa da base de usuários, parceiros e jogabilidade.</p>
                 </div>
             </header>
 
             <nav className="admin-nav glass-card">
                 {[
-                    { id: 'dashboard', label: 'Visão Geral' },
+                    { id: 'dashboard', label: 'Dashboard' },
+                    { id: 'salas', label: 'Salas Criadas' },
+                    { id: 'arena', label: 'Gerenciar Arena' },
                     { id: 'alunos', label: 'Alunos' },
                     { id: 'professores', label: 'Professores' },
                     { id: 'escolas', label: 'Escolas' },
-                    { id: 'planos', label: 'Planos' },
                     { id: 'financeiro', label: 'Financeiro' },
                 ].map(tab => (
                     <button
@@ -250,6 +318,8 @@ const InstitutionalPanel: React.FC = () => {
                         transition={{ duration: 0.2 }}
                     >
                         {activeTab === 'dashboard' && renderDashboard()}
+                        {activeTab === 'salas' && renderSalas()}
+                        {activeTab === 'arena' && renderArenaMgmt()}
                         {activeTab === 'financeiro' && renderFinanceiro()}
                         {['alunos', 'professores', 'escolas', 'planos'].includes(activeTab) && renderTable(activeTab)}
                     </motion.div>
@@ -266,35 +336,69 @@ const InstitutionalPanel: React.FC = () => {
                             className="glass-card admin-modal"
                         >
                             <div className="modal-header">
-                                <h2>Cadastrar {modalType?.toUpperCase()}</h2>
+                                <h2>
+                                    {modalType === 'salas' ? 'Criar Sala de Videoconferência' :
+                                        modalType === 'arena' ? 'Criar Nova Sala de Arena' :
+                                            `Cadastrar ${modalType?.toUpperCase()}`}
+                                </h2>
                                 <button className="close-btn" onClick={() => setShowModal(false)}><X /></button>
                             </div>
                             <form className="admin-form" onSubmit={(e) => { e.preventDefault(); setShowModal(false); }}>
                                 <div className="form-grid">
-                                    <div className="form-group">
-                                        <label>Nome Completo</label>
-                                        <input type="text" placeholder="Ex: João Silva" required />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>E-mail / Login</label>
-                                        <input type="email" placeholder="email@exemplo.com" required />
-                                    </div>
-                                    {modalType === 'alunos' && (
-                                        <div className="form-group">
-                                            <label>Clã</label>
-                                            <select><option>Cosmos</option><option>Ignis</option><option>Glacies</option><option>Silva</option></select>
-                                        </div>
-                                    )}
-                                    {modalType === 'professores' && (
-                                        <div className="form-group">
-                                            <label>Disciplina</label>
-                                            <input type="text" placeholder="Ex: Matemática" />
-                                        </div>
+                                    {modalType === 'salas' ? (
+                                        <>
+                                            <div className="form-group full">
+                                                <label>Título da Aula / Live</label>
+                                                <input type="text" placeholder="Ex: Maratona de Redação 2024" required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>ProfessorResponsável</label>
+                                                <input type="text" placeholder="Nome do Prof" required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Link do YouTube Stream (API)</label>
+                                                <input type="url" placeholder="https://youtube.com/live/..." required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Data / Hora</label>
+                                                <input type="datetime-local" required />
+                                            </div>
+                                        </>
+                                    ) : modalType === 'arena' ? (
+                                        <>
+                                            <div className="form-group full">
+                                                <label>Nome do Evento na Arena</label>
+                                                <input type="text" placeholder="Ex: Torneio de Verão Alpha" required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Ano do ENEM</label>
+                                                <select><option>2023</option><option>2022</option><option>2021</option></select>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Área do Conhecimento</label>
+                                                <select><option>Todas</option><option>Matemática</option><option>Linguagens</option><option>Natureza</option><option>Humanas</option></select>
+                                            </div>
+                                            <div className="form-group">
+                                                <label>Dificuldade Global</label>
+                                                <select><option>Fácil</option><option>Médio</option><option>Difícil</option><option>Elite</option></select>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div className="form-group">
+                                                <label>Nome / Identificador</label>
+                                                <input type="text" placeholder="Ex: João Silva" required />
+                                            </div>
+                                            <div className="form-group">
+                                                <label>E-mail / Login</label>
+                                                <input type="email" placeholder="email@exemplo.com" required />
+                                            </div>
+                                        </>
                                     )}
                                 </div>
                                 <div className="form-actions">
                                     <button type="button" className="neon-button alt" onClick={() => setShowModal(false)}>CANCELAR</button>
-                                    <button type="submit" className="neon-button">SALVAR REGISTRO</button>
+                                    <button type="submit" className="neon-button">{modalType === 'salas' ? 'INICIAR LIVE' : 'SALVAR REGISTRO'}</button>
                                 </div>
                             </form>
                         </motion.div>

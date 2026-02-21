@@ -17,10 +17,16 @@ import UserProfile from './pages/student/Profile';
 import SchoolPanel from './pages/admin/SchoolPanel';
 import StudyHub from './pages/student/StudyHub';
 import NotesGallery from './pages/student/NotesGallery';
-import RedacaoPro from './pages/student/RedacaoPro';
+import ArenaRedacao from './pages/student/ArenaRedacao';
+import MeuCla from './pages/student/MeuCla';
 import Inventory from './pages/student/Inventory';
 import AdaptiveCalendar from './pages/student/AdaptiveCalendar';
 import TrainingZone from './pages/student/TrainingZone';
+import MinhasNotas from './pages/student/MinhasNotas';
+import SisuSimulador from './pages/student/SisuSimulador';
+import Flashcards from './pages/student/Flashcards';
+import BattleMode from './pages/arena/BattleMode';
+import StudentDataVis from './pages/student/StudentDataVis';
 
 function App() {
   return (
@@ -37,7 +43,8 @@ function App() {
             <Route path="calendario" element={<AdaptiveCalendar />} />
             <Route path="conquistas" element={<Conquistas />} />
             <Route path="arena" element={<Arena />} />
-            <Route path="redacao" element={<RedacaoPro />} />
+            <Route path="redacao" element={<ArenaRedacao />} />
+            <Route path="meu-cla" element={<MeuCla />} />
             <Route path="live" element={<LiveClasses />} />
             <Route path="admin" element={<InstitutionalPanel />} />
             <Route path="admin/escola" element={<SchoolPanel />} />
@@ -49,6 +56,11 @@ function App() {
             <Route path="ranking" element={<Ranking />} />
             <Route path="inventario" element={<Inventory />} />
             <Route path="treinamento" element={<TrainingZone />} />
+            <Route path="minhas-notas" element={<MinhasNotas />} />
+            <Route path="simulador" element={<SisuSimulador />} />
+            <Route path="flashcards" element={<Flashcards />} />
+            <Route path="duelos" element={<BattleMode />} />
+            <Route path="desempenho" element={<StudentDataVis />} />
           </Route>
         </Routes>
       </BrowserRouter>

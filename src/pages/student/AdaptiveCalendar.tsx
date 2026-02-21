@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Clock, ChevronLeft,
+    ChevronLeft,
     ChevronRight, Zap, BookOpen, Target, CheckCircle,
     Play, Square, Settings as SettingsIcon, X
 } from 'lucide-react';

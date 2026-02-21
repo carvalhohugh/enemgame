@@ -1,0 +1,17 @@
+﻿src/pages/arena/Arena.tsx(31,28): error TS2322: Type '{ year: number; onExit: () => void; }' is not assignable to type 'IntrinsicAttributes & BattleRoomProps'.
+  Property 'year' does not exist on type 'IntrinsicAttributes & BattleRoomProps'.
+src/pages/auth/Diagnostic.tsx(4,18): error TS6133: 'Target' is declared but its value is never read.
+src/pages/auth/Diagnostic.tsx(4,26): error TS6133: 'Zap' is declared but its value is never read.
+src/pages/auth/Diagnostic.tsx(4,52): error TS6133: 'Check' is declared but its value is never read.
+src/pages/student/AdaptiveCalendar.tsx(3,5): error TS6133: 'Clock' is declared but its value is never read.
+src/pages/student/Calendario.tsx(2,69): error TS6133: 'BookOpen' is declared but its value is never read.
+src/pages/student/Calendario.tsx(2,79): error TS6133: 'Briefcase' is declared but its value is never read.
+src/pages/student/Calendario.tsx(2,90): error TS6133: 'GraduationCap' is declared but its value is never read.
+src/pages/student/Calendario.tsx(6,12): error TS6133: 'currentDate' is declared but its value is never read.
+src/pages/student/Calendario.tsx(6,25): error TS6133: 'setCurrentDate' is declared but its value is never read.
+src/pages/student/Conquistas.tsx(43,85): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Object literal may only specify known properties, and 'size' does not exist in type 'Partial<unknown> & Attributes'.
+src/pages/student/RedacaoPro.tsx(5,1): error TS6133: 'motion' is declared but its value is never read.
+src/pages/student/TrainingZone.tsx(3,10): error TS6133: 'Target' is declared but its value is never read.
+src/pages/student/TrainingZone.tsx(3,18): error TS6133: 'BookOpen' is declared but its value is never read.

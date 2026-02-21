@@ -1,4 +1,4 @@
-import { Trophy, Award, BookOpen, Target, TrendingUp, ChevronRight } from 'lucide-react';
+import { Trophy, Award, BookOpen, Target, TrendingUp, ChevronRight, Instagram, Twitter, Linkedin, Github } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 
@@ -118,6 +118,30 @@ const UserProfile: React.FC = () => {
                     <button className="neon-button" style={{ marginTop: '24px', width: '100%', borderRadius: 'var(--radius-sm)' }}>
                         Fazer Nova Redação <ChevronRight size={16} />
                     </button>
+                </div>
+            </div>
+
+            {/* Social Connections */}
+            <div className="glass-card" style={{ padding: '24px', marginTop: '24px' }}>
+                <h3 style={{ marginBottom: '20px' }}>Conexões Sociais</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                    {[
+                        { name: 'Instagram', icon: <Instagram size={20} />, connected: true, user: '@hugo_v' },
+                        { name: 'Twitter (X)', icon: <Twitter size={20} />, connected: false },
+                        { name: 'LinkedIn', icon: <Linkedin size={20} />, connected: true, user: 'Hugo Vasconcelos' },
+                        { name: 'GitHub', icon: <Github size={20} />, connected: false },
+                    ].map((app, i) => (
+                        <div key={i} style={{ padding: '16px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--bg-card-border)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ color: app.connected ? 'var(--primary)' : 'var(--text-secondary)' }}>{app.icon}</div>
+                            <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>{app.name}</div>
+                                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>{app.connected ? app.user : 'Não conectado'}</div>
+                            </div>
+                            <button className="neon-button mini" style={{ padding: '6px 12px', fontSize: '0.65rem', background: app.connected ? 'rgba(239, 68, 68, 0.1)' : 'var(--primary)' }}>
+                                {app.connected ? 'DESCONECTAR' : 'CONECTAR'}
+                            </button>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>

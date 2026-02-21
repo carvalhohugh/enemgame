@@ -1,0 +1,76 @@
+.datavis-container {
+    padding-bottom: 80px;
+}
+
+.datavis-header {
+    margin-bottom: 40px;
+}
+
+.vis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.vis-card {
+    padding: 32px;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.chart-container {
+    margin: 20px 0;
+}
+
+.vis-insight {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.achievements-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 32px;
+}
+
+.strip-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.strip-item h4 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+}
+
+.strip-item small {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    .vis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .achievements-strip {
+        grid-template-columns: 1fr;
+    }
+}

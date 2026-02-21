@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-    Zap, Target, BookOpen, Clock,
+    Zap, Clock,
     ChevronRight, Trophy, RotateCcw,
     CheckCircle, XCircle, ArrowLeft,
     ScrollText, GraduationCap

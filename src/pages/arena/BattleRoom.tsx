@@ -6,9 +6,10 @@ import './BattleRoom.css';
 
 interface BattleRoomProps {
     onExit: () => void;
+    year?: number;
 }
 
-const BattleRoom: React.FC<BattleRoomProps> = ({ onExit }) => {
+const BattleRoom: React.FC<BattleRoomProps> = ({ onExit, year }) => {
 
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,6 +35,7 @@ const BattleRoom: React.FC<BattleRoomProps> = ({ onExit }) => {
         const loadQuestions = async () => {
             setIsLoading(true);
             const q = await QuestionService.getRandomQuiz(undefined, 10);
+            if (year) console.log(`Iniciando batalha com questões do ENEM ${year}`);
             setQuestions(q);
             setIsLoading(false);
         };

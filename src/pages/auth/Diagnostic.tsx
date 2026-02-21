@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
-import { Shield, Target, Zap, Brain, ChevronRight, Check } from 'lucide-react';
+import { Shield, Brain, ChevronRight } from 'lucide-react';
 import './Diagnostic.css';
 
 const QUESTIONS = [

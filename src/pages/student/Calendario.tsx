@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight, BookOpen, Briefcase, GraduationCap } from 'lucide-react';
+import { Calendar as CalendarIcon, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Calendario.css';
 
 const Calendario: React.FC = () => {
-    const [currentDate, setCurrentDate] = useState(new Date());
 
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
     const weekDays = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];

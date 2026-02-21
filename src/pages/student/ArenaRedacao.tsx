@@ -4,13 +4,13 @@ import {
     AlertTriangle, Trophy,
     ArrowRight, RotateCcw
 } from 'lucide-react';
-import './RedacaoPro.css';
+import './ArenaRedacao.css';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { EssayService, type EssayCorrection } from '../../services/EssayService';
 import { XPService } from '../../services/XPService';
 
-const RedacaoPro: React.FC = () => {
+const ArenaRedacao: React.FC = () => {
     const [text, setText] = useState('');
     const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
     const [isTimerActive, setIsTimerActive] = useState(false);
@@ -81,7 +81,7 @@ const RedacaoPro: React.FC = () => {
         <div className="redacao-pro-container">
             <header className="redacao-header">
                 <div>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: 900 }}>Arena de <span style={{ color: 'var(--clan-color)' }}>Redação PRO</span> ✍️</h1>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: 900 }}>Arena de <span style={{ color: 'var(--clan-color)' }}>Redação</span> ✍️</h1>
                     <p style={{ color: 'var(--text-secondary)' }}>Simulação em tempo real com critérios oficiais do INEP.</p>
                 </div>
 
@@ -247,4 +247,4 @@ const RedacaoPro: React.FC = () => {
     );
 };
 
-export default RedacaoPro;
+export default ArenaRedacao;

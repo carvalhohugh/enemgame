@@ -1,5 +1,6 @@
 import React from 'react';
-import { Award, Target, Zap, Shield, Flame, Star, BookOpen, Crown } from 'lucide-react';
+import { Award, Target, Zap, Shield, Flame, Star, BookOpen, Crown, Share2 } from 'lucide-react';
+import { XPService } from '../../services/XPService';
 import './Conquistas.css';
 
 const BADGES = [
@@ -12,6 +13,11 @@ const BADGES = [
 ];
 
 const Conquistas: React.FC = () => {
+    const handleShare = (name: string) => {
+        XPService.addXP(50);
+        alert(`Conquista "${name}" compartilhada! +50 XP!`);
+    };
+
     return (
         <div className="conquistas-container">
             <header style={{ marginBottom: '40px' }}>
@@ -40,15 +46,26 @@ const Conquistas: React.FC = () => {
                 {BADGES.map(badge => (
                     <div key={badge.id} className={`glass-card badge-card ${badge.locked ? 'locked' : ''}`}>
                         <div className="badge-icon-wrapper">
-                            {React.cloneElement(badge.icon as React.ReactElement, { size: 40 })}
+                            {React.cloneElement(badge.icon as React.ReactElement<any>, { size: 40 })}
                         </div>
                         <h4>{badge.name}</h4>
                         <p>{badge.desc}</p>
                         <div className="badge-progress">
                             <div className="badge-progress-fill" style={{ width: `${badge.progress}%` }} />
                         </div>
-                        <div style={{ marginTop: '8px', fontSize: '0.7rem', fontWeight: 700, color: badge.progress === 100 ? 'var(--accent)' : 'var(--text-secondary)' }}>
-                            {badge.progress === 100 ? 'CONCLUÍDO' : `${badge.progress}% COMPLETO`}
+                        <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ fontSize: '0.7rem', fontWeight: 700, color: badge.progress === 100 ? 'var(--accent)' : 'var(--text-secondary)' }}>
+                                {badge.progress === 100 ? 'CONCLUÍDO' : `${badge.progress}% COMPLETO`}
+                            </div>
+                            {!badge.locked && badge.progress === 100 && (
+                                <button
+                                    className="share-btn"
+                                    onClick={() => handleShare(badge.name)}
+                                    style={{ background: 'none', border: 'none', color: 'var(--primary)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.7rem', fontWeight: 700 }}
+                                >
+                                    <Share2 size={12} /> COMPARTILHAR
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))}

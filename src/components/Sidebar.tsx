@@ -16,7 +16,11 @@ import {
     GraduationCap,
     FileText,
     Package,
-    Target
+    Target,
+    Shield,
+    BarChart3,
+    Brain,
+    Activity
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import './Sidebar.css';
@@ -36,7 +40,8 @@ const Sidebar: React.FC = () => {
         { icon: <CalendarIcon size={20} />, label: 'Plano Adaptativo', path: '/calendario' },
         { icon: <Swords size={20} />, label: 'Arena ENEM', path: '/arena' },
         { icon: <Target size={20} />, label: 'Zona de Treino', path: '/treinamento' },
-        { icon: <PenTool size={20} />, label: 'Redação PRO', path: '/redacao' },
+        { icon: <Shield size={20} />, label: 'Meu Clã', path: '/meu-cla' },
+        { icon: <PenTool size={20} />, label: 'Arena de Redação', path: '/redacao' },
         { icon: <Video size={20} />, label: 'Aulas ao Vivo', path: '/live' },
         { icon: <GraduationCap size={20} />, label: 'Hub de Estudos', path: '/estudos' },
         { icon: <FileText size={20} />, label: 'Minhas Anotações', path: '/anotacoes' },
@@ -44,6 +49,10 @@ const Sidebar: React.FC = () => {
         { icon: <Package size={20} />, label: 'Meu Inventário', path: '/inventario' },
         { icon: <Award size={20} />, label: 'Conquistas', path: '/conquistas' },
         { icon: <Store size={20} />, label: 'Loja Racer', path: '/loja' },
+        { icon: <BarChart3 size={20} />, label: 'Minhas Notas', path: '/minhas-notas' },
+        { icon: <GraduationCap size={20} />, label: 'Simulador Sisu', path: '/simulador' },
+        { icon: <Brain size={20} />, label: 'Flashcards 🧠', path: '/flashcards' },
+        { icon: <Activity size={20} />, label: 'Meu Desempenho', path: '/desempenho' },
         { icon: <Users size={20} />, label: 'Indicações', path: '/indicacoes' },
     ];
 

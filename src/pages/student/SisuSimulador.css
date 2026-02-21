@@ -1,0 +1,257 @@
+.sisu-container {
+    padding-bottom: 80px;
+}
+
+.sisu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+
+.user-score-display {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 32px;
+    border-left: 4px solid var(--primary);
+}
+
+.score-main small {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.score-main h2 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--text-primary);
+}
+
+.sisu-search-bar {
+    display: grid;
+    grid-template-columns: 1.5fr 0.5fr;
+    gap: 20px;
+    padding: 16px;
+    margin-bottom: 40px;
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0 16px;
+    border-radius: var(--radius-sm);
+}
+
+.search-input input {
+    background: none;
+    border: none;
+    padding: 14px 0;
+    width: 100%;
+    color: white;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.filter-select {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0 16px;
+    border-radius: var(--radius-sm);
+}
+
+.filter-select select {
+    background: none;
+    border: none;
+    color: white;
+    padding: 14px 0;
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+}
+
+.sisu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.uni-card {
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+}
+
+.uni-card.safe {
+    border-top: 4px solid #10b981;
+}
+
+.uni-card.warning {
+    border-top: 4px solid #f59e0b;
+}
+
+.uni-card.danger {
+    border-top: 4px solid #ef4444;
+}
+
+.course-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.uni-info h4 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+
+.location {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 24px;
+}
+
+.uni-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.data-item small {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.data-item strong {
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.trend {
+    font-size: 0.7rem;
+    margin-left: 8px;
+}
+
+.trend.up {
+    color: #10b981;
+}
+
+.trend.down {
+    color: #ef4444;
+}
+
+.trend.stable {
+    color: #94a3b8;
+}
+
+.prob-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 800;
+    font-size: 0.9rem;
+}
+
+.prob-gauge {
+    margin-bottom: 24px;
+}
+
+.gauge-bg {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 100px;
+}
+
+.gauge-fill {
+    height: 100%;
+    border-radius: 100px;
+    box-shadow: 0 0 10px currentColor;
+}
+
+.view-details-btn {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.view-details-btn:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: var(--shadow-neon);
+}
+
+.sisu-tips {
+    padding: 32px;
+}
+
+.sisu-tips h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    color: var(--primary);
+}
+
+.sisu-tips ul {
+    list-style: none;
+}
+
+.sisu-tips li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.sisu-tips li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .sisu-header {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .sisu-search-bar {
+        grid-template-columns: 1fr;
+    }
+}

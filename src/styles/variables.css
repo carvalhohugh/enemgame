@@ -53,15 +53,17 @@
 
 /* Light Mode Variables Overrides */
 [data-theme="light"] {
-  --bg-dark: #f8fafc;
-  --bg-card: rgba(255, 255, 255, 0.8);
-  --bg-card-border: rgba(0, 0, 0, 0.05);
-  --text-primary: #0f172a;
+  --bg-dark: #f1f5f9;
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-border: rgba(0, 0, 0, 0.08);
+  --text-primary: #1e293b;
   --text-secondary: #64748b;
   --primary: #4f46e5;
-  --primary-glow: rgba(79, 70, 229, 0.2);
-  --sidebar-bg: #1e293b;
-  /* Dark sidebar in light mode as requested */
+  --primary-glow: rgba(79, 70, 229, 0.15);
+  --sidebar-bg: #0f172a;
+  /* Keep sidebar dark for professional high-contrast look */
+  --clan-glow: rgba(0, 0, 0, 0.1);
+  --shadow-neon: 0 4px 12px rgba(79, 70, 229, 0.2);
 }
 
 /* Global Input / Form Overrides for Visibility */
