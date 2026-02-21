@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as XLSX from 'xlsx';
 import {
-    Upload, FileSpreadsheet, FileText, CheckCircle2,
+    Upload, FileSpreadsheet, CheckCircle2,
     AlertTriangle, Loader2, UserPlus, Trash2
 } from 'lucide-react';
 import { UniqueIdService } from '../../services/UniqueIdService';

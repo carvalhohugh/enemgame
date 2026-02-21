@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
-    Search, Users, GraduationCap, Building2,
-    Settings, Plus, Filter,
-    Activity, Layout,
-    Shield, Calendar, Youtube,
+    Search, Users, Plus,
     DollarSign, Video, Swords
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -38,12 +35,12 @@ const InstitutionalPanel: React.FC = () => {
     const [modalType, setModalType] = useState<TabType | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const [rooms, setRooms] = useState<Room[]>([
+    const [rooms] = useState<Room[]>([
         { id: '1', title: 'Revisão de Biologia: Genética', professor: 'Dr. Silva', youtubeUrl: 'https://youtube.com/live/abc', status: 'online', startTime: '14:00' },
         { id: '2', title: 'Matemática Financeira', professor: 'Prof. Ana', youtubeUrl: 'https://youtube.com/live/xyz', status: 'scheduled', startTime: '16:00' },
     ]);
 
-    const [arenaRooms, setArenaRooms] = useState<ArenaRoom[]>([
+    const [arenaRooms] = useState<ArenaRoom[]>([
         { id: '1', name: 'Grande Batalha do Cosmos', year: 2023, subject: 'Ciências da Natureza', difficulty: 'Elite', activePlayers: 124 },
         { id: '2', name: 'Duelo de Humanas', year: 2022, subject: 'Ciências Humanas', difficulty: 'Médio', activePlayers: 45 },
     ]);

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-    LineChart, Line, PieChart, Pie, Cell
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    LineChart, Line, Cell
 } from 'recharts';
 import {
     TrendingUp, Users, School, DollarSign,
@@ -113,7 +113,7 @@ const Relatorios: React.FC = () => {
                                     contentStyle={{ background: 'var(--sidebar-bg)', border: '1px solid var(--bg-card-border)' }}
                                 />
                                 <Bar dataKey="valor" fill="var(--clan-cosmos)">
-                                    {MOCK_COMMISSIONS.map((entry, index) => (
+                                    {MOCK_COMMISSIONS.map((_, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Bar>
