@@ -47,8 +47,19 @@
   /* Espaçamento e Bordas */
   --radius-sm: 8px;
   --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
   /* Sidebar & Navigation */
   --sidebar-bg: rgba(15, 15, 25, 0.95);
+  --header-height: 80px;
 }
 
 /* Light Mode Variables Overrides */
@@ -173,4 +184,35 @@ h6 {
   transform: translateY(-3px) scale(1.02);
   filter: brightness(1.2);
   box-shadow: 0 0 40px -5px var(--clan-glow);
+}
+
+/* Layout Utilities */
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  width: 100%;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+  }
+
+  .grid-auto {
+    grid-template-columns: 1fr;
+  }
 }

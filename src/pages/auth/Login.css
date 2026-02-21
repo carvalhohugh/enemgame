@@ -61,18 +61,18 @@
 }
 
 .hero-text h1 {
-    font-size: 4rem;
+    font-size: 4.8rem;
     font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 24px;
+    line-height: 1.05;
+    margin-bottom: 32px;
 }
 
 .hero-text p {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--text-secondary);
     line-height: 1.6;
-    margin-bottom: 40px;
-    max-width: 600px;
+    margin-bottom: 48px;
+    max-width: 700px;
 }
 
 .badge-new {
@@ -154,15 +154,15 @@
 }
 
 .card-header h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 8px;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 12px;
 }
 
 .card-header p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: var(--text-secondary);
-    margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .auth-form {
@@ -213,29 +213,25 @@
 }
 
 .social-auth-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.social-auth-btn {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: white;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: 0.2s;
+    flex-direction: column;
 }
 
-.social-auth-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
+.social-auth-btn.full-google {
+    width: 100%;
+    grid-column: span 2;
+    background: white;
+    color: #000;
+    border: none;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 16px;
+    transition: 0.3s;
+}
+
+.social-auth-btn.full-google:hover {
+    background: #f1f1f1;
+    transform: scale(1.02);
 }
 
 .auth-footer {

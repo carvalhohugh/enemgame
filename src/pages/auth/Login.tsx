@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Zap, Github, Chrome,
+    Brain, Chrome,
     Shield, Trophy, Target,
     ArrowRight
 } from 'lucide-react';
@@ -22,8 +22,8 @@ const LandingLogin: React.FC = () => {
             {/* Hero Section */}
             <nav className="landing-nav">
                 <div className="logo">
-                    <Zap size={32} fill="var(--primary)" />
-                    <span>ENEM <span style={{ color: 'var(--primary)' }}>FOCO</span></span>
+                    <Brain size={32} color="var(--primary)" />
+                    <span style={{ fontWeight: 900, fontSize: '1.5rem' }}>ARENA <span style={{ color: 'var(--primary)' }}>ENEM</span></span>
                 </div>
                 <div className="nav-links">
                     <a href="#features">Recursos</a>
@@ -110,11 +110,8 @@ const LandingLogin: React.FC = () => {
                             </div>
 
                             <div className="social-auth-grid">
-                                <button className="social-auth-btn">
-                                    <Chrome size={20} /> Google
-                                </button>
-                                <button className="social-auth-btn">
-                                    <Github size={20} /> GitHub
+                                <button className="social-auth-btn full-google">
+                                    <Chrome size={24} /> ENTRAR COM GOOGLE
                                 </button>
                             </div>
 

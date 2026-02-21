@@ -7,81 +7,122 @@ import {
     PenTool,
     Trophy,
     Store,
-    Users,
     Settings,
     LogOut,
-    Zap,
     Video,
-    Award,
     GraduationCap,
     FileText,
     Package,
-    Target,
     Shield,
     BarChart3,
     Brain,
     Activity
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
 
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+    isOpen?: boolean;
+    onClose?: () => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     const { clan } = useTheme();
+    const { user } = useAuth();
 
     const clanNames = {
         ignis: 'Ignis',
         glacies: 'Glacies',
-        silva: 'Silva',
+        guardioes: 'Guardiões',
         cosmos: 'Cosmos'
     };
 
-    const navItems = [
-        { icon: <LayoutDashboard size={20} />, label: 'Dashboard', path: '/' },
-        { icon: <CalendarIcon size={20} />, label: 'Plano Adaptativo', path: '/calendario' },
-        { icon: <Swords size={20} />, label: 'Arena ENEM', path: '/arena' },
-        { icon: <Target size={20} />, label: 'Zona de Treino', path: '/treinamento' },
-        { icon: <Shield size={20} />, label: 'Meu Clã', path: '/meu-cla' },
-        { icon: <PenTool size={20} />, label: 'Arena de Redação', path: '/redacao' },
-        { icon: <Video size={20} />, label: 'Aulas ao Vivo', path: '/live' },
-        { icon: <GraduationCap size={20} />, label: 'Hub de Estudos', path: '/estudos' },
-        { icon: <FileText size={20} />, label: 'Minhas Anotações', path: '/anotacoes' },
-        { icon: <Trophy size={20} />, label: 'Ranking', path: '/ranking' },
-        { icon: <Package size={20} />, label: 'Meu Inventário', path: '/inventario' },
-        { icon: <Award size={20} />, label: 'Conquistas', path: '/conquistas' },
-        { icon: <Store size={20} />, label: 'Loja Racer', path: '/loja' },
-        { icon: <BarChart3 size={20} />, label: 'Minhas Notas', path: '/minhas-notas' },
-        { icon: <GraduationCap size={20} />, label: 'Simulador Sisu', path: '/simulador' },
-        { icon: <Brain size={20} />, label: 'Flashcards 🧠', path: '/flashcards' },
-        { icon: <Activity size={20} />, label: 'Meu Desempenho', path: '/desempenho' },
-        { icon: <Users size={20} />, label: 'Indicações', path: '/indicacoes' },
-    ];
+    const menuGroups = [
+        {
+            title: 'MEUS ESTUDOS',
+            roles: ['ALUNO', 'PROFESSOR', 'ADMIN'],
+            items: [
+                { icon: <CalendarIcon size={18} />, label: 'Plano Adaptativo', path: '/calendario' },
+                { icon: <Swords size={18} />, label: 'Arena ENEM', path: '/arena' },
+                { icon: <PenTool size={18} />, label: 'Arena de Redação', path: '/redacao' },
+                { icon: <GraduationCap size={18} />, label: 'Hub de Estudos', path: '/estudos' },
+                { icon: <Video size={18} />, label: 'Aulas ao Vivo', path: '/live' },
+                { icon: <Brain size={18} />, label: 'Flashcards', path: '/flashcards' },
+                { icon: <FileText size={18} />, label: 'Minhas Anotações', path: '/anotacoes' },
+            ]
+        },
+        {
+            title: 'GESTÃO E RELATÓRIOS',
+            roles: ['ADMIN', 'GESTOR_ESCOLA', 'PROFESSOR', 'VENDEDOR'],
+            items: [
+                { icon: <BarChart3 size={18} />, label: 'Relatórios', path: '/admin/relatorios' },
+                { icon: <Package size={18} />, label: 'Financeiro', path: '/admin/financeiro' },
+                { icon: <GraduationCap size={18} />, label: 'Gestão Escolar', path: '/admin/escolas' },
+            ]
+        },
+        {
+            title: 'MEU DESEMPENHO',
+            roles: ['ALUNO', 'ADMIN'],
+            items: [
+                { icon: <BarChart3 size={18} />, label: 'Minhas Notas', path: '/minhas-notas' },
+                { icon: <GraduationCap size={18} />, label: 'Simulador Sisu', path: '/simulador' },
+                { icon: <Activity size={18} />, label: 'Meu Desempenho', path: '/desempenho' },
+            ]
+        },
+        {
+            title: 'GAME',
+            roles: ['ALUNO', 'ADMIN'],
+            items: [
+                { icon: <Shield size={18} />, label: 'Meu Clã', path: '/meu-cla' },
+                { icon: <Trophy size={18} />, label: 'Rankings', path: '/ranking' },
+                { icon: <Package size={18} />, label: 'Inventário', path: '/inventario' },
+                { icon: <Store size={18} />, label: 'Loja Racer', path: '/loja' },
+            ]
+        }
+    ].filter(group => !user || group.roles.includes(user.role));
 
     return (
-        <aside className="sidebar">
+        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+            {isOpen && <div className="sidebar-overlay" onClick={onClose} />}
             <div className="sidebar-logo">
-                <Zap size={28} fill="var(--clan-color)" color="var(--clan-color)" />
-                <span style={{ background: 'linear-gradient(45deg, var(--text-primary), var(--clan-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                    ENEM Foco
+                <Brain size={28} color="var(--clan-color)" />
+                <span style={{ fontWeight: 900, fontSize: '1.2rem', background: 'linear-gradient(45deg, var(--text-primary), var(--clan-color))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                    ARENA ENEM
                 </span>
             </div>
 
             <nav className="sidebar-nav">
-                {navItems.map((item) => (
-                    <NavLink
-                        key={item.path}
-                        to={item.path}
-                        className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                    >
-                        {item.icon}
-                        <span>{item.label}</span>
-                    </NavLink>
+                <NavLink to="/" className={({ isActive }) => `nav-item dashboard-link ${isActive ? 'active' : ''}`}>
+                    <LayoutDashboard size={20} />
+                    <span>Dashboard</span>
+                </NavLink>
+
+                {menuGroups.map((group, idx) => (
+                    <div key={idx} className="nav-group">
+                        <div className="group-divider">
+                            <span className="group-title">{group.title}</span>
+                        </div>
+                        {group.items.map((item) => (
+                            <NavLink
+                                key={item.path}
+                                to={item.path}
+                                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                            >
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </NavLink>
+                        ))}
+                    </div>
                 ))}
             </nav>
 
             {clan && (
                 <div className="clan-status glass-card" style={{ margin: '0 16px', padding: '16px', border: '1px solid var(--clan-glow)' }}>
                     <div className="clan-info">
-                        <h4 style={{ color: 'var(--clan-color)', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.1em' }}>Clã {clanNames[clan]}</h4>
+                        <h4 style={{ color: 'var(--clan-color)', textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 900, letterSpacing: '0.1em' }}>
+                            {clanNames[clan as keyof typeof clanNames]}
+                        </h4>
                         <p style={{ fontSize: '0.7rem', opacity: 0.8 }}>Nível 12 • Guerreiro</p>
                     </div>
                 </div>

@@ -45,3 +45,80 @@
     font-weight: 700;
     font-size: 0.75rem;
 }
+
+.rewards-tiers {
+    margin-top: 48px;
+}
+
+.tiers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.tier-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    position: relative;
+    border: 1px solid var(--bg-card-border);
+    transition: all 0.3s ease;
+}
+
+.tier-card.reached {
+    border-color: var(--accent);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.tier-card:not(.reached) {
+    opacity: 0.6;
+    filter: grayscale(0.8);
+}
+
+.tier-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.tier-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.tier-info strong {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+.tier-info span {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.check-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--accent);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.neon-button.success {
+    background: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow);
+}

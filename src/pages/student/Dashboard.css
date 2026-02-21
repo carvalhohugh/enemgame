@@ -1,3 +1,83 @@
+.dashboard-container {
+    padding: 32px;
+}
+
+.clan-hero-section {
+    grid-column: span 12;
+    padding: 40px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.clan-mascot-placeholder {
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 30px var(--clan-glow);
+}
+
+.clan-hero-content {
+    flex: 1;
+}
+
+.clan-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+    letter-spacing: 0.2em;
+}
+
+.clan-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--clan-color);
+    margin: 4px 0 12px;
+    text-shadow: 0 0 20px var(--clan-glow);
+}
+
+.clan-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 500px;
+}
+
+.clan-progress-wrapper {
+    max-width: 400px;
+}
+
+.clan-progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.clan-progress-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.clan-progress-fill {
+    height: 100%;
+}
+
+.clan-hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);

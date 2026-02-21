@@ -59,11 +59,20 @@ const AdaptiveCalendar: React.FC = () => {
     };
 
     const handleFinishSession = (id: string) => {
+        const isQualified = secondsElapsed >= 15 * 60; // 15 minutos
+
         setSchedule(prev => prev.map(item =>
             item.id === id ? { ...item, completed: true } : item
         ));
+
         setActiveSession(null);
-        XPService.addXP(100);
+
+        if (isQualified) {
+            XPService.addXP(100);
+            alert('Parabéns! Você estudou por mais de 15 minutos e ganhou 100 XP! 🚀');
+        } else {
+            alert('Sessão finalizada. Estude por pelo menos 15 minutos para ganhar XP.');
+        }
     };
 
     const changeDay = (offset: number) => {
@@ -178,6 +187,26 @@ const AdaptiveCalendar: React.FC = () => {
                             <div className="meter-fill" style={{ width: `${(schedule.filter(s => s.completed).length / schedule.length) * 100}%` }}></div>
                         </div>
                         <span className="meter-label">{schedule.filter(s => s.completed).length * 1.5}h / {hoursPerDay}h Diárias</span>
+                    </div>
+
+                    <div className="glass-card recommendations-sidebar">
+                        <h3>📚 PARA VOCÊ</h3>
+                        <div className="rec-list">
+                            {[
+                                { title: 'Redação: Coesão', type: 'Prática' },
+                                { title: 'Cinemática Escalar', type: 'Teoria' },
+                                { title: 'Brasil Colônia', type: 'Vídeo' }
+                            ].map((rec, i) => (
+                                <div key={i} className="rec-item">
+                                    <div className="rec-info">
+                                        <span className="rec-type">{rec.type}</span>
+                                        <span className="rec-title">{rec.title}</span>
+                                    </div>
+                                    <ChevronRight size={14} />
+                                </div>
+                            ))}
+                        </div>
+                        <button className="view-all-link">Ver Hub Completo</button>
                     </div>
 
                     <button className="neon-button settings-btn" onClick={() => setShowSettings(true)}>

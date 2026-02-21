@@ -50,8 +50,8 @@ const StudentDataVis: React.FC = () => {
                         <Target size={20} color="var(--primary)" />
                         <h3>Radar de Competências</h3>
                     </div>
-                    <div className="chart-container">
-                        <ResponsiveContainer width="100%" height={300}>
+                    <div className="chart-container" style={{ height: '300px' }}>
+                        <ResponsiveContainer width="100%" height="100%">
                             <RadarChart cx="50%" cy="50%" outerRadius="80%" data={COMPETENCY_DATA}>
                                 <PolarGrid stroke="rgba(255,255,255,0.1)" />
                                 <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-secondary)', fontSize: 12 }} />
@@ -77,8 +77,8 @@ const StudentDataVis: React.FC = () => {
                         <Calendar size={20} color="var(--clan-ignis)" />
                         <h3>Consistência Semanal (Horas)</h3>
                     </div>
-                    <div className="chart-container">
-                        <ResponsiveContainer width="100%" height={300}>
+                    <div className="chart-container" style={{ height: '300px' }}>
+                        <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={CONSISTENCY_DATA}>
                                 <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-secondary)' }} />
                                 <Tooltip

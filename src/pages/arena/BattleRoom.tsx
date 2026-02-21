@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, SkipForward, AlertCircle, CheckCircle2, XCircle, Shield, Sparkles, Lightbulb } from 'lucide-react';
+import { Clock, SkipForward, AlertCircle, CheckCircle, XCircle, Shield, Sparkles, Lightbulb } from 'lucide-react';
 import { QuestionService, type Question } from '../../services/QuestionService';
 import './BattleRoom.css';
 
@@ -217,7 +217,7 @@ const BattleRoom: React.FC<BattleRoomProps> = ({ onExit, year }) => {
                                 >
                                     <div className="option-letter">{String.fromCharCode(65 + i)}</div>
                                     <span style={{ opacity: isEliminated ? 0.3 : 1 }}>{opt}</span>
-                                    {status === 'correct' && <CheckCircle2 size={20} style={{ marginLeft: 'auto', color: 'var(--accent)' }} />}
+                                    {status === 'correct' && <CheckCircle size={20} style={{ marginLeft: 'auto', color: 'var(--accent)' }} />}
                                     {status === 'wrong' && <XCircle size={20} style={{ marginLeft: 'auto', color: 'var(--error)' }} />}
                                     {isEliminated && <XCircle size={16} style={{ marginLeft: 'auto', color: 'rgba(255,255,255,0.2)' }} />}
                                 </button>

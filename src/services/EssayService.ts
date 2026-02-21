@@ -12,9 +12,35 @@ export interface EssayCorrection {
     feedback: string;
 }
 
+export interface EssayTheme {
+    id: string;
+    title: string;
+    year?: number;
+    category: 'Oficial ENEM' | 'Social' | 'Tecnologia' | 'Meio Ambiente' | 'Saúde';
+}
+
 const INEP_TIERS = [0, 40, 80, 120, 160, 200];
 
+const HISTORIC_THEMES: EssayTheme[] = [
+    { id: '2023', title: 'Desafios para o enfrentamento da invisibilidade do trabalho de cuidado realizado pela mulher no Brasil', year: 2023, category: 'Oficial ENEM' },
+    { id: '2022', title: 'Desafios para a valorização de comunidades e povos tradicionais no Brasil', year: 2022, category: 'Oficial ENEM' },
+    { id: '2021', title: 'Invisibilidade e registro civil: garantia de acesso à cidadania no Brasil', year: 2021, category: 'Oficial ENEM' },
+    { id: '2020', title: 'O estigma associado às doenças mentais na sociedade brasileira', year: 2020, category: 'Oficial ENEM' },
+    { id: '2019', title: 'Democratização do acesso ao cinema no Brasil', year: 2019, category: 'Oficial ENEM' },
+    { id: 's1', title: 'A importância da educação financeira na formação do cidadão contemporâneo', category: 'Social' },
+    { id: 't1', title: 'Os impactos da inteligência artificial na privacidade e no mercado de trabalho', category: 'Tecnologia' },
+    { id: 'm1', title: 'Caminhos para combater a crise hídrica e garantir a segurança alimentar', category: 'Meio Ambiente' },
+    { id: 'sa1', title: 'O aumento da obesidade infantil e os desafios para a saúde pública', category: 'Saúde' }
+];
+
 export const EssayService = {
+    getThemes: (): EssayTheme[] => {
+        return HISTORIC_THEMES;
+    },
+
+    getRandomTheme: (): EssayTheme => {
+        return HISTORIC_THEMES[Math.floor(Math.random() * HISTORIC_THEMES.length)];
+    },
     checkPlagiarism: async (text: string): Promise<number> => {
         await new Promise(resolve => setTimeout(resolve, 2000));
 

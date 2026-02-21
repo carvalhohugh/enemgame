@@ -7,10 +7,12 @@ import {
 import './RedacaoPro.css';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { EssayService, type EssayCorrection } from '../../services/EssayService';
+import { EssayService } from '../../services/EssayService';
+import type { EssayCorrection, EssayTheme } from '../../services/EssayService';
 import { XPService } from '../../services/XPService';
 
 const RedacaoPro: React.FC = () => {
+    const [theme, setTheme] = useState<EssayTheme>(EssayService.getRandomTheme());
     const [text, setText] = useState('');
     const [timeLeft, setTimeLeft] = useState(3600); // 1 hour
     const [isTimerActive, setIsTimerActive] = useState(false);
@@ -75,6 +77,7 @@ const RedacaoPro: React.FC = () => {
         setShowResults(false);
         setTimeLeft(3600);
         setIsTimerActive(false);
+        setTheme(EssayService.getRandomTheme());
     };
 
     return (
@@ -103,8 +106,9 @@ const RedacaoPro: React.FC = () => {
             <div className="redacao-editor-layout">
                 <main className="editor-main glass-card">
                     <div className="editor-toolbar">
-                        <span className="theme-current">TEMA: Os impactos da inteligência artificial na educação brasileira</span>
+                        <span className="theme-current">TEMA: {theme.title} {theme.year ? `(ENEM ${theme.year})` : ''}</span>
                         <div className="toolbar-btns">
+                            <button title="Trocar Tema" onClick={() => setTheme(EssayService.getRandomTheme())}><RotateCcw size={18} /></button>
                             <button title="Salvar Rascunho"><Save size={18} /></button>
                             <button title="Histórico"><History size={18} /></button>
                         </div>

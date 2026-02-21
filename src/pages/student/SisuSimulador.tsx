@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Search, Target,
     ArrowRight, MapPin,
-    CheckCircle2,
+    CheckCircle,
     XCircle, Filter,
     AlertCircle, Info
 } from 'lucide-react';
@@ -19,12 +19,18 @@ interface University {
 }
 
 const MOCK_UNIVERSITIES: University[] = [
-    { id: '1', name: 'USP', location: 'São Paulo - SP', course: 'Medicina', cutoff: 812.5, trend: 'up' },
-    { id: '2', name: 'UFRJ', location: 'Rio de Janeiro - RJ', course: 'Direito', cutoff: 765.2, trend: 'stable' },
-    { id: '3', name: 'UFMG', location: 'Belo Horizonte - MG', course: 'Engenharia Civil', cutoff: 742.8, trend: 'down' },
-    { id: '4', name: 'UnB', location: 'Brasília - DF', course: 'Relações Internacionais', cutoff: 735.4, trend: 'up' },
-    { id: '5', name: 'UFRGS', location: 'Porto Alegre - RS', course: 'Psicologia', cutoff: 728.1, trend: 'stable' },
-    { id: '6', name: 'UFPE', location: 'Recife - PE', course: 'Ciência da Computação', cutoff: 715.6, trend: 'up' },
+    { id: '1', name: 'USP - Universidade de São Paulo', location: 'São Paulo - SP', course: 'Medicina', cutoff: 812.5, trend: 'up' },
+    { id: '2', name: 'UFRJ - Federal do Rio de Janeiro', location: 'Rio de Janeiro - RJ', course: 'Direito', cutoff: 765.2, trend: 'stable' },
+    { id: '3', name: 'UFMG - Federal de Minas Gerais', location: 'Belo Horizonte - MG', course: 'Engenharia Civil', cutoff: 742.8, trend: 'down' },
+    { id: '4', name: 'UnB - Universidade de Brasília', location: 'Brasília - DF', course: 'Relações Internacionais', cutoff: 735.4, trend: 'up' },
+    { id: '5', name: 'UFRGS - Federal do Rio Grande do Sul', location: 'Porto Alegre - RS', course: 'Psicologia', cutoff: 728.1, trend: 'stable' },
+    { id: '6', name: 'UFPE - Federal de Pernambuco', location: 'Recife - PE', course: 'Ciência da Computação', cutoff: 715.6, trend: 'up' },
+    { id: '7', name: 'UFC - Federal do Ceará', location: 'Fortaleza - CE', course: 'Medicina', cutoff: 798.2, trend: 'up' },
+    { id: '8', name: 'UFSC - Federal de Santa Catarina', location: 'Florianópolis - SC', course: 'Arquitetura', cutoff: 725.5, trend: 'stable' },
+    { id: '9', name: 'UFBA - Federal da Bahia', location: 'Salvador - BA', course: 'Odontologia', cutoff: 738.9, trend: 'up' },
+    { id: '10', name: 'Unicamp', location: 'Campinas - SP', course: 'Engenharia de Software', cutoff: 785.4, trend: 'up' },
+    { id: '11', name: 'UFPR - Federal do Paraná', location: 'Curitiba - PR', course: 'Medicina Veterinária', cutoff: 712.3, trend: 'down' },
+    { id: '12', name: 'UFG - Federal de Goiás', location: 'Goiânia - GO', course: 'Agronomia', cutoff: 685.7, trend: 'stable' }
 ];
 
 const SisuSimulador: React.FC = () => {
@@ -45,7 +51,7 @@ const SisuSimulador: React.FC = () => {
 
     const getProbability = (cutoff: number) => {
         const diff = userAverage - cutoff;
-        if (diff >= 10) return { label: 'ALTA', color: '#10b981', icon: <CheckCircle2 size={16} />, status: 'safe' };
+        if (diff >= 10) return { label: 'ALTA', color: '#10b981', icon: <CheckCircle size={16} />, status: 'safe' };
         if (diff >= -10) return { label: 'MÉDIA', color: '#f59e0b', icon: <AlertCircle size={16} />, status: 'warning' };
         return { label: 'BAIXA', color: '#ef4444', icon: <XCircle size={16} />, status: 'danger' };
     };
@@ -89,6 +95,9 @@ const SisuSimulador: React.FC = () => {
                         <option value="Medicina">Medicina</option>
                         <option value="Direito">Direito</option>
                         <option value="Engenharia Civil">Engenharia Civil</option>
+                        <option value="Ciência da Computação">Ciência da Computação</option>
+                        <option value="Psicologia">Psicologia</option>
+                        <option value="Relações Internacionais">Relações Internacionais</option>
                     </select>
                 </div>
             </div>

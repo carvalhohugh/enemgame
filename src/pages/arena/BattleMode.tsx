@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-    Swords, Zap, Timer,
-    Trophy, Users, Target,
-    Skull, Shield, ArrowRight,
-    Star, Flame, Coins, RotateCcw
+    Zap, Timer,
+    Trophy, Users,
+    Skull, Swords
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './BattleMode.css';
@@ -74,13 +73,13 @@ const BattleMode: React.FC = () => {
                             <p>Enfrente outros estudantes em batalhas de conhecimento em tempo real.</p>
 
                             <div className="bet-selector">
-                                <Coins size={20} color="gold" />
+                                <Zap size={20} color="gold" style={{ display: 'inline', marginRight: '8px' }} />
                                 <span>APOSTA: <strong>{bet} XP</strong></span>
                                 <input type="range" min="50" max="500" step="50" value={bet} onChange={e => setBet(parseInt(e.target.value))} />
                             </div>
 
                             <button className="neon-button large" onClick={startSearch}>
-                                <Zap size={20} /> BUSCAR ADVERSÁRIO
+                                <Swords size={20} /> BUSCAR ADVERSÁRIO
                             </button>
                         </div>
                     </motion.div>
@@ -110,6 +109,7 @@ const BattleMode: React.FC = () => {
 
                             <div className="battle-timer">
                                 <div className="timer-circle" style={{ borderColor: timer < 5 ? 'var(--secondary)' : 'var(--primary)' }}>
+                                    <Timer size={18} style={{ marginRight: '4px' }} />
                                     <span>{timer}</span>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@ const BattleMode: React.FC = () => {
                                 <span>{score}</span> VS <span>{opponentScore}</span>
                             </div>
                             <button className="neon-button" onClick={() => setGameState('lobby')}>
-                                <RotateCcw size={18} /> RECOMEÇAR
+                                RECOMEÇAR
                             </button>
                         </div>
                     </motion.div>

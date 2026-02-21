@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {
-    BookOpen, ChevronRight, Video,
-    Play, Info, ExternalLink, Loader2,
-    ArrowLeft, GraduationCap, FileText, Save, PenTool, CheckCircle
+    BookOpen, ChevronRight, Video, Play, Info, ExternalLink,
+    Loader2, ArrowLeft, GraduationCap, FileText, Save, PenTool,
+    CheckCircle
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ContentService } from '../../services/ContentService';
@@ -10,6 +10,7 @@ import type { AcademicContent, RelatedVideo } from '../../services/ContentServic
 import { BNCC_CURRICULUM } from '../../data/BNCCObjects';
 import type { BNCCComponent, BNCCTheme } from '../../data/BNCCObjects';
 import { NoteService } from '../../services/NoteService';
+import { XPService } from '../../services/XPService';
 import './StudyHub.css';
 
 const StudyHub: React.FC = () => {
@@ -22,6 +23,13 @@ const StudyHub: React.FC = () => {
     const [videos, setVideos] = useState<RelatedVideo[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [currentVideo, setCurrentVideo] = useState<string | null>(null);
+
+    // Quiz states
+    const [qIndex, setQIndex] = useState(0);
+    const [qScore, setQScore] = useState(0);
+    const [quizFinished, setQuizFinished] = useState(false);
+    const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
+    const [isConfirmed, setIsConfirmed] = useState(false);
 
     // Note states
     const [showNotes, setShowNotes] = useState(false);
@@ -52,6 +60,11 @@ const StudyHub: React.FC = () => {
         setSelectedTheme(theme);
         setSelectedStep('study');
         setIsLoading(true);
+        setQuizFinished(false);
+        setQIndex(0);
+        setQScore(0);
+        setSelectedOpt(null);
+        setIsConfirmed(false);
 
         try {
             const [summary, vids] = await Promise.all([
@@ -65,6 +78,19 @@ const StudyHub: React.FC = () => {
             console.error("Erro ao carregar estudos:", error);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleNextQuestion = () => {
+        if (selectedOpt === 0) setQScore(prev => prev + 1); // Mock: correct is always index 0 for now
+
+        if (qIndex < 4) {
+            setQIndex(prev => prev + 1);
+            setSelectedOpt(null);
+            setIsConfirmed(false);
+        } else {
+            setQuizFinished(true);
+            XPService.addXP(qScore * 100 + 100); // 100 per correct + 100 bonus
         }
     };
 
@@ -244,44 +270,88 @@ const StudyHub: React.FC = () => {
         </div>
     );
 
-    const renderQuestionsScreen = () => (
-        <div className="questions-screen glass-card">
-            <div className="quiz-header">
-                <h2>Simulado Rápido: {selectedTheme?.title}</h2>
-                <div className="quiz-progress-bar">
-                    <div className="q-fill" style={{ width: '40%' }}></div>
-                </div>
-            </div>
+    const renderQuestionsScreen = () => {
+        if (quizFinished) {
+            return (
+                <div className="quiz-results glass-card">
+                    <div className="results-header">
+                        <div className="score-circle">
+                            <span className="score-num">{qScore}/5</span>
+                            <span className="score-label">ACERTOS</span>
+                        </div>
+                        <h2>Desempenho em {selectedTheme?.title}</h2>
+                        <p>Você ganhou <strong>{qScore * 100 + 100} XP</strong> por completar esta trilha!</p>
+                    </div>
 
-            <div className="question-body">
-                <span className="q-number">QUESTÃO 01 DE 05</span>
-                <p className="q-text">
-                    Considerando o tema "{selectedTheme?.title}" no contexto do ENEM, qual das alternativas abaixo melhor descreve a principal competência avaliada?
-                </p>
+                    <div className="performance-msg">
+                        {qScore >= 4 ? "Excelente! Você dominou este tópico." : qScore >= 2 ? "Bom trabalho! Continue revisando para atingir a perfeição." : "Este tema é desafiador. Recomenda-se assistir novamente os vídeos."}
+                    </div>
 
-                <div className="options-list">
-                    {[
-                        'Análise crítica de fontes históricas e literárias.',
-                        'Resolução de problemas complexos com lógica matemática.',
-                        'Interpretação de textos e fenômenos naturais.',
-                        'Aplicação de conhecimentos técnicos em situações reais.'
-                    ].map((opt, i) => (
-                        <button key={i} className="option-btn">
-                            <span className="opt-letter">{'ABCD'[i]}</span>
-                            {opt}
+                    <div className="results-actions">
+                        <button className="neon-button" onClick={() => setSelectedStep('study')}>
+                            REVISAR CONTEÚDO
                         </button>
-                    ))}
+                        <button className="neon-button primary" onClick={() => setSelectedStep('theme')}>
+                            PRÓXIMO TÓPICO <ChevronRight size={18} />
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div className="questions-screen glass-card">
+                <div className="quiz-header">
+                    <h2>Simulado Rápido: {selectedTheme?.title}</h2>
+                    <div className="quiz-progress-bar">
+                        <div className="q-fill" style={{ width: `${((qIndex + 1) / 5) * 100}%` }}></div>
+                    </div>
+                </div>
+
+                <div className="question-body">
+                    <span className="q-number">QUESTÃO {String(qIndex + 1).padStart(2, '0')} DE 05</span>
+                    <p className="q-text">
+                        {qIndex === 0 && `Qual o conceito fundamental de ${selectedTheme?.title} mais cobrado no ENEM?`}
+                        {qIndex === 1 && `A aplicação prática de ${selectedTheme?.title} no cotidiano brasileiro envolve:`}
+                        {qIndex === 2 && `Sobre a cronologia/evolução de ${selectedTheme?.title}, é correto afirmar:`}
+                        {qIndex === 3 && `A intersecção de ${selectedTheme?.title} com outras áreas do conhecimento gera:`}
+                        {qIndex === 4 && `O impacto socioambiental ou político de ${selectedTheme?.title} reflete em:`}
+                    </p>
+
+                    <div className="options-list">
+                        {[
+                            'Alternativa principal baseada na curadoria BNCC.',
+                            'Visão periférica de conceitos secundários.',
+                            'Interpretação literal sem contexto crítico.',
+                            'Aplicação de fórmulas sem análise de variáveis.'
+                        ].map((opt, i) => (
+                            <button
+                                key={i}
+                                className={`option-btn ${selectedOpt === i ? 'selected' : ''}`}
+                                onClick={() => !isConfirmed && setSelectedOpt(i)}
+                            >
+                                <span className="opt-letter">{'ABCD'[i]}</span>
+                                {opt}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="quiz-footer">
+                    <button className="neon-button" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setSelectedStep('study')}>
+                        SAIR DO QUIZ
+                    </button>
+                    <button
+                        className="neon-button primary"
+                        disabled={selectedOpt === null}
+                        onClick={handleNextQuestion}
+                    >
+                        {qIndex < 4 ? 'PRÓXIMA QUESTÃO' : 'FINALIZAR'} <ArrowLeft size={18} style={{ rotate: '180deg' }} />
+                    </button>
                 </div>
             </div>
-
-            <div className="quiz-footer">
-                <button className="neon-button" style={{ background: 'rgba(255,255,255,0.05)' }} onClick={() => setSelectedStep('study')}>
-                    VOLTAR PARA O CONTEÚDO
-                </button>
-                <button className="neon-button">PRÓXIMA QUESTÃO <ArrowLeft size={18} style={{ rotate: '180deg' }} /></button>
-            </div>
-        </div>
-    );
+        );
+    };
 
     return (
         <div className="study-hub-container">

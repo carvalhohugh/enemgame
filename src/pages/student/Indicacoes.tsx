@@ -1,8 +1,24 @@
-import React from 'react';
-import { Share2, Users, Gift, TrendingUp, Copy } from 'lucide-react';
+import React, { useState } from 'react';
+import { Share2, Users, Gift, TrendingUp, Copy, Check, Award, Flame } from 'lucide-react';
+import { motion } from 'framer-motion';
 import './Indicacoes.css';
 
 const Indicacoes: React.FC = () => {
+    const [copied, setCopied] = useState(false);
+    const referralCode = "ARENA-7721-GX"; // Mock dinâmico
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(referralCode);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    const REWARDS_TIERS = [
+        { friends: 1, reward: "Bônus 500 XP", icon: <Flame size={16} />, reached: true },
+        { friends: 5, reward: "Badge 'Recrutador'", icon: <Award size={16} />, reached: true },
+        { friends: 10, reward: "Skin de Clã Exclusiva", icon: <Gift size={16} />, reached: false },
+        { friends: 25, reward: "Assinatura 1 Mês Grátis", icon: <TrendingUp size={16} />, reached: false },
+    ];
     return (
         <div className="referral-container">
             <header>
@@ -30,14 +46,42 @@ const Indicacoes: React.FC = () => {
 
             <div className="glass-card referral-code-card">
                 <h3>Seu Código de Recrutamento</h3>
-                <div className="code-display">HERO-2024</div>
+                <motion.div
+                    className="code-display"
+                    whileHover={{ scale: 1.02 }}
+                >
+                    {referralCode}
+                </motion.div>
                 <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                    Compartilhe este código com seus amigos. Você ganha 500 XP quando eles atingirem o nível 5!
+                    Compartilhe este código com seus amigos. Você ganha **500 XP** quando eles atingirem o nível 5!
                 </p>
-                <button className="neon-button" style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0 auto' }}>
-                    <Copy size={18} /> COPIAR CÓDIGO
+                <button
+                    className={`neon-button ${copied ? 'success' : ''}`}
+                    onClick={handleCopy}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: '0 auto', minWidth: '180px', justifyContent: 'center' }}
+                >
+                    {copied ? <Check size={18} /> : <Copy size={18} />}
+                    {copied ? 'COPIADO!' : 'COPIAR CÓDIGO'}
                 </button>
             </div>
+
+            <section className="rewards-tiers" style={{ marginTop: '40px' }}>
+                <h3 style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Award size={20} color="var(--accent)" /> Trilhas de Recompensas
+                </h3>
+                <div className="tiers-grid">
+                    {REWARDS_TIERS.map((tier, i) => (
+                        <div key={i} className={`glass-card tier-card ${tier.reached ? 'reached' : ''}`}>
+                            <div className="tier-icon">{tier.icon}</div>
+                            <div className="tier-info">
+                                <strong>{tier.reward}</strong>
+                                <span>{tier.friends} Amigos</span>
+                            </div>
+                            {tier.reached && <div className="check-badge"><Check size={12} /></div>}
+                        </div>
+                    ))}
+                </div>
+            </section>
 
             <section className="referral-history">
                 <h3 style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>

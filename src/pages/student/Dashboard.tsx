@@ -8,7 +8,6 @@ import { useTheme } from '../../context/ThemeContext';
 import { motion } from 'framer-motion';
 import './Dashboard.css';
 
-
 const performanceData = [
     { area: 'Matemática', value: 85 },
     { area: 'Linguagens', value: 70 },
@@ -20,37 +19,52 @@ const performanceData = [
 const Dashboard: React.FC = () => {
     const { clan } = useTheme();
     const clanInfos = {
-        ignis: { name: 'Ignis', icon: '🔥' },
-        glacies: { name: 'Glacies', icon: '❄️' },
-        silva: { name: 'Silva', icon: '🌿' },
-        cosmos: { name: 'Cosmos', icon: '✨' }
+        ignis: { name: 'Ignis', icon: '🔥', description: 'O fogo da vitória e o foco absoluto.' },
+        glacies: { name: 'Glacies', icon: '❄️', description: 'A frieza estratégica e o cálculo preciso.' },
+        guardioes: { name: 'Guardiões', icon: '🌿', description: 'A base inabalável e a persistência eterna.' },
+        cosmos: { name: 'Cosmos', icon: '✨', description: 'A visão infinita e a conexão universal.' }
     };
 
-    const currentClan = clan ? clanInfos[clan as keyof typeof clanInfos] : { name: 'Exploradores', icon: '🚀' };
+    const currentClan = clan ? clanInfos[clan as keyof typeof clanInfos] : { name: 'Exploradores', icon: '🚀', description: 'Em busca do seu destino na Arena ENEM.' };
 
     return (
         <div className="dashboard-container">
-            <header style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div>
-                    <h1 style={{ fontSize: '3rem', marginBottom: '8px', fontWeight: 900, textShadow: '0 0 30px var(--clan-glow)', color: 'var(--clan-color)' }}>
-                        Nação {currentClan.name} {currentClan.icon}
-                    </h1>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <span style={{ color: 'var(--text-secondary)', fontWeight: 700, fontSize: '0.9rem', letterSpacing: '1px' }}>NÍVEL 18 • MESTRE DE COMBATE</span>
-                        <div style={{ width: '200px', height: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
+            <div className="clan-hero-section glass-card" style={{
+                borderColor: 'var(--clan-color)',
+                background: 'linear-gradient(135deg, rgba(var(--clan-color-rgb), 0.1) 0%, rgba(var(--clan-color-rgb), 0.02) 100%)'
+            }}>
+                <div className="clan-mascot-placeholder">
+                    {currentClan.icon}
+                </div>
+                <div className="clan-hero-content">
+                    <span className="clan-label">SEU CLÃ ATUAL</span>
+                    <h1 className="clan-title">NAÇÃO {currentClan.name.toUpperCase()}</h1>
+                    <p className="clan-description">{currentClan.description}</p>
+
+                    <div className="clan-progress-wrapper" style={{ marginTop: '20px' }}>
+                        <div className="clan-progress-header">
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800 }}>NÍVEL 18 • MESTRE DE COMBATE</span>
+                            <span style={{ fontSize: '0.75rem', fontWeight: 800, opacity: 0.8 }}>2.450 / 5.000 XP</span>
+                        </div>
+                        <div className="clan-progress-bar">
                             <motion.div
                                 initial={{ width: 0 }}
                                 animate={{ width: '65%' }}
-                                style={{ height: '100%', background: 'var(--clan-color)', boxShadow: '0 0 10px var(--clan-color)' }}
+                                className="clan-progress-fill"
+                                style={{ background: 'var(--clan-color)', boxShadow: '0 0 15px var(--clan-color)' }}
                             />
                         </div>
-                        <span style={{ fontSize: '0.8rem', opacity: 0.6 }}>2.450 / 5.000 XP</span>
                     </div>
                 </div>
-                <button className="neon-button" style={{ borderRadius: '12px', padding: '12px 24px' }}>
-                    CONVOCAR AMIGOS <Share2 size={18} style={{ marginLeft: '8px' }} />
-                </button>
-            </header>
+                <div className="clan-hero-actions">
+                    <button className="neon-button">
+                        CONVOCAR AMIGOS <Share2 size={18} />
+                    </button>
+                    <button className="neon-button secondary">
+                        VER MEU CLÃ
+                    </button>
+                </div>
+            </div>
 
             <div className="dashboard-grid">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card stat-card">
@@ -153,6 +167,5 @@ const Dashboard: React.FC = () => {
         </div>
     );
 };
-
 
 export default Dashboard;
